@@ -1,0 +1,11 @@
+BREAK ON id
+COLUMN group_text FORMAT A20
+COLUMN text FORMAT A500
+COLUMN "Time" FORMAT A8
+SET LINES 530
+SET PAGES 10000
+SELECT line_text text
+  FROM log_lines
+ WHERE log_header_id = 0
+ ORDER BY id
+/

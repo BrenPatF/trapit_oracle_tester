@@ -1,0 +1,25 @@
+ADD utid TO employees
+ALTER TABLE employees ADD (utid VARCHAR2(30))
+                           *
+ERROR at line 1:
+ORA-01430: column being added already exists in table
+
+
+Grant all on employees to dp_6
+old   1: GRANT ALL ON employees TO &DEMO_USER
+new   1: GRANT ALL ON employees TO dp_6
+
+Grant succeeded.
+
+Grant all on departments to dp_6
+old   1: GRANT ALL ON departments TO &DEMO_USER
+new   1: GRANT ALL ON departments TO dp_6
+
+Grant succeeded.
+
+Grant all on employees_seq to dp_6
+old   1: GRANT ALL ON employees_seq TO &DEMO_USER
+new   1: GRANT ALL ON employees_seq TO dp_6
+
+Grant succeeded.
+

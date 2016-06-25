@@ -1,0 +1,258 @@
+Common types creation
+=====================
+Drop type L3_chr_arr
+DROP TYPE L3_chr_arr
+*
+ERROR at line 1:
+ORA-04043: object L3_CHR_ARR does not exist
+
+
+Drop type L2_chr_arr
+DROP TYPE L2_chr_arr
+*
+ERROR at line 1:
+ORA-04043: object L2_CHR_ARR does not exist
+
+
+Create type L1_chr_arr
+
+Type created.
+
+Create type L2_chr_arr
+
+Type created.
+
+Create type L3_chr_arr
+
+Type created.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+Create type L1_num_arr
+
+Type created.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+Common tables creation
+======================
+Create table log_headers
+DROP TABLE log_lines
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+DROP TABLE log_headers
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+Table created.
+
+Insert the default log header
+
+1 row created.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+DROP SEQUENCE log_headers_s
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist
+
+
+
+Sequence created.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+Create table log_lines
+
+Table created.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+DROP SEQUENCE log_lines_s
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist
+
+
+
+Sequence created.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+Packages creation
+=================
+Create package Utils
+
+Package created.
+
+No errors.
+
+Synonym created.
+
+
+Grant succeeded.
+
+
+Package body created.
+
+No errors.
+Create package Timer_Set
+
+Package created.
+
+No errors.
+
+Grant succeeded.
+
+
+Synonym created.
+
+
+Package body created.
+
+No errors.
+Create package UT_Utils
+
+Package created.
+
+No errors.
+
+Synonym created.
+
+
+Grant succeeded.
+
+
+Package body created.
+
+No errors.
+HR Types creation
+=================
+Input types creation
+DROP TYPE emp_in_arr
+*
+ERROR at line 1:
+ORA-04043: object EMP_IN_ARR does not exist
+
+
+
+Type created.
+
+
+Type created.
+
+Output types creation
+DROP TYPE emp_out_arr
+*
+ERROR at line 1:
+ORA-04043: object EMP_OUT_ARR does not exist
+
+
+
+Type created.
+
+
+Type created.
+
+HR synonyms AND views creation
+==============================
+
+Synonym created.
+
+
+Synonym created.
+
+employees view
+
+View created.
+
+hr_test_view_v view
+
+View created.
+
+HR Packages creation
+====================
+Create package DML_API_UT_HR
+
+Package created.
+
+No errors.
+
+Package created.
+
+
+Package body created.
+
+No errors.
+
+Package body created.
+
+Create package Emp_WS
+
+Package created.
+
+
+Package body created.
+
+No errors.
+Create package UT_Emp_WS
+
+Package created.
+
+
+Package body created.
+
+No errors.
+View_drivers packages
+=====================
+Create package UT_View_Drivers
+
+Package created.
+
+
+Package body created.
+
+No errors.
