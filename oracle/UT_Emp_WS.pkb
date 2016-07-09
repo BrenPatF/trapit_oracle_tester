@@ -21,9 +21,10 @@ Brendan Furey        08-May-2016 1.0   Initial
 Brendan Furey        21-May-2016 1.1   Re-factored: setup at procedure level; new type names;
                                        Write_Session_Results moved to Check_UT_Results; etc.
 Brendan Furey        25-Jun-2016 1.2   Removed ut_Setup and ut_Teardown following removal of uPLSQL
+Brendan Furey        09-Jul-2016 1.3   Passing new input arrays to Check_UT_Results for printing per
+                                       scenario
 
 ***************************************************************************************************/
-
 c_n                     CONSTANT VARCHAR2(1) := 'N';
 
 /***************************************************************************************************
@@ -72,7 +73,15 @@ PROCEDURE ut_AIP_Save_Emps IS
                                '1 valid record',
                                '1 invalid job id',
                                '1 invalid number',
-                               '2 valid records, 1 invalid job id'
+                               '2 valid records, 1 invalid job id (2 deliberate errors)'
+  );
+  c_inp_group_lis       CONSTANT L1_chr_arr := L1_chr_arr ('Employee');
+  c_inp_field_2lis      CONSTANT L2_chr_arr := L2_chr_arr (
+                                                        L1_chr_arr (
+                                                                'Name',
+                                                                'Email',
+                                                                'Job',
+                                                               '*Salary')
   );
   c_out_group_lis         CONSTANT L1_chr_arr := L1_chr_arr ('Employee', 'Output array', 'Exception');
   c_fields_2lis           CONSTANT L2_chr_arr :=  L2_chr_arr (
@@ -81,6 +90,8 @@ PROCEDURE ut_AIP_Save_Emps IS
                                       L1_chr_arr ('Error message')
   );
   l_timer_set             PLS_INTEGER;
+  l_inp_3lis              L3_chr_arr := L3_chr_arr();
+
   l_ws_act_3lis           L3_chr_arr := L3_chr_arr ();
 
   /***************************************************************************************************
@@ -110,9 +121,9 @@ PROCEDURE ut_AIP_Save_Emps IS
                                     UT_Utils.c_empty_list,
                                     L1_chr_arr ('ORA-06502: PL/SQL: numeric or value error: character to number conversion error')
                         ),
-                        L2_chr_arr (L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+3), c_ln (4), c_em (4), c_job_id, c_salary (1)),  -- Deliberate mistake: c_salary (1), 4 --> 1
+                        L2_chr_arr (L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+3), c_ln (4), c_em (4), c_job_id, c_salary (1)), -- c_salary (1) should be c_salary (4)
                                                 Utils.List_Delim (To_Char(l_last_seq_val+5), c_ln (6), c_em (6), c_job_id, c_salary (6)),
-                                                Utils.List_Delim (To_Char(l_last_seq_val+5), c_ln (6), c_em (6), c_job_id, c_salary (6))), -- Deliberate mistake: duplicate record
+                                                Utils.List_Delim (To_Char(l_last_seq_val+5), c_ln (6), c_em (6), c_job_id, c_salary (6))), -- duplicate record to generate error
                                     L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+3), To_Char(To_Date(l_last_seq_val+3,'J'),'JSP')),
                                                 Utils.List_Delim (0, 'ORA-02291: integrity constraint (.) violated - parent key not found'),
                                                 Utils.List_Delim (To_Char(l_last_seq_val+5), To_Char(To_Date(l_last_seq_val+5,'J'),'JSP'))),
@@ -211,16 +222,26 @@ BEGIN
   Setup;
   Timer_Set.Increment_Time (l_timer_set, 'Setup');
   l_ws_act_3lis.EXTEND (c_params_3lis.COUNT);
+  l_inp_3lis.EXTEND (c_params_3lis.COUNT);
 
   FOR i IN 1..c_params_3lis.COUNT LOOP
 
     Call_WS (c_params_3lis(i), l_ws_act_3lis(i));
+    l_inp_3lis(i) := L2_chr_arr();
+    l_inp_3lis(i).EXTEND(1);
+    l_inp_3lis(i)(1) := L1_chr_arr();
+    l_inp_3lis(i)(1).EXTEND(c_params_3lis(i).COUNT);
+    FOR j IN 1..c_params_3lis(i).COUNT LOOP
+
+      l_inp_3lis(i)(1)(j) := Utils.List_Delim (c_params_3lis(i)(j)(1), c_params_3lis(i)(j)(2), c_params_3lis(i)(j)(3), c_params_3lis(i)(j)(4));
+
+    END LOOP;
     ROLLBACK;
 
   END LOOP;
 
-  UT_Utils.Check_UT_Results (c_proc_name, c_scenario_lis, l_ws_act_3lis, g_ws_exp_3lis, l_timer_set, c_ws_ms_limit,
-                             c_out_group_lis, c_fields_2lis);
+  UT_Utils.Check_UT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_ws_act_3lis, g_ws_exp_3lis, l_timer_set, c_ws_ms_limit,
+                             c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_fields_2lis);
 
 EXCEPTION
   WHEN OTHERS THEN

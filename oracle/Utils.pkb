@@ -14,16 +14,17 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        08-May-2016 1.0   Initial for first article
 Brendan Furey        21-May-2016 1.1   Replaced SYS.ODCI types with custom types L1_chr_arr etc.
-Brendan Furey        24-Jun-2016 1.0   Row_To_List added
+Brendan Furey        24-Jun-2016 1.2   Row_To_List added
+Brendan Furey        09-Jul-2016 1.3   Write_Log: added p_indent_level parameter
 
 ***************************************************************************************************/
-
 c_lines                 CONSTANT VARCHAR2(1000) := '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------';
 c_equals                CONSTANT VARCHAR2(1000) := '=======================================================================================================================================================================================================';
 
 g_log_header_id         PLS_INTEGER := 0;
 g_line_lis              L1_chr_arr;
 g_line_printed          VARCHAR2(1000);
+g_indent_level          PLS_INTEGER := 0;
 
 /***************************************************************************************************
 
@@ -84,8 +85,13 @@ Write_Log: Logging procedure, writes log line for header stored in global
 
 ***************************************************************************************************/
 PROCEDURE Write_Log (p_text             VARCHAR2,                 -- line to write
+                     p_indent_level     PLS_INTEGER DEFAULT 0,    -- indent level
                      p_group_text       VARCHAR2 DEFAULT NULL) IS -- group text
   PRAGMA AUTONOMOUS_TRANSACTION;
+  c_spaces              CONSTANT VARCHAR2(100) := '                                                  ';
+  c_indent_amount       CONSTANT PLS_INTEGER := 4;
+  l_indent                       VARCHAR2(20) := Substr (c_spaces, 1, p_indent_level * c_indent_amount);
+
 BEGIN
 
   IF p_group_text IS NOT NULL THEN
@@ -102,7 +108,7 @@ BEGIN
         log_lines_s.NEXTVAL,
         g_log_header_id,
         g_group_text,
-        p_text,
+        l_indent || p_text,
         SYSTIMESTAMP);
   COMMIT;
 
@@ -145,13 +151,12 @@ PROCEDURE Heading (p_head       VARCHAR2,                 -- heading string
                    p_group_text VARCHAR2 DEFAULT NULL) IS -- group text
 
   l_under       VARCHAR2(500) := Substr (c_equals, 1, Length (p_head));
-  l_indent      VARCHAR2(10) := CASE p_indent_level WHEN 1 THEN '     ' WHEN 2 THEN '          ' END;
 
 BEGIN
 
-  Write_Log (p_text => '', p_group_text => p_group_text);
-  Write_Log (p_text => l_indent || p_head);
-  Write_Log (p_text => l_indent || l_under);
+  Write_Log (p_text => '', p_indent_level => p_indent_level, p_group_text => p_group_text);
+  Write_Log (p_text => p_head, p_indent_level => p_indent_level);
+  Write_Log (p_text => l_under, p_indent_level => p_indent_level);
 
 END Heading;
 
@@ -223,7 +228,6 @@ PROCEDURE Pr_List_As_Line (p_val_lis            L1_chr_arr, -- token list
                            p_save_line BOOLEAN DEFAULT FALSE) IS  -- TRUE if to save in global
   l_line        VARCHAR2(1000);
   l_fld         VARCHAR2(200);
-  l_indent      VARCHAR2(10) := CASE p_indent_level WHEN 1 THEN '     ' WHEN 2 THEN '          ' END;
   l_val         VARCHAR2(1000);
 BEGIN
 
@@ -242,9 +246,10 @@ BEGIN
     END IF;
 
   END LOOP;
-  Write_Log (l_indent || l_line);
+  Write_Log (l_line, p_indent_level);
   IF p_save_line THEN
-    g_line_printed := l_indent || l_line;
+    g_line_printed := l_line;
+    g_indent_level := p_indent_level;
   END IF;
 
 END Pr_List_As_Line;
@@ -257,7 +262,7 @@ Reprint_Line: Reprint the line previously printed by Pr_List_As_Line, stored in 
 PROCEDURE Reprint_Line IS
 BEGIN
 
-  Write_Log (g_line_printed);
+  Write_Log (g_line_printed, g_indent_level);
 
 END Reprint_Line;
 

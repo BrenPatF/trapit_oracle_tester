@@ -14,7 +14,8 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        08-May-2016 1.0   Initial for first article
 Brendan Furey        21-May-2016 1.1   Replaced SYS.ODCI types with custom types L1_chr_arr etc.
-Brendan Furey        24-Jun-2016 1.0   Row_To_List added
+Brendan Furey        24-Jun-2016 1.2   Row_To_List added
+Brendan Furey        09-Jul-2016 1.3   Write_Log: added p_indent_level parameter
 
 ***************************************************************************************************/
 
@@ -29,7 +30,9 @@ c_session_id_if_UT               VARCHAR2(30);
 FUNCTION Create_Log (p_description VARCHAR2 DEFAULT NULL) RETURN PLS_INTEGER;
 PROCEDURE Clear_Log (p_log_header_id PLS_INTEGER DEFAULT 0);
 PROCEDURE Reset_Log (p_log_header_id PLS_INTEGER DEFAULT 0);
-PROCEDURE Write_Log (p_text VARCHAR2, p_group_text VARCHAR2 DEFAULT NULL);
+PROCEDURE Write_Log (p_text             VARCHAR2,
+                     p_indent_level     PLS_INTEGER DEFAULT 0,
+                     p_group_text       VARCHAR2 DEFAULT NULL);
 PROCEDURE Write_Other_Error (p_package VARCHAR2 DEFAULT NULL, p_proc VARCHAR2 DEFAULT NULL, p_group_text VARCHAR2 DEFAULT NULL);
 
 FUNCTION Get_Seconds (p_interval INTERVAL DAY TO SECOND) RETURN NUMBER;

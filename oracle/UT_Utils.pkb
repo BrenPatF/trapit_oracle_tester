@@ -22,6 +22,8 @@ Brendan Furey        10-Jun-2016 1.2   Check_UT_Results: Handle missing records 
 Brendan Furey        25-Jun-2016 1.3   Refactored the output formatting; removed utPLSQL calls and
                                        replaced Run_Suite with new version that loops over array
                                        making its own calls
+Brendan Furey        09-Jul-2016 1.4   Check_UT_Results: Write_Inp_Group added to write inputs per
+                                       scenario, with extra parameters for the inputs
 
 ***************************************************************************************************/
 c_status_f              CONSTANT VARCHAR2(10) := 'F';
@@ -30,7 +32,6 @@ c_status_word_f         CONSTANT VARCHAR2(10) := 'FAILURE';
 c_status_word_s         CONSTANT VARCHAR2(10) := 'SUCCESS';
 c_null                  CONSTANT VARCHAR2(30) := 'NULL';
 c_time_not_ok           CONSTANT VARCHAR2(60) := 'Average call time: #1, exceeds limit: #2';
-c_ut_prefix             CONSTANT VARCHAR2(10) := 'UT_';
 c_ut_suites_3lis        CONSTANT L3_chr_arr := L3_chr_arr (
                                     L2_chr_arr (L1_chr_arr ('UT_Emp_WS',           'ut_AIP_Save_Emps'),
                                                 L1_chr_arr ('UT_View_Drivers',     'ut_HR_Test_View_V'))
@@ -62,7 +63,7 @@ END Write_Log;
 
 /***************************************************************************************************
 
-Init: ut initialise for a procedure by constructing timer set, then calling local Init procedure,
+Init: ut initialise for a procedure by constructing timer set, then writing heading,
       and returning the timer set id
 
 ***************************************************************************************************/
@@ -115,8 +116,7 @@ BEGIN
   l_max_len := Utils.Max_Len (l_test_name_lis);
   l_len_lis := L1_num_arr (l_max_len, -5, -5, -10, -10);
   Utils.Col_Headers (L1_chr_arr ('Package.Procedure', 'Tests', 'Fails', 'ELA', 'CPU'),
-               l_len_lis
-              );
+                     l_len_lis);
 
   FOR i IN 1..g_test_set_lis.COUNT LOOP
 
@@ -151,10 +151,13 @@ Check_UT_Results: ut utility to check results from testing, L3_chr_arr version
 ***************************************************************************************************/
 PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
                             p_test_lis                  L1_chr_arr,    -- test descriptions
+                            p_inp_3lis                  L3_chr_arr,    -- actual result strings
                             p_act_3lis                  L3_chr_arr,    -- actual result strings
                             p_exp_3lis                  L3_chr_arr,    -- expected result strings
                             p_timer_set                 PLS_INTEGER,   -- timer set index
                             p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
+                            p_inp_group_lis             L1_chr_arr,    -- input group names
+                            p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
                             p_out_group_lis             L1_chr_arr,    -- output group names
                             p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
 
@@ -162,6 +165,150 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
   l_num_tests_sce                L1_num_arr :=  L1_num_arr();
   l_tot_fails                    PLS_INTEGER := 0;
   l_tot_tests                    PLS_INTEGER := 0;
+
+  /***************************************************************************************************
+
+  Write_Inp_Group: Writes the input fields for a given scenario and output group in tabular format within
+                   block header and trailer lines
+
+  ***************************************************************************************************/
+  PROCEDURE Write_Inp_Group (p_inp_group            VARCHAR2,       -- input group name
+                             p_inp_fields_lis       L1_chr_arr,     -- column names array
+                             p_inp_lis              L1_chr_arr) IS  -- input record strings for scenario/ group
+
+    l_res_2lis                   L2_chr_arr := L2_chr_arr();
+    l_just_sign                  L1_num_arr := L1_num_arr(1);
+    l_inp_is_empty               BOOLEAN;
+    /***************************************************************************************************
+
+    Set_Result_Row: Assign a first value scalar, then a list of values to a single row of the output
+                    array
+
+    ***************************************************************************************************/
+    PROCEDURE Set_Result_Row (p_value_lis           L1_chr_arr,    -- array for rest of the results record
+                              x_res_lis         OUT L1_chr_arr) IS -- full results record array
+      l_value   VARCHAR2(4000);
+    BEGIN
+
+      x_res_lis := L1_chr_arr();
+      x_res_lis.EXTEND (p_value_lis.COUNT);
+
+      FOR i IN 1..p_value_lis.COUNT LOOP
+
+        l_value := p_value_lis(i);
+        x_res_lis(i) := l_value;
+
+      END LOOP;
+
+    END Set_Result_Row;
+    /***************************************************************************************************
+
+    Print_Group_Header: Prints the output group header allowing for case where the group has no body
+
+    ***************************************************************************************************/
+    PROCEDURE Print_Group_Header (p_group_is_empty       BOOLEAN,        -- TRUE if no records in group
+                                  p_inp_group            VARCHAR2,       -- input group name
+                                  p_inp_fields_lis       L1_chr_arr,     -- column names array
+                                  x_just_sign     IN OUT L1_num_arr,     -- column justification sign array
+                                  x_res_lis          OUT L1_chr_arr) IS  -- first record of results array = headers
+
+      l_suffix          VARCHAR2(30) := CASE WHEN p_group_is_empty THEN ' (No records)' ELSE ' {' END;
+      l_value_lis       L1_chr_arr := p_inp_fields_lis;
+
+    BEGIN
+
+      FOR i IN 1..l_value_lis.COUNT LOOP
+
+        x_just_sign.EXTEND;
+        x_just_sign(i) := 1;
+        IF Substr (l_value_lis(i), 1, 1) = '*' THEN
+          l_value_lis(i) := Substr (l_value_lis(i), 2);
+          x_just_sign(i) := -1;
+        END IF;
+
+      END LOOP;
+      x_res_lis := l_value_lis;
+
+      Utils.Heading ('GROUP ' || p_inp_group || l_suffix, 2);
+
+    END Print_Group_Header;
+
+    /***************************************************************************************************
+
+    Set_Result_Array: Populates the results array for subsequent printing, using  input value array for
+                      given scenario and output group
+
+    ***************************************************************************************************/
+    PROCEDURE Set_Result_Array (p_inp_lis              L1_chr_arr,    -- input value string array
+                                x_res_2lis      IN OUT L2_chr_arr) IS --
+
+      l_row_ind                    PLS_INTEGER := 1;
+      l_act                        VARCHAR2(4000);
+      l_exp                        VARCHAR2(4000);
+      l_value_lis                  L1_chr_arr;
+
+      PROCEDURE Add_Result_Row (p_value_lis L1_chr_arr, x_row_ind IN OUT PLS_INTEGER) IS
+      BEGIN
+
+        x_row_ind := x_row_ind + 1;
+        x_res_2lis.EXTEND;
+        Set_Result_Row (p_value_lis, x_res_2lis (x_row_ind));
+
+      END Add_Result_Row;
+
+   BEGIN
+
+      FOR i IN 1..p_inp_lis.COUNT LOOP
+
+        Add_Result_Row (Utils.Row_To_List (p_inp_lis(i)), l_row_ind);
+
+      END LOOP;
+
+    END Set_Result_Array;
+
+    /***************************************************************************************************
+
+    Print_Result_Array: Prints the result array
+
+    ***************************************************************************************************/
+    PROCEDURE Print_Result_Array (p_just_sign   L1_num_arr,    -- column justification sign array
+                                  p_res_2lis    L2_chr_arr) IS -- results array
+
+      l_len_lis                    L1_num_arr := Utils.Max_Len_2lis (p_res_2lis);
+
+    BEGIN
+
+      FOR i IN 1..l_len_lis.COUNT LOOP
+        l_len_lis(i) := p_just_sign(i) * l_len_lis(i);
+      END LOOP;
+
+      Utils.Col_Headers (p_res_2lis(1), l_len_lis, 3);
+      FOR i IN 2..p_res_2lis.COUNT LOOP
+
+        Utils.Pr_List_As_Line (p_res_2lis(i), l_len_lis, 3);
+
+      END LOOP;
+
+      Utils.Heading ('}', 2);
+
+    END Print_Result_Array;
+
+  BEGIN
+
+    IF p_inp_lis IS NULL THEN
+      l_inp_is_empty := TRUE;
+    ELSE
+      l_inp_is_empty := p_inp_lis.COUNT = 0;
+    END IF;
+
+    l_res_2lis.EXTEND;
+    Print_Group_Header (l_inp_is_empty, p_inp_group, p_inp_fields_lis, l_just_sign, l_res_2lis(1));
+    IF NOT l_inp_is_empty THEN
+      Set_Result_Array (p_inp_lis, l_res_2lis);
+      Print_Result_Array (l_just_sign, l_res_2lis);
+    END IF;
+
+  END Write_Inp_Group;
 
   /***************************************************************************************************
 
@@ -176,7 +323,6 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
                          x_num_fails     IN OUT PLS_INTEGER,    -- total number of failed tests
                          x_num_tests     IN OUT PLS_INTEGER) IS -- total number of tests
 
-    l_max_len                    PLS_INTEGER := Greatest (6, Utils.Max_Len (p_act_lis), Utils.Max_Len (p_exp_lis));
     l_res_2lis                   L2_chr_arr := L2_chr_arr();
     l_just_sign                  L1_num_arr := L1_num_arr(1);
     l_missing_rec                VARCHAR2(4000) := RegExp_Replace (Utils.List_Delim (p_fields_lis), '[^' || Utils.g_list_delimiter || ']', ''); --? use global delimiter
@@ -243,7 +389,7 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
 
       END IF;
 
-      Utils.Heading ('GROUP ' || p_out_group || l_group_header, 1);
+      Utils.Heading ('GROUP ' || p_out_group || l_group_header, 2);
       RETURN l_not_null_case;
 
     END Print_Group_Header;
@@ -283,11 +429,15 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
         l_act := p_missing_rec;
         l_exp := p_missing_rec;
         IF i <= p_act_lis.COUNT THEN
-          l_act := p_act_lis(i);
-       END IF;
+          IF p_act_lis(i) != c_empty_list(1) THEN
+            l_act := p_act_lis(i);
+          END IF;
+        END IF;
 
         IF i <= p_exp_lis.COUNT THEN
-          l_exp := p_exp_lis(i);
+          IF p_exp_lis(i) != c_empty_list(1) THEN
+            l_exp := p_exp_lis(i);
+          END IF;
         END IF;
 
         l_value_lis := Utils.Row_To_List (l_act);
@@ -327,10 +477,10 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
         l_len_lis(i) := p_just_sign(i) * l_len_lis(i);
       END LOOP;
 
-      Utils.Col_Headers (l_res_2lis(1), l_len_lis, 2);
+      Utils.Col_Headers (l_res_2lis(1), l_len_lis, 3);
       FOR i IN 2..l_res_2lis.COUNT LOOP
 
-        Utils.Pr_List_As_Line (l_res_2lis(i), l_len_lis, 2);
+        Utils.Pr_List_As_Line (l_res_2lis(i), l_len_lis, 3);
 
       END LOOP;
 
@@ -338,7 +488,7 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
         l_status := c_status_word_f;
       END IF;
 
-      Utils.Heading ('} ' || p_num_fails || ' failed, of ' || (p_res_2lis.COUNT-1-p_num_fails) || ': ' || l_status, 1);
+      Utils.Heading ('} ' || p_num_fails || ' failed, of ' || (p_res_2lis.COUNT-1-p_num_fails) || ': ' || l_status, 2);
 
     END Print_Result_Array;
 
@@ -353,7 +503,7 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
 
     ELSE
 
-        x_num_tests := x_num_tests + 1;
+      x_num_tests := x_num_tests + 1;
 
     END IF;
 
@@ -374,6 +524,24 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
     FOR i IN 1..p_act_3lis.COUNT LOOP -- scenario/call loop
 
       Utils.Heading ('SCENARIO ' || i || ': ' || p_test_lis(i) || ' {');
+      Utils.Heading ('INPUTS', 1);
+
+      IF p_inp_3lis IS NULL THEN
+
+        Utils.Write_Log ('No inputs supplied)', 1);
+
+      ELSE
+
+        FOR j IN 1..p_inp_3lis(i).COUNT LOOP -- group loop (group instance means table or array normally)
+
+          Write_Inp_Group (p_inp_group_lis(j), p_inp_fields_2lis(j), p_inp_3lis(i)(j));
+
+        END LOOP;
+
+      END IF;
+
+      Utils.Heading ('OUTPUTS', 1);
+
       x_num_fails_sce(i) := 0;
       x_num_tests_sce(i) := 0;
       FOR j IN 1..p_act_3lis(i).COUNT LOOP -- group loop (group instance means table or array normally)
@@ -475,15 +643,18 @@ Check_UT_Results: ut utility to check results from testing, L2_chr_arr version j
 ***************************************************************************************************/
 PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
                             p_test_lis                  L1_chr_arr,    -- test descriptions
+                            p_inp_3lis                  L3_chr_arr,    -- input strings
                             p_act_2lis                  L2_chr_arr,    -- actual result strings
                             p_exp_2lis                  L2_chr_arr,    -- expected result strings
                             p_timer_set                 PLS_INTEGER,   -- timer set index
-                            p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
+                           p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
+                            p_inp_group_lis             L1_chr_arr,    -- input group names
+                            p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
                             p_out_group_lis             L1_chr_arr,    -- output group names
                             p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
 
-  l_act_3lis               L3_chr_arr := L3_chr_arr ();
-  l_exp_3lis               L3_chr_arr := L3_chr_arr ();
+  l_act_3lis               L3_chr_arr := L3_chr_arr();
+  l_exp_3lis               L3_chr_arr := L3_chr_arr();
 
 BEGIN
 
@@ -500,10 +671,13 @@ BEGIN
 
   Check_UT_Results (        p_proc_name       => p_proc_name,
                             p_test_lis        => p_test_lis,
+                            p_inp_3lis        => p_inp_3lis,
                             p_act_3lis        => l_act_3lis,
                             p_exp_3lis        => l_exp_3lis,
                             p_timer_set       => p_timer_set,
                             p_ms_limit        => p_ms_limit,
+                            p_inp_group_lis   => p_inp_group_lis,
+                            p_inp_fields_2lis => p_inp_fields_2lis,
                             p_out_group_lis   => p_out_group_lis,
                             p_fields_2lis     => p_fields_2lis);
 
@@ -517,10 +691,13 @@ Check_UT_Results: ut utility to check results from testing, L1_chr_arr version j
 ***************************************************************************************************/
 PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
                             p_test_lis                  L1_chr_arr,    -- test descriptions
+                            p_inp_3lis                  L3_chr_arr,    -- input strings
                             p_act_lis                   L1_chr_arr,    -- actual result strings
                             p_exp_lis                   L1_chr_arr,    -- expected result strings
                             p_timer_set                 PLS_INTEGER,   -- timer set index
                             p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
+                            p_inp_group_lis             L1_chr_arr,    -- input group names
+                            p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
                             p_out_group_lis             L1_chr_arr,    -- output group names
                             p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
 
@@ -531,10 +708,13 @@ BEGIN
 
   Check_UT_Results (        p_proc_name       => p_proc_name,
                             p_test_lis        => p_test_lis,
+                            p_inp_3lis        => p_inp_3lis,
                             p_act_3lis        => l_act_3lis,
                             p_exp_3lis        => l_exp_3lis,
                             p_timer_set       => p_timer_set,
                             p_ms_limit        => p_ms_limit,
+                            p_inp_group_lis   => p_inp_group_lis,
+                            p_inp_fields_2lis => p_inp_fields_2lis,
                             p_out_group_lis   => p_out_group_lis,
                             p_fields_2lis     => p_fields_2lis);
 
@@ -549,6 +729,7 @@ List_or_Empty: Takes a list and just returns it unless it's empty, when it retur
 FUNCTION List_or_Empty (p_list          L1_chr_arr)   -- list of strings
                         RETURN          L1_chr_arr IS -- input list or 1-record EMPTY list
 BEGIN
+
   IF p_list IS NULL THEN
     RETURN c_empty_list;
   ELSE
@@ -558,6 +739,7 @@ BEGIN
       RETURN p_list;
     END IF;
   END IF;
+
 END List_or_Empty;
 
 /***************************************************************************************************
