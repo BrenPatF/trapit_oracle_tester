@@ -23,28 +23,44 @@ UNIT TEST for UT_Emp_WS.ut_AIP_Save_Emps
 SCENARIO 1: 1 valid record {
 ============================
 
-     GROUP Employee: Actual = 1, Expected = 1 {
-     ==========================================
+    INPUTS
+    ======
 
-          F?  Employee id  Name  Email  Job      Salary
-          --  -----------  ----  -----  -------  ------
-                     1488  LN 1  EM 1   IT_PROG    1000
+        GROUP Employee {
+        ================
 
-     } 0 failed, of 1: SUCCESS
-     =========================
+            Name  Email  Job      Salary
+            ----  -----  -------  ------
+            LN 1  EM 1   IT_PROG    1000
 
-     GROUP Output array: Actual = 1, Expected = 1 {
-     ==============================================
+        }
+        =
 
-          F?  Employee id  Description
-          --  -----------  --------------------------------------
-                     1488  ONE THOUSAND FOUR HUNDRED EIGHTY-EIGHT
+    OUTPUTS
+    =======
 
-     } 0 failed, of 1: SUCCESS
-     =========================
+        GROUP Employee: Actual = 1, Expected = 1 {
+        ==========================================
 
-     GROUP Exception: Actual = 0, Expected = 0: SUCCESS
-     ==================================================
+            F?  Employee id  Name  Email  Job      Salary
+            --  -----------  ----  -----  -------  ------
+                       1513  LN 1  EM 1   IT_PROG    1000
+
+        } 0 failed, of 1: SUCCESS
+        =========================
+
+        GROUP Output array: Actual = 1, Expected = 1 {
+        ==============================================
+
+            F?  Employee id  Description
+            --  -----------  ----------------------------------
+                       1513  ONE THOUSAND FIVE HUNDRED THIRTEEN
+
+        } 0 failed, of 1: SUCCESS
+        =========================
+
+        GROUP Exception: Actual = 0, Expected = 0: SUCCESS
+        ==================================================
 
 } 0 failed, of 3: SUCCESS
 =========================
@@ -52,21 +68,37 @@ SCENARIO 1: 1 valid record {
 SCENARIO 2: 1 invalid job id {
 ==============================
 
-     GROUP Employee: Actual = 0, Expected = 0: SUCCESS
-     =================================================
+    INPUTS
+    ======
 
-     GROUP Output array: Actual = 1, Expected = 1 {
-     ==============================================
+        GROUP Employee {
+        ================
 
-          F?  Employee id  Description
-          --  -----------  -------------------------------------------------------------------
-                        0  ORA-02291: integrity constraint (.) violated - parent key not found
+            Name  Email  Job      Salary
+            ----  -----  -------  ------
+            LN 2  EM 2   NON_JOB    1500
 
-     } 0 failed, of 1: SUCCESS
-     =========================
+        }
+        =
 
-     GROUP Exception: Actual = 0, Expected = 0: SUCCESS
-     ==================================================
+    OUTPUTS
+    =======
+
+        GROUP Employee: Actual = 0, Expected = 0: SUCCESS
+        =================================================
+
+        GROUP Output array: Actual = 1, Expected = 1 {
+        ==============================================
+
+            F?  Employee id  Description
+            --  -----------  -------------------------------------------------------------------
+                          0  ORA-02291: integrity constraint (.) violated - parent key not found
+
+        } 0 failed, of 1: SUCCESS
+        =========================
+
+        GROUP Exception: Actual = 0, Expected = 0: SUCCESS
+        ==================================================
 
 } 0 failed, of 3: SUCCESS
 =========================
@@ -74,150 +106,213 @@ SCENARIO 2: 1 invalid job id {
 SCENARIO 3: 1 invalid number {
 ==============================
 
-     GROUP Employee: Actual = 0, Expected = 0: SUCCESS
-     =================================================
+    INPUTS
+    ======
 
-     GROUP Output array: Actual = 0, Expected = 0: SUCCESS
-     =====================================================
+        GROUP Employee {
+        ================
 
-     GROUP Exception: Actual = 1, Expected = 1 {
-     ===========================================
+            Name  Email  Job      Salary
+            ----  -----  -------  ------
+            LN 3  EM 3   IT_PROG   2000x
 
-          F?  Error message
-          --  -------------------------------------------------------------------------------
-              ORA-06502: PL/SQL: numeric or value error: character to number conversion error
+        }
+        =
 
-     } 0 failed, of 1: SUCCESS
-     =========================
+    OUTPUTS
+    =======
+
+        GROUP Employee: Actual = 0, Expected = 0: SUCCESS
+        =================================================
+
+        GROUP Output array: Actual = 0, Expected = 0: SUCCESS
+        =====================================================
+
+        GROUP Exception: Actual = 1, Expected = 1 {
+        ===========================================
+
+            F?  Error message
+            --  -------------------------------------------------------------------------------
+                ORA-06502: PL/SQL: numeric or value error: character to number conversion error
+
+        } 0 failed, of 1: SUCCESS
+        =========================
 
 } 0 failed, of 3: SUCCESS
 =========================
 
-SCENARIO 4: 2 valid records, 1 invalid job id {
-===============================================
+SCENARIO 4: 2 valid records, 1 invalid job id (2 deliberate errors) {
+=====================================================================
 
-     GROUP Employee: Actual = 2, Expected = 3 {
-     ==========================================
+    INPUTS
+    ======
 
-          F?  Employee id  Name  Email  Job      Salary
-          --  -----------  ----  -----  -------  ------
-          F          1490  LN 4  EM 4   IT_PROG    3000
-          >          1490  LN 4  EM 4   IT_PROG    1000
-                     1492  LN 6  EM 6   IT_PROG    5000
-          F
-          >          1492  LN 6  EM 6   IT_PROG    5000
+        GROUP Employee {
+        ================
 
-     } 2 failed, of 3: FAILURE
-     =========================
+            Name  Email  Job      Salary
+            ----  -----  -------  ------
+            LN 4  EM 4   IT_PROG    3000
+            LN 5  EM 5   NON_JOB    4000
+            LN 6  EM 6   IT_PROG    5000
 
-     GROUP Output array: Actual = 3, Expected = 3 {
-     ==============================================
+        }
+        =
 
-          F?  Employee id  Description
-          --  -----------  -------------------------------------------------------------------
-                     1490  ONE THOUSAND FOUR HUNDRED NINETY
-                        0  ORA-02291: integrity constraint (.) violated - parent key not found
-                     1492  ONE THOUSAND FOUR HUNDRED NINETY-TWO
+    OUTPUTS
+    =======
 
-     } 0 failed, of 3: SUCCESS
-     =========================
+        GROUP Employee: Actual = 2, Expected = 3 {
+        ==========================================
 
-     GROUP Exception: Actual = 0, Expected = 0: SUCCESS
-     ==================================================
+            F?  Employee id  Name  Email  Job      Salary
+            --  -----------  ----  -----  -------  ------
+            F          1515  LN 4  EM 4   IT_PROG    3000
+            >          1515  LN 4  EM 4   IT_PROG    1000
+                       1517  LN 6  EM 6   IT_PROG    5000
+            F
+            >          1517  LN 6  EM 6   IT_PROG    5000
+
+        } 2 failed, of 3: FAILURE
+        =========================
+
+        GROUP Output array: Actual = 3, Expected = 3 {
+        ==============================================
+
+            F?  Employee id  Description
+            --  -----------  -------------------------------------------------------------------
+                       1515  ONE THOUSAND FIVE HUNDRED FIFTEEN
+                          0  ORA-02291: integrity constraint (.) violated - parent key not found
+                       1517  ONE THOUSAND FIVE HUNDRED SEVENTEEN
+
+        } 0 failed, of 3: SUCCESS
+        =========================
+
+        GROUP Exception: Actual = 0, Expected = 0: SUCCESS
+        ==================================================
 
 } 2 failed, of 7: FAILURE
 =========================
 
-TIMING: Actual = 4, Expected <= 2: FAILURE
-==========================================
+TIMING: Actual = 222, Expected <= 2: FAILURE
+============================================
 
 SUMMARY for UT_Emp_WS.ut_AIP_Save_Emps
 ======================================
 
-Scenario                           # Failed  # Tests  Status
----------------------------------  --------  -------  -------
-1 valid record                            0        3  SUCCESS
-1 invalid job id                          0        3  SUCCESS
-1 invalid number                          0        3  SUCCESS
-2 valid records, 1 invalid job id         2        7  FAILURE
-Timing                                    1        1  FAILURE
----------------------------------  --------  -------  -------
-Total                                     3       17  FAILURE
----------------------------------  --------  -------  -------
+Scenario                                                 # Failed  # Tests  Status
+-------------------------------------------------------  --------  -------  -------
+1 valid record                                                  0        3  SUCCESS
+1 invalid job id                                                0        3  SUCCESS
+1 invalid number                                                0        3  SUCCESS
+2 valid records, 1 invalid job id (2 deliberate errors)         2        7  FAILURE
+Timing                                                          1        1  FAILURE
+-------------------------------------------------------  --------  -------  -------
+Total                                                           3       17  FAILURE
+-------------------------------------------------------  --------  -------  -------
 
-Timer Set: UT_Emp_WS.ut_AIP_Save_Emps, Constructed at 25 Jun 2016 16:10:48, written at 16:10:48
+Timer Set: UT_Emp_WS.ut_AIP_Save_Emps, Constructed at 09 Jul 2016 13:32:40, written at 13:32:42
 ===============================================================================================
-[Timer timed: Elapsed (per call): 0.01 (0.000013), CPU (per call): 0.01 (0.000010), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.01 (0.000013), CPU (per call): 0.02 (0.000020), calls: 1000, '***' denotes corrected line below]
 
 Timer       Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------  ----------  ----------  ------------  -------------  -------------
-Setup          0.03        0.03             1        0.02800        0.03000
-Caller         0.01        0.00             3        0.00433        0.00000
-SELECT         0.01        0.02             3        0.00233        0.00667
-(Other)        0.03        0.03             1        0.02900        0.03000
+Setup          0.04        0.01             1        0.03700        0.01000
+Caller         0.67        0.03             3        0.22200        0.01000
+SELECT         0.60        0.00             3        0.19933        0.00000
+(Other)        0.41        0.03             1        0.40500        0.03000
 -------  ----------  ----------  ------------  -------------  -------------
-Total          0.08        0.08             8        0.00963        0.01000
+Total          1.71        0.07             8        0.21325        0.00875
 -------  ----------  ----------  ------------  -------------  -------------
 
 UNIT TEST for UT_View_Drivers.ut_HR_Test_View_V
 ===============================================
 
-SCENARIO 1: DS-1, testing inner, outer joins, analytic over dep, and global ratios with 1 dep, Employees created in setup: DS-1 - 4 emps, 1 dep (10), emp-3 has no dep, emp-4 has bad job
-=========================================================================================================================================================================================
+Employees created in setup: DS-1 - 4 emps, 1 dep (10), emp-3 has no dep, emp-4 has bad job
+==========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1493             10              IT_PROG           1000
-2         1494             10        1493  IT_PROG           2000
-3         1495                       1493  IT_PROG           3000
-4         1496             10        1493  AD_ASST           4000
+1         1518             10              IT_PROG           1000
+2         1519             10        1518  IT_PROG           2000
+3         1520                       1518  IT_PROG           3000
+4         1521             10        1518  AD_ASST           4000
 
-SCENARIO 2: DS-2, testing same as 1 but with extra emp in another dep, Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
-===============================================================================================================================================================
-
-#  Employee id  Department id     Manager  Job id          Salary
--  -----------  -------------  ----------  ----------  ----------
-1         1497             10              IT_PROG           1000
-2         1498             10        1497  IT_PROG           2000
-3         1499                       1497  IT_PROG           3000
-4         1500             10        1497  AD_ASST           4000
-5         1501             20        1497  IT_PROG           5000
-
-SCENARIO 3: DS-2, passing 'WHERE dep=10', Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
-==================================================================================================================================
+Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
+========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1502             10              IT_PROG           1000
-2         1503             10        1502  IT_PROG           2000
-3         1504                       1502  IT_PROG           3000
-4         1505             10        1502  AD_ASST           4000
-5         1506             20        1502  IT_PROG           5000
+1         1522             10              IT_PROG           1000
+2         1523             10        1522  IT_PROG           2000
+3         1524                       1522  IT_PROG           3000
+4         1525             10        1522  AD_ASST           4000
+5         1526             20        1522  IT_PROG           5000
 
-SCENARIO 4: DS-3, Salaries total 1500 (< threshold of 1600), Employees created in setup: DS-3 - As dataset 2 but with salaries * 0.1, total below reporting threshold of 1600
-=============================================================================================================================================================================
+Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
+========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1507             10              IT_PROG            100
-2         1508             10        1507  IT_PROG            200
-3         1509                       1507  IT_PROG            300
-4         1510             10        1507  AD_ASST            400
-5         1511             20        1507  IT_PROG            500
+1         1527             10              IT_PROG           1000
+2         1528             10        1527  IT_PROG           2000
+3         1529                       1527  IT_PROG           3000
+4         1530             10        1527  AD_ASST           4000
+5         1531             20        1527  IT_PROG           5000
+
+Employees created in setup: DS-3 - As dataset 2 but with salaries * 0.1, total below reporting threshold of 1600
+================================================================================================================
+
+#  Employee id  Department id     Manager  Job id          Salary
+-  -----------  -------------  ----------  ----------  ----------
+1         1532             10              IT_PROG            100
+2         1533             10        1532  IT_PROG            200
+3         1534                       1532  IT_PROG            300
+4         1535             10        1532  AD_ASST            400
+5         1536             20        1532  IT_PROG            500
 
 SCENARIO 1: DS-1, testing inner, outer joins, analytic over dep, and global ratios with 1 dep {
 ===============================================================================================
 
-     GROUP Select results: Actual = 2, Expected = 2 {
-     ================================================
+    INPUTS
+    ======
 
-          F?  Name  Department      Manager  Salary  Salary Ratio (dep)  Salary Ratio (overall)
-          --  ----  --------------  -------  ------  ------------------  ----------------------
-              LN_1  Administration             1000                 .67                      .4
-              LN_2  Administration  LN_1       2000                1.33                      .8
+        GROUP Employee {
+        ================
 
-     } 0 failed, of 2: SUCCESS
-     =========================
+            Employee Id  Last Name  Email  Hire Date  Job      Salary  Manager Id  department Id
+            -----------  ---------  -----  ---------  -------  ------  ----------  -------------
+                   1518  LN_1       EM_1   09-JUL-16  IT_PROG    1000                         10
+                   1519  LN_2       EM_2   09-JUL-16  IT_PROG    2000        1518             10
+                   1520  LN_3       EM_3   09-JUL-16  IT_PROG    3000        1518
+                   1521  LN_4       EM_4   09-JUL-16  AD_ASST    4000        1518             10
+
+        }
+        =
+
+        GROUP Where {
+        =============
+
+            Where
+            -----
+
+
+        }
+        =
+
+    OUTPUTS
+    =======
+
+        GROUP Select results: Actual = 2, Expected = 2 {
+        ================================================
+
+            F?  Name  Department      Manager  Salary  Salary Ratio (dep)  Salary Ratio (overall)
+            --  ----  --------------  -------  ------  ------------------  ----------------------
+                LN_1  Administration             1000                 .67                      .4
+                LN_2  Administration  LN_1       2000                1.33                      .8
+
+        } 0 failed, of 2: SUCCESS
+        =========================
 
 } 0 failed, of 2: SUCCESS
 =========================
@@ -225,17 +320,47 @@ SCENARIO 1: DS-1, testing inner, outer joins, analytic over dep, and global rati
 SCENARIO 2: DS-2, testing same as 1 but with extra emp in another dep {
 =======================================================================
 
-     GROUP Select results: Actual = 3, Expected = 3 {
-     ================================================
+    INPUTS
+    ======
 
-          F?  Name  Department      Manager  Salary  Salary Ratio (dep)  Salary Ratio (overall)
-          --  ----  --------------  -------  ------  ------------------  ----------------------
-              LN_1  Administration             1000                 .67                     .33
-              LN_2  Administration  LN_1       2000                1.33                     .67
-              LN_5  Marketing       LN_1       5000                   1                    1.67
+        GROUP Employee {
+        ================
 
-     } 0 failed, of 3: SUCCESS
-     =========================
+            Employee Id  Last Name  Email  Hire Date  Job      Salary  Manager Id  department Id
+            -----------  ---------  -----  ---------  -------  ------  ----------  -------------
+                   1522  LN_1       EM_1   09-JUL-16  IT_PROG    1000                         10
+                   1523  LN_2       EM_2   09-JUL-16  IT_PROG    2000        1522             10
+                   1524  LN_3       EM_3   09-JUL-16  IT_PROG    3000        1522
+                   1525  LN_4       EM_4   09-JUL-16  AD_ASST    4000        1522             10
+                   1526  LN_5       EM_5   09-JUL-16  IT_PROG    5000        1522             20
+
+        }
+        =
+
+        GROUP Where {
+        =============
+
+            Where
+            -----
+
+
+        }
+        =
+
+    OUTPUTS
+    =======
+
+        GROUP Select results: Actual = 3, Expected = 3 {
+        ================================================
+
+            F?  Name  Department      Manager  Salary  Salary Ratio (dep)  Salary Ratio (overall)
+            --  ----  --------------  -------  ------  ------------------  ----------------------
+                LN_1  Administration             1000                 .67                     .33
+                LN_2  Administration  LN_1       2000                1.33                     .67
+                LN_5  Marketing       LN_1       5000                   1                    1.67
+
+        } 0 failed, of 3: SUCCESS
+        =========================
 
 } 0 failed, of 3: SUCCESS
 =========================
@@ -243,16 +368,46 @@ SCENARIO 2: DS-2, testing same as 1 but with extra emp in another dep {
 SCENARIO 3: DS-2, passing 'WHERE dep=10' {
 ==========================================
 
-     GROUP Select results: Actual = 2, Expected = 2 {
-     ================================================
+    INPUTS
+    ======
 
-          F?  Name  Department      Manager  Salary  Salary Ratio (dep)  Salary Ratio (overall)
-          --  ----  --------------  -------  ------  ------------------  ----------------------
-              LN_1  Administration             1000                 .67                     .33
-              LN_2  Administration  LN_1       2000                1.33                     .67
+        GROUP Employee {
+        ================
 
-     } 0 failed, of 2: SUCCESS
-     =========================
+            Employee Id  Last Name  Email  Hire Date  Job      Salary  Manager Id  department Id
+            -----------  ---------  -----  ---------  -------  ------  ----------  -------------
+                   1527  LN_1       EM_1   09-JUL-16  IT_PROG    1000                         10
+                   1528  LN_2       EM_2   09-JUL-16  IT_PROG    2000        1527             10
+                   1529  LN_3       EM_3   09-JUL-16  IT_PROG    3000        1527
+                   1530  LN_4       EM_4   09-JUL-16  AD_ASST    4000        1527             10
+                   1531  LN_5       EM_5   09-JUL-16  IT_PROG    5000        1527             20
+
+        }
+        =
+
+        GROUP Where {
+        =============
+
+            Where
+            --------------------------------
+            department_name='Administration'
+
+        }
+        =
+
+    OUTPUTS
+    =======
+
+        GROUP Select results: Actual = 2, Expected = 2 {
+        ================================================
+
+            F?  Name  Department      Manager  Salary  Salary Ratio (dep)  Salary Ratio (overall)
+            --  ----  --------------  -------  ------  ------------------  ----------------------
+                LN_1  Administration             1000                 .67                     .33
+                LN_2  Administration  LN_1       2000                1.33                     .67
+
+        } 0 failed, of 2: SUCCESS
+        =========================
 
 } 0 failed, of 2: SUCCESS
 =========================
@@ -260,13 +415,43 @@ SCENARIO 3: DS-2, passing 'WHERE dep=10' {
 SCENARIO 4: DS-3, Salaries total 1500 (< threshold of 1600) {
 =============================================================
 
-     GROUP Select results: Actual = 0, Expected = 0: SUCCESS
-     =======================================================
+    INPUTS
+    ======
+
+        GROUP Employee {
+        ================
+
+            Employee Id  Last Name  Email  Hire Date  Job      Salary  Manager Id  department Id
+            -----------  ---------  -----  ---------  -------  ------  ----------  -------------
+                   1532  LN_1       EM_1   09-JUL-16  IT_PROG     100                         10
+                   1533  LN_2       EM_2   09-JUL-16  IT_PROG     200        1532             10
+                   1534  LN_3       EM_3   09-JUL-16  IT_PROG     300        1532
+                   1535  LN_4       EM_4   09-JUL-16  AD_ASST     400        1532             10
+                   1536  LN_5       EM_5   09-JUL-16  IT_PROG     500        1532             20
+
+        }
+        =
+
+        GROUP Where {
+        =============
+
+            Where
+            -----
+
+
+        }
+        =
+
+    OUTPUTS
+    =======
+
+        GROUP Select results: Actual = 0, Expected = 0: SUCCESS
+        =======================================================
 
 } 0 failed, of 1: SUCCESS
 =========================
 
-TIMING: Actual = 11, Expected <= 1: FAILURE
+TIMING: Actual = 48, Expected <= 1: FAILURE
 ===========================================
 
 SUMMARY for UT_View_Drivers.ut_HR_Test_View_V
@@ -283,17 +468,17 @@ Timing                                                                          
 Total                                                                                     1        9  FAILURE
 ---------------------------------------------------------------------------------  --------  -------  -------
 
-Timer Set: UT_View_Drivers.ut_HR_Test_View_V, Constructed at 25 Jun 2016 16:10:48, written at 16:10:48
+Timer Set: UT_View_Drivers.ut_HR_Test_View_V, Constructed at 09 Jul 2016 13:32:42, written at 13:32:42
 ======================================================================================================
-[Timer timed: Elapsed (per call): 0.01 (0.000013), CPU (per call): 0.01 (0.000010), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.01 (0.000013), CPU (per call): 0.02 (0.000020), calls: 1000, '***' denotes corrected line below]
 
 Timer       Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------  ----------  ----------  ------------  -------------  -------------
-Setup          0.02        0.05             4        0.00400        0.01250
-Caller         0.04        0.02             4        0.01050        0.00500
-(Other)        0.01        0.00             1        0.01100        0.00000
+Setup          0.11        0.00             4        0.02675        0.00000
+Caller         0.19        0.06             4        0.04750        0.01500
+(Other)        0.03        0.03             1        0.02700        0.03000
 -------  ----------  ----------  ------------  -------------  -------------
-Total          0.07        0.07             9        0.00767        0.00778
+Total          0.32        0.09             9        0.03600        0.01000
 -------  ----------  ----------  ------------  -------------  -------------
 
 Suite Summary
@@ -301,16 +486,16 @@ Suite Summary
 
 Package.Procedure                  Tests  Fails         ELA         CPU
 ---------------------------------  -----  -----  ----------  ----------
-UT_Emp_WS.ut_AIP_Save_Emps            17      3        0.08        0.08
-UT_View_Drivers.ut_HR_Test_View_V      9      1        0.07        0.07
+UT_Emp_WS.ut_AIP_Save_Emps            17      3        1.71        0.07
+UT_View_Drivers.ut_HR_Test_View_V      9      1        0.32        0.09
 ---------------------------------  -----  -----  ----------  ----------
-Total                                 26      4        0.15        0.15
+Total                                 26      4        2.03        0.16
 ---------------------------------  -----  -----  ----------  ----------
-Others error in (): ORA-20001: Suite BRENDAN returned error status: ORA-06512: at "DP_6.UT_UTILS", line 142
-ORA-06512: at "DP_6.UT_UTILS", line 627
+Others error in (): ORA-20001: Suite BRENDAN returned error status: ORA-06512: at "DP_7.UT_UTILS", line 140
+ORA-06512: at "DP_7.UT_UTILS", line 807
 ORA-06512: at line 5
 
 
-291 rows selected.
+476 rows selected.
 
 SQL> SPOOL OFF
