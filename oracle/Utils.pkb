@@ -16,7 +16,7 @@ Brendan Furey        08-May-2016 1.0   Initial for first article
 Brendan Furey        21-May-2016 1.1   Replaced SYS.ODCI types with custom types L1_chr_arr etc.
 Brendan Furey        24-Jun-2016 1.2   Row_To_List added
 Brendan Furey        09-Jul-2016 1.3   Write_Log: added p_indent_level parameter
-Brendan Furey        09-Jul-2016 1.3   Max_Len_2lis: Add subscript check
+Brendan Furey        30-Jul-2016 1.4   Max_Len_2lis: Add subscript check
 
 ***************************************************************************************************/
 c_lines                 CONSTANT VARCHAR2(1000) := '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------';
