@@ -16,6 +16,7 @@ Brendan Furey        08-May-2016 1.0   Initial for first article
 Brendan Furey        21-May-2016 1.1   Replaced SYS.ODCI types with custom types L1_chr_arr etc.
 Brendan Furey        24-Jun-2016 1.2   Row_To_List added
 Brendan Furey        09-Jul-2016 1.3   Write_Log: added p_indent_level parameter
+Brendan Furey        09-Jul-2016 1.3   Max_Len_2lis: Add subscript check
 
 ***************************************************************************************************/
 c_lines                 CONSTANT VARCHAR2(1000) := '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------';
@@ -331,6 +332,10 @@ BEGIN
   FOR i IN 1..p_2lis.COUNT LOOP
 
     FOR j IN 1..p_2lis(i).COUNT LOOP
+
+      IF j > l_Max_Len_2lis.COUNT THEN
+        Write_Log ('Error in Max_Len_2lis: At row ' || i || ', column j = ' || j || ', exceeds initial row length ' || l_Max_Len_2lis.COUNT);
+      END IF;
 
       IF Nvl (l_Max_Len_2lis(j), 0) < Length (p_2lis(i)(j)) THEN
 

@@ -24,6 +24,10 @@ Brendan Furey        25-Jun-2016 1.3   Refactored the output formatting; removed
                                        making its own calls
 Brendan Furey        09-Jul-2016 1.4   Check_UT_Results: Write_Inp_Group added to write inputs per
                                        scenario, with extra parameters for the inputs
+Brendan Furey        30-Jul-2016 1.5   Print_Group_Header: p_act_lis_1 parameter now (bug fix)
+                                       p_act_exp_1_equal; l_not_null_case changed for new parameter
+                                       Print_Result_Array: Call to Print_Group_Header now passed
+                                       boolean instead of p_act_lis(1)
 
 ***************************************************************************************************/
 c_status_f              CONSTANT VARCHAR2(10) := 'F';
@@ -361,12 +365,12 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
                                  p_fields_lis           L1_chr_arr,  -- column names array
                                  p_act_count            PLS_INTEGER, -- number of actual strings
                                  p_exp_count            PLS_INTEGER, -- number of expected strings
-                                 p_act_lis_1            VARCHAR2,    -- first element in the actuals array
+                                 p_act_exp_1_equal      BOOLEAN,     -- first element in the actuals/expected array records equal
                                  x_just_sign     IN OUT L1_num_arr,  -- column justification sign array
                                  x_res_lis          OUT L1_chr_arr)  -- first record of results array = headers
                                  RETURN BOOLEAN IS                   -- TRUE if there is a body for the group
 
-      l_not_null_case   BOOLEAN := NOT (p_act_count = p_exp_count AND p_act_count = 1 AND p_act_lis_1 = c_empty_list(1)); --?
+      l_not_null_case   BOOLEAN := NOT (p_act_count = p_exp_count AND p_act_count = 1 AND p_act_exp_1_equal);
       l_group_header    VARCHAR2(300) := ': Actual = 0, Expected = 0: ' || c_status_word_s;
       l_value_lis       L1_chr_arr := p_fields_lis;
 
@@ -495,7 +499,7 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
   BEGIN
 
     l_res_2lis.EXTEND;
-    IF Print_Group_Header (p_out_group, p_fields_lis, p_act_lis.COUNT, p_exp_lis.COUNT, p_act_lis(1), l_just_sign, l_res_2lis(1)) THEN
+    IF Print_Group_Header (p_out_group, p_fields_lis, p_act_lis.COUNT, p_exp_lis.COUNT, p_act_lis(1) = p_exp_lis(1) AND p_act_lis(1) = c_empty_list(1), l_just_sign, l_res_2lis(1)) THEN
 
       Set_Result_Array (l_missing_rec, p_act_lis, p_exp_lis, l_res_2lis, l_num_fails, x_num_tests);
       Print_Result_Array (l_num_fails, l_just_sign, l_res_2lis);

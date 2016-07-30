@@ -23,7 +23,7 @@ Brendan Furey        21-May-2016 1.1   Re-factored: setup at procedure level; ne
 Brendan Furey        25-Jun-2016 1.2   Removed ut_Setup and ut_Teardown following removal of uPLSQL
 Brendan Furey        09-Jul-2016 1.3   Passing new input arrays to Check_UT_Results for printing per
                                        scenario
-
+Brendan Furey        09-Jul-2016 1.3   Setup: Expected value, scenario 2, group 3 -> empty
 ***************************************************************************************************/
 c_n                     CONSTANT VARCHAR2(1) := 'N';
 
@@ -115,7 +115,7 @@ PROCEDURE ut_AIP_Save_Emps IS
                         ),
                         L2_chr_arr (UT_Utils.c_empty_list,
                                     L1_chr_arr (Utils.List_Delim (0, 'ORA-02291: integrity constraint (.) violated - parent key not found')),
-                                    L1_chr_arr (Utils.List_Delim (0, 'ORA-02291: integrity constraint (.) violated - parent key not found'))
+                                    UT_Utils.c_empty_list
                         ),
                         L2_chr_arr (UT_Utils.c_empty_list,
                                     UT_Utils.c_empty_list,
