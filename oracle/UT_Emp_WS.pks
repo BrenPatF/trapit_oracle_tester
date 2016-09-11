@@ -16,10 +16,12 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        08-May-2016 1.0   Initial
 Brendan Furey        25-Jun-2016 1.1   Removed ut_Setup and ut_Teardown following removal of uPLSQL
+Brendan Furey        11-Sep-2016 1.2   ut_AIP_Get_Dept_Emps added
 
 ***************************************************************************************************/
 
 PROCEDURE ut_AIP_Save_Emps;
+PROCEDURE ut_AIP_Get_Dept_Emps;
 
 END UT_Emp_WS;
 /

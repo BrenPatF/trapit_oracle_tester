@@ -3,8 +3,24 @@ SET TRIMSPOOL ON
 SET PAGES 1000
 SET LINES 500
 SPOOL Install_SYS.log
+/***************************************************************************************************
+
+Author:      Brendan Furey
+Description: Script for SYS schema to create the new schema for Brendan's database unit testing
+             framework design patterns demo. """Directory needs to be changed"""
+
+Further details: 'Brendan's Database Unit Testing Framework'
+                 http://aprogrammerwrites.eu/?p=1723
+
+Modification History
+Who                  When        Which What
+-------------------- ----------- ----- -------------------------------------------------------------
+Brendan Furey        04-May-2016 1.0   Created
+Brendan Furey        11-Sep-2016 1.1   Directory
+
+***************************************************************************************************/
 REM
-REM Run this script from sys schema to create new schema for Brendan's utPLSQL web service demo
+REM Run this script from sys schema to create new schema for Brendan's unit testing demo
 REM
 
 DEFINE DEMO_USER=&1
@@ -24,5 +40,11 @@ GRANT CREATE SEQUENCE TO &DEMO_USER ;
 GRANT CREATE VIEW TO &DEMO_USER ;
 GRANT UNLIMITED TABLESPACE TO &DEMO_USER ;
 GRANT CREATE PROCEDURE TO &DEMO_USER ;
+
+PROMPT Directory input_dir - change to a writeable directory on your system
+CREATE OR REPLACE DIRECTORY input_dir AS 'C:\Users\Brend_000\Documents\Home - Chronos\SQL\Input'
+/
+GRANT ALL ON DIRECTORY input_dir TO PUBLIC
+/
 
 SPOOL OFF

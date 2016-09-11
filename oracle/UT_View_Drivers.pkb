@@ -95,7 +95,7 @@ PROCEDURE ut_HR_Test_View_V IS
                                'DS-1, testing inner, outer joins, analytic over dep, and global ratios with 1 dep',
                                'DS-2, testing same as 1 but with extra emp in another dep',
                                'DS-2, passing ''WHERE dep=10''',
-                               'DS-3, Salaries total 1500 (< threshold of 1600)');
+                               'DS-3, Salaries total 1500 (< threshold of 1600, so return nothing)');
 
   c_inp_group_lis       CONSTANT L1_chr_arr := L1_chr_arr ('Employee', 'Where');
   c_inp_field_2lis      CONSTANT L2_chr_arr := L2_chr_arr (
@@ -107,7 +107,8 @@ PROCEDURE ut_HR_Test_View_V IS
                                                                 'Job',
                                                                 '*Salary',
                                                                 '*Manager Id',
-                                                                '*department Id'),
+                                                                '*Department Id',
+                                                                'Updated'),
                                                         L1_chr_arr (
                                                                 'Where')
   );
@@ -128,7 +129,8 @@ PROCEDURE ut_HR_Test_View_V IS
 Setup: Local procedure to create test records for a given scenario; rolled back after query executed
 
 ***************************************************************************************************/
-  PROCEDURE Setup (p_call_ind PLS_INTEGER, x_inp_lis OUT L1_chr_arr) IS -- scenario index
+  PROCEDURE Setup (p_call_ind           PLS_INTEGER,   -- scenario index
+                   x_inp_lis        OUT L1_chr_arr) IS -- input list
 
     l_emp_id            PLS_INTEGER;
     l_mgr_id            PLS_INTEGER;
@@ -194,4 +196,3 @@ END ut_HR_Test_View_V;
 
 END UT_View_Drivers;
 /
-SHO ERR

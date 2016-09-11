@@ -3,16 +3,20 @@ CREATE OR REPLACE PACKAGE BODY Emp_WS AS
 Description: HR demo web service code. Procedure saves new employees list and returns primary key
              plus same in words, or zero plus error message in output list
 
+Further details: 'Brendan's Database Unit Testing Framework'
+                 http://aprogrammerwrites.eu/?p=1723
+
 Modification History
 Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        04-May-2016 1.0   Created
+Brendan Furey        11-Sep-2016 1.1   AIP_Get_Dept_Emps added
 
 ***************************************************************************************************/
 
 /***************************************************************************************************
 
-AIP_Save_Emps: HR demo web service entry point procedure
+AIP_Save_Emps: HR demo web service setter entry point procedure
 
 ***************************************************************************************************/
 PROCEDURE AIP_Save_Emps (p_emp_in_lis           emp_in_arr,     -- list of employees to insert
@@ -70,6 +74,38 @@ EXCEPTION
     END LOOP;
 
 END AIP_Save_Emps;
+
+/***************************************************************************************************
+
+AIP_Get_Dept_Emps: HR demo web service getter entry point procedure
+
+***************************************************************************************************/
+PROCEDURE AIP_Get_Dept_Emps (p_dep_id           PLS_INTEGER,      -- department id
+                             x_emp_csr      OUT SYS_REFCURSOR) IS -- reference cursor
+
+  qry_str       VARCHAR2(4000) := q'[
+  WITH all_emps AS (
+        SELECT Avg (salary) avg_sal, SUM (salary) sal_tot_g
+          FROM employees e
+)
+SELECT e.last_name, d.department_name, m.last_name manager, e.salary,
+       Round (e.salary / Avg (e.salary) OVER (PARTITION BY e.department_id), 2) sal_rat,
+       Round (e.salary / a.avg_sal, 2) sal_rat_g
+  FROM all_emps a
+ CROSS JOIN employees e
+  JOIN departments d
+    ON d.department_id = e.department_id
+  LEFT JOIN employees m
+    ON m.employee_id = e.manager_id
+ WHERE e.job_id != 'AD_ASST'
+   AND a.sal_tot_g >= 1600
+   AND d.department_id = :1]';
+
+BEGIN
+
+  OPEN x_emp_csr FOR qry_str USING p_dep_id;
+
+END AIP_Get_Dept_Emps;
 
 END Emp_WS;
 /

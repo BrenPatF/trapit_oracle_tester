@@ -3,8 +3,25 @@ SET TRIMSPOOL ON
 SET PAGES 1000
 SET LINES 500
 SPOOL Install_Bren.log
+/***************************************************************************************************
 
-REM Run this script from schema for Brendan's unit testing design patterns demo to create the common objects
+Author:      Brendan Furey
+Description: Script for new schema to create the common objects for Brendan's database unit testing
+             framework design patterns demo
+
+Further details: 'Brendan's Database Unit Testing Framework'
+                 http://aprogrammerwrites.eu/?p=1723
+
+Modification History
+Who                  When        Which What
+-------------------- ----------- ----- -------------------------------------------------------------
+Brendan Furey        04-May-2016 1.0   Created
+Brendan Furey        11-Sep-2016 1.1   Generic array field size increased from 4000 to 32767; also
+                                       various additions for new ut examples
+
+***************************************************************************************************/
+
+REM Run this script from schema for Brendan's database unit testing framework design patterns demo to create the common objects
 
 PROMPT Common types creation
 PROMPT =====================
@@ -16,7 +33,7 @@ PROMPT Drop type L2_chr_arr
 DROP TYPE L2_chr_arr
 /
 PROMPT Create type L1_chr_arr
-CREATE OR REPLACE TYPE L1_chr_arr IS VARRAY(32767) OF VARCHAR2(4000)
+CREATE OR REPLACE TYPE L1_chr_arr IS VARRAY(32767) OF VARCHAR2(32767)
 /
 PROMPT Create type L2_chr_arr
 CREATE OR REPLACE TYPE L2_chr_arr IS VARRAY(32767) OF L1_chr_arr
@@ -148,18 +165,26 @@ PROMPT employees view
 CREATE OR REPLACE VIEW employees AS
 SELECT
         employee_id,
-	first_name,
-	last_name,
-	email,
-	phone_number,
-	hire_date,
-	job_id,
-	salary,
-	commission_pct,
-	manager_id,
-	department_id,
-	utid
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        hire_date,
+        job_id,
+        salary,
+        commission_pct,
+        manager_id,
+        department_id,
+        update_date,
+        utid
   FROM  hr.employees
+ WHERE (utid = SYS_Context ('userenv', 'sessionid') OR
+        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
+/
+PROMPT err$_employees view
+CREATE OR REPLACE VIEW err$_employees AS
+SELECT *
+  FROM  hr.err$_employees
  WHERE (utid = SYS_Context ('userenv', 'sessionid') OR
         Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
 /
@@ -196,11 +221,106 @@ PROMPT Create package UT_Emp_WS
 @UT_Emp_WS.pks
 @UT_Emp_WS.pkb
 
-PROMPT View_drivers packages
-PROMPT =====================
-
 PROMPT Create package UT_View_Drivers
 @UT_View_Drivers.pks
 @UT_View_Drivers.pkb
+
+PROMPT Create employees_et
+DROP TABLE employees_et
+/
+CREATE TABLE employees_et (
+                    employee_id         VARCHAR2(4000),
+                    last_name           VARCHAR2(4000),
+                    email               VARCHAR2(4000),
+                    hire_date           VARCHAR2(4000),
+                    job_id              VARCHAR2(4000),
+                    salary              VARCHAR2(4000)
+)
+ORGANIZATION EXTERNAL (
+    TYPE ORACLE_LOADER
+    DEFAULT DIRECTORY input_dir
+    ACCESS PARAMETERS (
+            RECORDS DELIMITED BY NEWLINE
+            FIELDS TERMINATED BY  ','
+            MISSING FIELD VALUES ARE NULL (
+                    employee_id,
+                    last_name,
+                    email,
+                    hire_date,
+                    job_id,
+                    salary
+            )
+    )
+    LOCATION ('employees.dat')
+)
+    REJECT LIMIT UNLIMITED
+/
+PROMPT Create batch_jobs
+DROP TABLE batch_jobs
+/
+CREATE TABLE batch_jobs (
+        batch_job_id        VARCHAR2(30) NOT NULL,
+        fail_threshold_perc NUMBER,
+        CONSTRAINT bjb_pk PRIMARY KEY (batch_job_id)
+)
+/
+PROMPT Seed batch_jobs record for load_employees
+INSERT INTO batch_jobs
+VALUES ('LOAD_EMPS', 70)
+/
+PROMPT Create job_statistics
+DROP TABLE job_statistics
+/
+CREATE TABLE job_statistics (
+        job_statistic_id        NUMBER NOT NULL,
+        batch_job_id            VARCHAR2(30) NOT NULL,
+        file_name               VARCHAR2(60) NOT NULL,
+        records_loaded          NUMBER,
+        records_failed_et       NUMBER,
+        records_failed_db       NUMBER,
+        start_time              DATE,
+        end_time                DATE,
+        job_status              VARCHAR2(1),
+        utid                    VARCHAR2(30),
+        CONSTRAINT jbs_pk PRIMARY KEY (job_statistic_id),
+        CONSTRAINT jbs_bjb_fk FOREIGN KEY (batch_job_id) REFERENCES batch_jobs (batch_job_id),
+        CONSTRAINT jbs_job_status_chk CHECK (job_status IN ('S', 'F'))
+)
+/
+DROP SEQUENCE job_statistics_seq
+/
+CREATE SEQUENCE job_statistics_seq START WITH 1
+/
+PROMPT job_statistics_v view
+CREATE OR REPLACE VIEW job_statistics_v AS
+SELECT job_statistic_id,
+       batch_job_id,
+       file_name,
+       records_loaded,
+       records_failed_et,
+       records_failed_db,
+       start_time,
+       end_time,
+       job_status,
+       utid
+  FROM job_statistics
+ WHERE (utid = SYS_Context ('userenv', 'sessionid') OR
+        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
+/
+PROMPT Create DML_API_Bren package
+@DML_API_Bren.pks
+@DML_API_Bren.pkb
+
+PROMPT Create DML_API_UT_Bren package
+@DML_API_UT_Bren.pks
+@DML_API_UT_Bren.pkb
+
+PROMPT Create Emp_Batch package
+@Emp_Batch.pks
+@Emp_Batch.pkb
+
+PROMPT Create Emp_Batch package
+@UT_Emp_Batch.pks
+@UT_Emp_Batch.pkb
 
 SPOOL OFF

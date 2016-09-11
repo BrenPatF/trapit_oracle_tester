@@ -22,15 +22,12 @@ Brendan Furey        25-Jun-2016 1.2   Refactored the output formatting; removed
                                        making its own calls
 Brendan Furey        09-Jul-2016 1.3   Check_UT_Results: Write_Inp_Group added to body write inputs
                                        per scenario, with extra parameters for the inputs
+Brendan Furey        09-Sep-2016 1.4   Cursor_to_Array added
 
 ***************************************************************************************************/
-c_past_date             CONSTANT DATE := SYSDATE - 100;
-c_is_null               CONSTANT VARCHAR2(30) := 'Is null';
-c_in_past               CONSTANT VARCHAR2(30) := 'In past';
-c_now                   CONSTANT VARCHAR2(30) := 'Now';
-c_none                  CONSTANT VARCHAR2(30) := 'NONE';
-c_num_type_posint       CONSTANT VARCHAR2(30) := 'POSINT';
-c_num_type_other        CONSTANT VARCHAR2(30) := 'OTHER';
+c_date_fmt              CONSTANT VARCHAR2(11) := 'DD-MON-YYYY';
+c_past_date             CONSTANT DATE := To_Date ('01-JAN-2010', c_date_fmt);
+c_past_date_chr         CONSTANT VARCHAR2(11) := To_Char (c_past_date, c_date_fmt);
 c_call_timer            CONSTANT VARCHAR2(30) := 'Caller';
 c_setup_timer           CONSTANT VARCHAR2(30) := 'Setup';
 c_empty_list            CONSTANT L1_chr_arr := L1_chr_arr ('EMPTY');
@@ -80,6 +77,7 @@ FUNCTION Get_View (    p_view_name         VARCHAR2,
                        p_sel_field_lis     L1_chr_arr,
                        p_where             VARCHAR2 DEFAULT NULL,
                        p_timer_set         PLS_INTEGER) RETURN L1_chr_arr;
+FUNCTION Cursor_to_Array (x_csr IN OUT SYS_REFCURSOR, p_filter VARCHAR2 DEFAULT NULL) RETURN L1_chr_arr;
 
 END UT_Utils;
 /

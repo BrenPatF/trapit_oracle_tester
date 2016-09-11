@@ -16,15 +16,19 @@ Brendan Furey        08-May-2016 1.0   Initial for first article
 Brendan Furey        21-May-2016 1.1   Replaced SYS.ODCI types with custom types L1_chr_arr etc.
 Brendan Furey        24-Jun-2016 1.2   Row_To_List added
 Brendan Furey        09-Jul-2016 1.3   Write_Log: added p_indent_level parameter
-Brendan Furey        30-Jul-2016 1.4   Max_Len_2lis: Add subscript check
+Brendan Furey        26-Jul-2016 1.4   Max_Len_2lis: Add subscript check
+Brendan Furey        04-Aug-2016 1.5   Delete_File, Write_File added
+Brendan Furey        08-Sep-2016 1.6   g_line_printed, List_Delim, Pr_List_As_Line, Row_To_List:
+                                       Increased some variable max lengths to 32767
 
 ***************************************************************************************************/
 c_lines                 CONSTANT VARCHAR2(1000) := '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------';
 c_equals                CONSTANT VARCHAR2(1000) := '=======================================================================================================================================================================================================';
+c_in_dir               CONSTANT VARCHAR2(30) := 'INPUT_DIR';
 
 g_log_header_id         PLS_INTEGER := 0;
 g_line_lis              L1_chr_arr;
-g_line_printed          VARCHAR2(1000);
+g_line_printed          VARCHAR2(32767);
 g_indent_level          PLS_INTEGER := 0;
 
 /***************************************************************************************************
@@ -92,7 +96,7 @@ PROCEDURE Write_Log (p_text             VARCHAR2,                 -- line to wri
   c_spaces              CONSTANT VARCHAR2(100) := '                                                  ';
   c_indent_amount       CONSTANT PLS_INTEGER := 4;
   l_indent                       VARCHAR2(20) := Substr (c_spaces, 1, p_indent_level * c_indent_amount);
-
+  l_line_text                    VARCHAR2(4000) := Substr (l_indent || p_text, 1, 4000);
 BEGIN
 
   IF p_group_text IS NOT NULL THEN
@@ -109,7 +113,7 @@ BEGIN
         log_lines_s.NEXTVAL,
         g_log_header_id,
         g_group_text,
-        l_indent || p_text,
+        l_line_text,
         SYSTIMESTAMP);
   COMMIT;
 
@@ -203,7 +207,7 @@ FUNCTION List_Delim (p_field_lis        L1_chr_arr,              -- list of stri
                      p_delim            VARCHAR2 DEFAULT g_list_delimiter) -- delimiter
                      RETURN VARCHAR2 IS                                    -- delimited string
 
-  l_str         VARCHAR2(4000) := p_field_lis(1);
+  l_str         VARCHAR2(32767) := p_field_lis(1);
 
 BEGIN
 
@@ -227,9 +231,9 @@ PROCEDURE Pr_List_As_Line (p_val_lis            L1_chr_arr, -- token list
                            p_len_lis            L1_num_arr, -- length list
                            p_indent_level       PLS_INTEGER DEFAULT 0,
                            p_save_line BOOLEAN DEFAULT FALSE) IS  -- TRUE if to save in global
-  l_line        VARCHAR2(1000);
-  l_fld         VARCHAR2(200);
-  l_val         VARCHAR2(1000);
+  l_line        VARCHAR2(32767);
+  l_fld         VARCHAR2(32767);
+  l_val         VARCHAR2(32767);
 BEGIN
 
   FOR i IN 1..p_val_lis.COUNT LOOP
@@ -361,7 +365,7 @@ FUNCTION Row_To_List (p_row     VARCHAR2)     -- delimited string
   l_end_pos     PLS_INTEGER;
   l_arr_index   PLS_INTEGER := 1;
   l_arr         L1_chr_arr := L1_chr_arr();
-  l_row         VARCHAR2(4000) := p_row || g_list_delimiter;
+  l_row         VARCHAR2(32767) := p_row || g_list_delimiter;
 BEGIN
 
   WHILE l_start_pos <= Length (l_row) LOOP
@@ -379,6 +383,46 @@ BEGIN
   RETURN l_arr;
 
 END Row_To_List;
+
+/***************************************************************************************************
+
+Delete_File: Delete OS file if present (used in ut)
+
+***************************************************************************************************/
+PROCEDURE Delete_File (p_file_name VARCHAR2) IS -- OS file name
+BEGIN
+
+  UTL_File.FRemove (c_in_dir, p_file_name);
+
+EXCEPTION
+  WHEN UTL_File.invalid_operation THEN
+    Write_Log (p_file_name || ' was not present to delete!');
+
+END Delete_File;
+
+/***************************************************************************************************
+
+Write_File: Open an OS file and write an input list of lines to it, then close it (used in ut)
+
+***************************************************************************************************/
+PROCEDURE Write_File (p_file_name       VARCHAR2, -- file name
+                      p_lines           L1_chr_arr) IS -- list of lines to write
+  l_file_ptr         		UTL_FILE.File_Type;
+BEGIN
+
+  l_file_ptr := UTL_File.FOpen (c_in_dir, p_file_name, 'W', 32767);
+  IF p_lines IS NOT NULL THEN
+
+    FOR i IN 1..p_lines.COUNT LOOP
+
+      UTL_File.Put_Line (l_file_ptr, p_lines(i));
+
+    END LOOP;
+
+  END IF;
+  UTL_File.FClose (l_file_ptr);
+
+END Write_File;
 
 END Utils;
 /

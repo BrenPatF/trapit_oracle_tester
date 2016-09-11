@@ -16,6 +16,7 @@ Brendan Furey        08-May-2016 1.0   Initial for first article
 Brendan Furey        21-May-2016 1.1   Replaced SYS.ODCI types with custom types L1_chr_arr etc.
 Brendan Furey        24-Jun-2016 1.2   Row_To_List added
 Brendan Furey        09-Jul-2016 1.3   Write_Log: added p_indent_level parameter
+Brendan Furey        04-Aug-2016 1.4   Delete_File, Write_File added
 
 ***************************************************************************************************/
 
@@ -57,10 +58,12 @@ FUNCTION Row_To_List (p_row VARCHAR2) RETURN L1_chr_arr;
 FUNCTION Max_Len (p_lis L1_chr_arr) RETURN PLS_INTEGER;
 FUNCTION Max_Len_2lis (p_2lis L2_chr_arr) RETURN L1_num_arr;
 
+PROCEDURE Delete_File (p_file_name VARCHAR2);
+PROCEDURE Write_File (p_file_name VARCHAR2, p_lines L1_chr_arr);
+
 g_debug_level           PLS_INTEGER := 1;
 g_line_size             PLS_INTEGER := 180;
 g_group_text            VARCHAR2(30);
-
 END Utils;
 /
 SHOW ERROR
