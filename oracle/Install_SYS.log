@@ -1,55 +1,62 @@
 old   1: CREATE USER &DEMO_USER IDENTIFIED BY &DEMO_USER
-new   1: CREATE USER dp_6 IDENTIFIED BY dp_6
+new   1: CREATE USER dp_1 IDENTIFIED BY dp_1
 
 User created.
 
 old   1: GRANT CREATE SESSION TO &DEMO_USER
-new   1: GRANT CREATE SESSION TO dp_6
+new   1: GRANT CREATE SESSION TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT ALTER SESSION TO &DEMO_USER
-new   1: GRANT ALTER SESSION TO dp_6
+new   1: GRANT ALTER SESSION TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT CREATE TABLE TO &DEMO_USER
-new   1: GRANT CREATE TABLE TO dp_6
+new   1: GRANT CREATE TABLE TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT CREATE TYPE TO &DEMO_USER
-new   1: GRANT CREATE TYPE TO dp_6
+new   1: GRANT CREATE TYPE TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT CREATE PUBLIC SYNONYM TO &DEMO_USER
-new   1: GRANT CREATE PUBLIC SYNONYM TO dp_6
+new   1: GRANT CREATE PUBLIC SYNONYM TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT CREATE SYNONYM TO &DEMO_USER
-new   1: GRANT CREATE SYNONYM TO dp_6
+new   1: GRANT CREATE SYNONYM TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT CREATE SEQUENCE TO &DEMO_USER
-new   1: GRANT CREATE SEQUENCE TO dp_6
+new   1: GRANT CREATE SEQUENCE TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT CREATE VIEW TO &DEMO_USER
-new   1: GRANT CREATE VIEW TO dp_6
+new   1: GRANT CREATE VIEW TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT UNLIMITED TABLESPACE TO &DEMO_USER
-new   1: GRANT UNLIMITED TABLESPACE TO dp_6
+new   1: GRANT UNLIMITED TABLESPACE TO dp_1
 
 Grant succeeded.
 
 old   1: GRANT CREATE PROCEDURE TO &DEMO_USER
-new   1: GRANT CREATE PROCEDURE TO dp_6
+new   1: GRANT CREATE PROCEDURE TO dp_1
+
+Grant succeeded.
+
+Directory input_dir - change to a writeable directory on your system
+
+Directory created.
+
 
 Grant succeeded.
 

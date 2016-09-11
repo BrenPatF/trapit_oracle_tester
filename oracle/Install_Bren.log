@@ -209,6 +209,10 @@ employees view
 
 View created.
 
+err$_employees view
+
+View created.
+
 hr_test_view_v view
 
 View created.
@@ -227,9 +231,6 @@ Package created.
 Package body created.
 
 No errors.
-
-Package body created.
-
 Create package Emp_WS
 
 Package created.
@@ -246,12 +247,92 @@ Package created.
 Package body created.
 
 No errors.
-View_drivers packages
-=====================
 Create package UT_View_Drivers
 
 Package created.
 
+
+Package body created.
+
+Create employees_et
+DROP TABLE employees_et
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+Table created.
+
+Create batch_jobs
+DROP TABLE batch_jobs
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+Table created.
+
+Seed batch_jobs record for load_employees
+
+1 row created.
+
+Create job_statistics
+DROP TABLE job_statistics
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+Table created.
+
+DROP SEQUENCE job_statistics_seq
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist
+
+
+
+Sequence created.
+
+job_statistics_v view
+
+View created.
+
+Create DML_API_Bren package
+
+Package created.
+
+No errors.
+
+Package body created.
+
+No errors.
+Create DML_API_UT_Bren package
+
+Package created.
+
+No errors.
+
+Package body created.
+
+No errors.
+Create Emp_Batch package
+
+Package created.
+
+No errors.
+
+Package body created.
+
+No errors.
+Create Emp_Batch package
+
+Package created.
+
+No errors.
 
 Package body created.
 

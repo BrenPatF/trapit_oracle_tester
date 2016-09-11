@@ -1,25 +1,61 @@
-ADD utid TO employees
-ALTER TABLE employees ADD (utid VARCHAR2(30))
-                           *
-ERROR at line 1:
-ORA-01430: column being added already exists in table
-
-
-Grant all on employees to dp_6
+Grant all on employees to dp_1
 old   1: GRANT ALL ON employees TO &DEMO_USER
-new   1: GRANT ALL ON employees TO dp_6
+new   1: GRANT ALL ON employees TO dp_1
 
 Grant succeeded.
 
-Grant all on departments to dp_6
+Grant all on departments to dp_1
 old   1: GRANT ALL ON departments TO &DEMO_USER
-new   1: GRANT ALL ON departments TO dp_6
+new   1: GRANT ALL ON departments TO dp_1
 
 Grant succeeded.
 
-Grant all on employees_seq to dp_6
+Grant all on employees_seq to dp_1
 old   1: GRANT ALL ON employees_seq TO &DEMO_USER
-new   1: GRANT ALL ON employees_seq TO dp_6
+new   1: GRANT ALL ON employees_seq TO dp_1
 
 Grant succeeded.
+
+Drop utid from employees, then update_date
+
+Table altered.
+
+ALTER TABLE employees DROP (update_date)
+                            *
+ERROR at line 1:
+ORA-00904: "UPDATE_DATE": invalid identifier
+
+
+Drop and recreate err$_employees via DBMS_ERRLOG.create_error_log
+DROP TABLE err$_employees
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+PL/SQL procedure successfully completed.
+
+Add job_statistic_id to err$_employees
+
+Table altered.
+
+Add utid to err$_employees
+
+Table altered.
+
+old   1: GRANT ALL ON err$_employees TO &DEMO_USER
+new   1: GRANT ALL ON err$_employees TO dp_1
+
+Grant succeeded.
+
+Add update_date, then utid to employees
+
+Table altered.
+
+
+107 rows updated.
+
+
+Table altered.
 
