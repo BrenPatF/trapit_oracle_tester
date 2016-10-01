@@ -24,8 +24,10 @@ Brendan Furey        25-Jun-2016 1.2   Removed ut_Setup and ut_Teardown followin
 Brendan Furey        09-Jul-2016 1.3   Passing new input arrays to Check_UT_Results for printing per
                                        scenario
 Brendan Furey        11-Sep-2016 1.4   ut_AIP_Get_Dept_Emps added
-
+Brendan Furey        01-Oct-2016 1.5   ut_AIP_Get_Dept_Emps: Call timing added; also, null dept
+                                       scenario added
 ***************************************************************************************************/
+
 c_n                     CONSTANT VARCHAR2(1) := 'N';
 
 /***************************************************************************************************
@@ -269,7 +271,7 @@ PROCEDURE ut_AIP_Get_Dept_Emps IS
 
   c_ln_pre              CONSTANT VARCHAR2(10) := DML_API_UT_HR.c_ln_pre;
 
-  c_dep_lis             CONSTANT L1_chr_arr := L1_chr_arr (c_dep_id_1, c_dep_id_1, c_dep_id_2, c_dep_id_1);
+  c_dep_lis             CONSTANT L1_chr_arr := L1_chr_arr (c_dep_id_1, c_dep_id_1, c_dep_id_2, NULL, c_dep_id_1);
 
   c_dataset_3lis        CONSTANT L3_chr_arr := L3_chr_arr (
                              L2_chr_arr (L1_chr_arr ('4 emps, 1 dep (10), emp-3 has no dep, emp-4 has bad job'),
@@ -307,14 +309,16 @@ PROCEDURE ut_AIP_Get_Dept_Emps IS
                                                L1_chr_arr (
                                        Utils.List_Delim (c_ln_pre || '5',   c_dep_nm_2, c_ln_pre || '1', '5000',  '1',    '1.67')
                                                ),
+                                               ut_Utils.c_empty_list,
                                                ut_Utils.c_empty_list
                         );
 
-  c_scenario_ds_lis     CONSTANT L1_num_arr := L1_num_arr (1, 2, 2, 3);
+  c_scenario_ds_lis     CONSTANT L1_num_arr := L1_num_arr (1, 2, 2, 2, 3);
   c_scenario_lis        CONSTANT L1_chr_arr := L1_chr_arr (
                                'DS-1, testing inner, outer joins, analytic over dep, and global ratios with 1 dep (10) - pass dep 10',
                                'DS-2, testing same as 1 but with extra emp in another dep (20) - pass dep 10',
-                               'DS-2, as DS-2 but - pass dep 20',
+                               'DS-2, as second scenario, but - pass dep 20',
+                               'DS-2, as second scenario, but - pass null dep',
                                'DS-3, Salaries total 1500 (< threshold of 1600, so return nothing) - pass dep 10');
 
   c_inp_group_lis       CONSTANT L1_chr_arr := L1_chr_arr ('Employee', 'Department Parameter');
@@ -400,6 +404,7 @@ BEGIN
     Emp_WS.AIP_Get_Dept_Emps (p_dep_id  => c_dep_lis(i),
                               x_emp_csr => l_emp_csr);
     l_act_2lis(i) := UT_Utils.List_or_Empty (UT_Utils.Cursor_to_Array (x_csr => l_emp_csr));
+    Timer_Set.Increment_Time (l_timer_set, UT_Utils.c_call_timer);
     ROLLBACK;
 
   END LOOP;
@@ -418,3 +423,4 @@ END ut_AIP_Get_Dept_Emps;
 END UT_Emp_WS;
 /
 SHO ERR
+
