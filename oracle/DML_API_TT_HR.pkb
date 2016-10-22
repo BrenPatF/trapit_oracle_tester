@@ -1,9 +1,9 @@
-CREATE OR REPLACE PACKAGE BODY DML_API_UT_HR AS
+CREATE OR REPLACE PACKAGE BODY DML_API_TT_HR AS
 /***************************************************************************************************
-Description: This package contains HR DML procedures for Brendan's database unit testing
+Description: This package contains HR DML procedures for Brendan's TRAPIT API testing
              framework demo test data
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -12,12 +12,13 @@ Who                  When        Which What
 Brendan Furey        10-May-2016 1.0   Initial
 Brendan Furey        09-Jul-2016 1.1   Added output parameter x_rec for new printing of inputs
 Brendan Furey        11-Sep-2016 1.2   Defaulted extra parameters
+Brendan Furey        22-Oct-2016 1.3   TRAPIT name changes, UT->TT etc.
 
 ***************************************************************************************************/
 
 /***************************************************************************************************
 
-Ins_Emp: Inserts a record in employees table for unit testing, setting the new utid column to
+Ins_Emp: Inserts a record in employees table for testing, setting the new ttid column to
          session id
 
 ***************************************************************************************************/
@@ -45,7 +46,7 @@ BEGIN
         manager_id,
         department_id,
         update_date,
-        utid
+        ttid
   ) VALUES (
         employees_seq.NEXTVAL,
         Nvl (p_last_name, c_ln_pre || p_emp_ind),
@@ -60,18 +61,18 @@ BEGIN
   ) RETURNING employee_id, Utils.List_Delim (   employee_id,
                                                 last_name,
                                                 email,
-                                                To_Char (hire_date,UT_Utils.c_date_fmt),
+                                                To_Char (hire_date,Utils_TT.c_date_fmt),
                                                 job_id,
                                                 salary,
                                                 manager_id,
                                                 department_id,
-                                                To_Char (update_date, UT_Utils.c_date_fmt))
+                                                To_Char (update_date, Utils_TT.c_date_fmt))
          INTO l_emp_id, x_rec;
 
   RETURN l_emp_id;
 
 END Ins_Emp;
 
-END DML_API_UT_HR;
+END DML_API_TT_HR;
 /
 SHO ERR

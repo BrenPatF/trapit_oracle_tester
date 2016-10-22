@@ -6,10 +6,10 @@ SPOOL Install_Bren.log
 /***************************************************************************************************
 
 Author:      Brendan Furey
-Description: Script for new schema to create the common objects for Brendan's database unit testing
+Description: Script for new schema to create the common objects for Brendan's TRAPIT API testing
              framework design patterns demo
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -17,11 +17,11 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        04-May-2016 1.0   Created
 Brendan Furey        11-Sep-2016 1.1   Generic array field size increased from 4000 to 32767; also
-                                       various additions for new ut examples
+                                       various additions for new TRAPIT examples
 
 ***************************************************************************************************/
 
-REM Run this script from schema for Brendan's database unit testing framework design patterns demo to create the common objects
+REM Run this script from schema for Brendan's TRAPIT API testing framework design patterns demo to create the common objects
 
 PROMPT Common types creation
 PROMPT =====================
@@ -126,9 +126,9 @@ PROMPT Create package Timer_Set
 @Timer_Set.pks
 @Timer_Set.pkb
 
-PROMPT Create package UT_Utils
-@UT_Utils.pks
-@UT_Utils.pkb
+PROMPT Create package Utils_TT
+@Utils_TT.pks
+@Utils_TT.pkb
 
 PROMPT HR Types creation
 PROMPT =================
@@ -176,16 +176,16 @@ SELECT
         manager_id,
         department_id,
         update_date,
-        utid
+        ttid
   FROM  hr.employees
- WHERE (utid = SYS_Context ('userenv', 'sessionid') OR
+ WHERE (ttid = SYS_Context ('userenv', 'sessionid') OR
         Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
 /
 PROMPT err$_employees view
 CREATE OR REPLACE VIEW err$_employees AS
 SELECT *
   FROM  hr.err$_employees
- WHERE (utid = SYS_Context ('userenv', 'sessionid') OR
+ WHERE (ttid = SYS_Context ('userenv', 'sessionid') OR
         Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
 /
 PROMPT hr_test_view_v view
@@ -209,21 +209,21 @@ SELECT e.last_name, d.department_name, m.last_name manager, e.salary,
 PROMPT HR Packages creation
 PROMPT ====================
 
-PROMPT Create package DML_API_UT_HR
-@DML_API_UT_HR.pks
-@DML_API_UT_HR.pkb
+PROMPT Create package DML_API_TT_HR
+@DML_API_TT_HR.pks
+@DML_API_TT_HR.pkb
 
 PROMPT Create package Emp_WS
 @Emp_WS.pks
 @Emp_WS.pkb
 
-PROMPT Create package UT_Emp_WS
-@UT_Emp_WS.pks
-@UT_Emp_WS.pkb
+PROMPT Create package TT_Emp_WS
+@TT_Emp_WS.pks
+@TT_Emp_WS.pkb
 
-PROMPT Create package UT_View_Drivers
-@UT_View_Drivers.pks
-@UT_View_Drivers.pkb
+PROMPT Create package TT_View_Drivers
+@TT_View_Drivers.pks
+@TT_View_Drivers.pkb
 
 PROMPT Create employees_et
 DROP TABLE employees_et
@@ -256,6 +256,8 @@ ORGANIZATION EXTERNAL (
     REJECT LIMIT UNLIMITED
 /
 PROMPT Create batch_jobs
+DROP TABLE job_statistics
+/
 DROP TABLE batch_jobs
 /
 CREATE TABLE batch_jobs (
@@ -269,8 +271,6 @@ INSERT INTO batch_jobs
 VALUES ('LOAD_EMPS', 70)
 /
 PROMPT Create job_statistics
-DROP TABLE job_statistics
-/
 CREATE TABLE job_statistics (
         job_statistic_id        NUMBER NOT NULL,
         batch_job_id            VARCHAR2(30) NOT NULL,
@@ -281,7 +281,7 @@ CREATE TABLE job_statistics (
         start_time              DATE,
         end_time                DATE,
         job_status              VARCHAR2(1),
-        utid                    VARCHAR2(30),
+        ttid                    VARCHAR2(30),
         CONSTRAINT jbs_pk PRIMARY KEY (job_statistic_id),
         CONSTRAINT jbs_bjb_fk FOREIGN KEY (batch_job_id) REFERENCES batch_jobs (batch_job_id),
         CONSTRAINT jbs_job_status_chk CHECK (job_status IN ('S', 'F'))
@@ -302,25 +302,25 @@ SELECT job_statistic_id,
        start_time,
        end_time,
        job_status,
-       utid
+       ttid
   FROM job_statistics
- WHERE (utid = SYS_Context ('userenv', 'sessionid') OR
+ WHERE (ttid = SYS_Context ('userenv', 'sessionid') OR
         Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
 /
 PROMPT Create DML_API_Bren package
 @DML_API_Bren.pks
 @DML_API_Bren.pkb
 
-PROMPT Create DML_API_UT_Bren package
-@DML_API_UT_Bren.pks
-@DML_API_UT_Bren.pkb
+PROMPT Create DML_API_TT_Bren package
+@DML_API_TT_Bren.pks
+@DML_API_TT_Bren.pkb
 
 PROMPT Create Emp_Batch package
 @Emp_Batch.pks
 @Emp_Batch.pkb
 
 PROMPT Create Emp_Batch package
-@UT_Emp_Batch.pks
-@UT_Emp_Batch.pkb
+@TT_Emp_Batch.pks
+@TT_Emp_Batch.pkb
 
 SPOOL OFF

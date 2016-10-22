@@ -1,15 +1,16 @@
 CREATE OR REPLACE PACKAGE DML_API_Bren AS
 /***************************************************************************************************
-Description: This package contains Bren (i.e. demo schema) DML procedures for  Brendan's
-             database unit testing framework demo test data
+Description: This package contains Bren (i.e. demo schema) DML procedures for Brendan's
+              TRAPIT API testing framework demo test data
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
 Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
-Brendan              11-Sep-2016 1.0   Initial
+Brendan Furey        11-Sep-2016 1.0   Initial
+Brendan Furey        22-Oct-2016 1.1   TRAPIT name changes, UT->TT etc.
 
 ***************************************************************************************************/
 

@@ -1,9 +1,9 @@
-CREATE OR REPLACE PACKAGE DML_API_UT_HR AS
+CREATE OR REPLACE PACKAGE DML_API_TT_HR AS
 /***************************************************************************************************
-Description: This package contains HR DML procedures for Brendan's database unit testing
+Description: This package contains HR DML procedures for Brendan's TRAPIT API testing
              framework demo test data
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -12,6 +12,7 @@ Who                  When        Which What
 Brendan Furey        10-May-2016 1.0   Initial
 Brendan Furey        09-Jul-2016 1.1   Added output parameter x_rec for new printing of inputs
 Brendan Furey        11-Sep-2016 1.2   Defaulted extra parameters
+Brendan Furey        22-Oct-2016 1.3   TRAPIT name changes, UT->TT etc.
 
 ***************************************************************************************************/
 
@@ -29,7 +30,7 @@ FUNCTION Ins_Emp (p_emp_ind       PLS_INTEGER,
                   p_update_date   DATE DEFAULT SYSDATE,
                   x_rec       OUT VARCHAR2) RETURN PLS_INTEGER;
 
-END DML_API_UT_HR;
+END DML_API_TT_HR;
 /
 SHO ERR
 /

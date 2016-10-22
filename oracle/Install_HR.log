@@ -1,37 +1,34 @@
-Grant all on employees to dp_1
+Grant all on employees to dp_3
 old   1: GRANT ALL ON employees TO &DEMO_USER
-new   1: GRANT ALL ON employees TO dp_1
+new   1: GRANT ALL ON employees TO dp_3
 
 Grant succeeded.
 
-Grant all on departments to dp_1
+Grant all on departments to dp_3
 old   1: GRANT ALL ON departments TO &DEMO_USER
-new   1: GRANT ALL ON departments TO dp_1
+new   1: GRANT ALL ON departments TO dp_3
 
 Grant succeeded.
 
-Grant all on employees_seq to dp_1
+Grant all on employees_seq to dp_3
 old   1: GRANT ALL ON employees_seq TO &DEMO_USER
-new   1: GRANT ALL ON employees_seq TO dp_1
+new   1: GRANT ALL ON employees_seq TO dp_3
 
 Grant succeeded.
 
 Drop utid from employees, then update_date
+ALTER TABLE employees DROP (utid)
+                            *
+ERROR at line 1:
+ORA-00904: "UTID": invalid identifier
+
+
 
 Table altered.
 
-ALTER TABLE employees DROP (update_date)
-                            *
-ERROR at line 1:
-ORA-00904: "UPDATE_DATE": invalid identifier
-
-
 Drop and recreate err$_employees via DBMS_ERRLOG.create_error_log
-DROP TABLE err$_employees
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist
 
+Table dropped.
 
 
 PL/SQL procedure successfully completed.
@@ -45,7 +42,7 @@ Add utid to err$_employees
 Table altered.
 
 old   1: GRANT ALL ON err$_employees TO &DEMO_USER
-new   1: GRANT ALL ON err$_employees TO dp_1
+new   1: GRANT ALL ON err$_employees TO dp_3
 
 Grant succeeded.
 

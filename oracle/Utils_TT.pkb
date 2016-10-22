@@ -1,6 +1,6 @@
-CREATE OR REPLACE PACKAGE BODY UT_Utils AS
+CREATE OR REPLACE PACKAGE BODY Utils_TT AS
 /***************************************************************************************************
-Description: This package contains procedures for Brendan's database unit testing framework .
+Description: This package contains procedures for Brendan's TRAPIT API testing framework
 
              It was published initially with two other utility packages for the articles linked in
              the link below:
@@ -8,7 +8,7 @@ Description: This package contains procedures for Brendan's database unit testin
                  Utils:     General utilities
                  Timer_Set: Code timing utility
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -16,13 +16,13 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        08-May-2016 1.0   Initial
 Brendan Furey        21-May-2016 1.1   Replaced SYS.ODCI types with custom types L1_chr_arr etc.
-                                       Check_UT_Results: Renamed from WS; overloaded versions added
+                                       Check_TT_Results: Renamed from WS; overloaded versions added
                                        Other re-factoring for formatting etc.
-Brendan Furey        10-Jun-2016 1.2   Check_UT_Results: Handle missing records better
+Brendan Furey        10-Jun-2016 1.2   Check_TT_Results: Handle missing records better
 Brendan Furey        25-Jun-2016 1.3   Refactored the output formatting; removed utPLSQL calls and
                                        replaced Run_Suite with new version that loops over array
                                        making its own calls
-Brendan Furey        09-Jul-2016 1.4   Check_UT_Results: Write_Inp_Group added to write inputs per
+Brendan Furey        09-Jul-2016 1.4   Check_TT_Results: Write_Inp_Group added to write inputs per
                                        scenario, with extra parameters for the inputs
 Brendan Furey        26-Jul-2016 1.5   Print_Group_Header: p_act_lis_1 parameter now (bug fix)
                                        p_act_exp_1_equal; l_not_null_case changed for new parameter
@@ -32,6 +32,7 @@ Brendan Furey        19-Aug-2016 1.6   Package begin section: Added nls date for
                                        logging)
 Brendan Furey        08-Sep-2016 1.7   Set_Result_Row: Increased max length to 32767 for variable
 Brendan Furey        09-Sep-2016 1.8   Cursor_to_Array added
+Brendan Furey        22-Oct-2016 1.9   TRAPIT name changes, UT->TT etc.
 
 ***************************************************************************************************/
 c_status_f              CONSTANT VARCHAR2(10) := 'F';
@@ -40,12 +41,12 @@ c_status_word_f         CONSTANT VARCHAR2(10) := 'FAILURE';
 c_status_word_s         CONSTANT VARCHAR2(10) := 'SUCCESS';
 c_null                  CONSTANT VARCHAR2(30) := 'NULL';
 c_time_not_ok           CONSTANT VARCHAR2(60) := 'Average call time: #1, exceeds limit: #2';
-c_ut_suites_3lis        CONSTANT L3_chr_arr := L3_chr_arr (
-                                    L2_chr_arr (L1_chr_arr ('UT_Emp_WS',           'ut_AIP_Save_Emps', 'ut_AIP_Get_Dept_Emps'),
-                                                L1_chr_arr ('UT_View_Drivers',     'ut_HR_Test_View_V'),
-                                                L1_chr_arr ('UT_Emp_Batch',        'ut_AIP_Load_Emps'))
+c_tt_suites_3lis        CONSTANT L3_chr_arr := L3_chr_arr (
+                                    L2_chr_arr (L1_chr_arr ('TT_Emp_WS',           'tt_AIP_Save_Emps', 'tt_AIP_Get_Dept_Emps'),
+                                                L1_chr_arr ('TT_View_Drivers',     'tt_HR_Test_View_V'),
+                                                L1_chr_arr ('TT_Emp_Batch',        'tt_AIP_Load_Emps'))
                                  );
-c_ut_suite_names_lis    CONSTANT L1_chr_arr := L1_chr_arr ('BRENDAN');
+c_tt_suite_names_lis    CONSTANT L1_chr_arr := L1_chr_arr ('BRENDAN');
 
 TYPE test_set_rec  IS RECORD (
         test_set_name   VARCHAR2(100),
@@ -72,7 +73,7 @@ END Write_Log;
 
 /***************************************************************************************************
 
-Init: ut initialise for a procedure by constructing timer set, then writing heading,
+Init: TRAPIT initialise for a procedure by constructing timer set, then writing heading,
       and returning the timer set id
 
 ***************************************************************************************************/
@@ -83,17 +84,17 @@ FUNCTION Init (p_proc_name      VARCHAR2)      -- calling procedure name
 
 BEGIN
 
-  Utils.Heading ('UNIT TEST for ' || p_proc_name);
+  Utils.Heading ('TRAPIT TEST: ' || p_proc_name);
   RETURN l_timer_set;
 
 END Init;
 
 /***************************************************************************************************
 
-Write_Suite_Results: Write out the results for a ut suite
+Write_Suite_Results: Write out the results for a TRAPIT suite
 
 ***************************************************************************************************/
-PROCEDURE Write_Suite_Results (p_suite VARCHAR2) IS -- ut suite name
+PROCEDURE Write_Suite_Results (p_suite VARCHAR2) IS -- TRAPIT suite name
   l_test_set_rec        test_set_rec;
   l_test_set_tot_rec    test_set_rec;
   l_test_name_lis       L1_chr_arr := L1_chr_arr ('Module');
@@ -103,7 +104,7 @@ PROCEDURE Write_Suite_Results (p_suite VARCHAR2) IS -- ut suite name
 
   /***************************************************************************************************
 
-  Write_Test_Set: Write out the results for a ut suite, set of tests - summary line
+  Write_Test_Set: Write out the results for a TRAPIT suite, set of tests - summary line
 
   ***************************************************************************************************/
   PROCEDURE Write_Test_Set (p_test_set_rec test_set_rec) IS -- test set record
@@ -155,10 +156,10 @@ END Write_Suite_Results;
 
 /***************************************************************************************************
 
-Check_UT_Results: ut utility to check results from testing, L3_chr_arr version
+Check_TT_Results: TRAPIT utility to check results from testing, L3_chr_arr version
 
 ***************************************************************************************************/
-PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
+PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
                             p_test_lis                  L1_chr_arr,    -- test descriptions
                             p_inp_3lis                  L3_chr_arr,    -- actual result strings
                             p_act_3lis                  L3_chr_arr,    -- actual result strings
@@ -642,15 +643,15 @@ BEGIN
   Summary_Section (l_num_fails_sce, l_num_tests_sce, l_tot_fails, l_tot_tests);
   Set_Global_Summary (l_tot_fails, l_tot_tests + 1);
 
-END Check_UT_Results;
+END Check_TT_Results;
 
 /***************************************************************************************************
 
-Check_UT_Results: ut utility to check results from testing, L2_chr_arr version just calls L3_chr_arr
+Check_TT_Results: TRAPIT utility to check results from testing, L2_chr_arr version just calls L3_chr_arr
                   version
 
 ***************************************************************************************************/
-PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
+PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
                             p_test_lis                  L1_chr_arr,    -- test descriptions
                             p_inp_3lis                  L3_chr_arr,    -- input strings
                             p_act_2lis                  L2_chr_arr,    -- actual result strings
@@ -678,7 +679,7 @@ BEGIN
 
   END LOOP;
 
-  Check_UT_Results (        p_proc_name       => p_proc_name,
+  Check_TT_Results (        p_proc_name       => p_proc_name,
                             p_test_lis        => p_test_lis,
                             p_inp_3lis        => p_inp_3lis,
                             p_act_3lis        => l_act_3lis,
@@ -690,15 +691,15 @@ BEGIN
                             p_out_group_lis   => p_out_group_lis,
                             p_fields_2lis     => p_fields_2lis);
 
-END Check_UT_Results;
+END Check_TT_Results;
 
 /***************************************************************************************************
 
-Check_UT_Results: ut utility to check results from testing, L1_chr_arr version just calls L3_chr_arr
+Check_TT_Results: TRAPIT utility to check results from testing, L1_chr_arr version just calls L3_chr_arr
                   version
 
 ***************************************************************************************************/
-PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
+PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
                             p_test_lis                  L1_chr_arr,    -- test descriptions
                             p_inp_3lis                  L3_chr_arr,    -- input strings
                             p_act_lis                   L1_chr_arr,    -- actual result strings
@@ -715,7 +716,7 @@ PROCEDURE Check_UT_Results (p_proc_name                 VARCHAR2,      -- callin
 
 BEGIN
 
-  Check_UT_Results (        p_proc_name       => p_proc_name,
+  Check_TT_Results (        p_proc_name       => p_proc_name,
                             p_test_lis        => p_test_lis,
                             p_inp_3lis        => p_inp_3lis,
                             p_act_3lis        => l_act_3lis,
@@ -727,7 +728,7 @@ BEGIN
                             p_out_group_lis   => p_out_group_lis,
                             p_fields_2lis     => p_fields_2lis);
 
-END Check_UT_Results;
+END Check_TT_Results;
 
 /***************************************************************************************************
 
@@ -753,7 +754,7 @@ END List_or_Empty;
 
 /***************************************************************************************************
 
-Get_View: ut utility to run a query dynamically on a view and return result set as array of strings
+Get_View: TRAPIT utility to run a query dynamically on a view and return result set as array of strings
 
 ***************************************************************************************************/
 FUNCTION Get_View (p_view_name         VARCHAR2,               -- name of view
@@ -792,12 +793,12 @@ END Get_View;
 
 /***************************************************************************************************
 
-Run_Suite: Run a ut suite
+Run_Suite: Run a TRAPIT suite
 
 ***************************************************************************************************/
 PROCEDURE Run_Suite (p_suite_id PLS_INTEGER) IS -- suite id, must be one of the named constants in the spec
 
-  PROCEDURE Run_UT_Package (p_package_lis L1_chr_arr) IS
+  PROCEDURE Run_TT_Package (p_package_lis L1_chr_arr) IS
   BEGIN
 
     FOR i IN 2..p_package_lis.COUNT LOOP
@@ -806,16 +807,16 @@ PROCEDURE Run_Suite (p_suite_id PLS_INTEGER) IS -- suite id, must be one of the 
 
     END LOOP;
 
-  END Run_UT_Package;
+  END Run_TT_Package;
 
 BEGIN
 
-  FOR i IN 1..c_ut_suites_3lis (p_suite_id).COUNT LOOP
+  FOR i IN 1..c_tt_suites_3lis (p_suite_id).COUNT LOOP
 
-    Run_UT_Package (c_ut_suites_3lis (p_suite_id)(i));
+    Run_TT_Package (c_tt_suites_3lis (p_suite_id)(i));
 
   END LOOP;
-  Write_Suite_Results (c_ut_suite_names_lis (p_suite_id));
+  Write_Suite_Results (c_tt_suite_names_lis (p_suite_id));
 
 END Run_Suite;
 
@@ -911,9 +912,9 @@ END Cursor_to_Array;
 BEGIN
 
   DBMS_Application_Info.Set_Client_Info (client_info => 'UT');
-  Utils.c_session_id_if_UT := SYS_Context ('userenv', 'sessionid');
+  Utils.c_session_id_if_TT := SYS_Context ('userenv', 'sessionid');
   DBMS_Session.Set_NLS('nls_date_format', '''DD-MON-YYYY''');--c_date_fmt); - constant did not work
 
-END UT_Utils;
+END Utils_TT;
 /
 SHO ERR

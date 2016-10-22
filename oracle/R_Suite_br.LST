@@ -2,7 +2,7 @@ SQL> DECLARE
   2  BEGIN
   3  
   4    Utils.Clear_Log;
-  5    UT_Utils.Run_Suite (UT_Utils.c_ut_suite_bren);
+  5    Utils_TT.Run_Suite (Utils_TT.c_tt_suite_bren);
   6  
   7  EXCEPTION
   8    WHEN OTHERS THEN
@@ -17,8 +17,8 @@ SQL> @L_Log_Default
 TEXT
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-UNIT TEST for UT_Emp_WS.ut_AIP_Save_Emps
-========================================
+TRAPIT TEST: TT_Emp_WS.tt_AIP_Save_Emps
+=======================================
 
 SCENARIO 1: 1 valid record {
 ============================
@@ -44,7 +44,7 @@ SCENARIO 1: 1 valid record {
 
             F?  Employee id  Name  Email  Job      Salary
             --  -----------  ----  -----  -------  ------
-                       1653  LN 1  EM 1   IT_PROG    1000
+                       1927  LN 1  EM 1   IT_PROG    1000
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -53,8 +53,8 @@ SCENARIO 1: 1 valid record {
         ==============================================
 
             F?  Employee id  Description
-            --  -----------  ------------------------------------
-                       1653  ONE THOUSAND SIX HUNDRED FIFTY-THREE
+            --  -----------  --------------------------------------
+                       1927  ONE THOUSAND NINE HUNDRED TWENTY-SEVEN
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -167,11 +167,11 @@ SCENARIO 4: 2 valid records, 1 invalid job id (2 deliberate errors) {
 
             F?  Employee id  Name  Email  Job      Salary
             --  -----------  ----  -----  -------  ------
-            F          1655  LN 4  EM 4   IT_PROG    3000
-            >          1655  LN 4  EM 4   IT_PROG    1000
-                       1657  LN 6  EM 6   IT_PROG    5000
+            F          1929  LN 4  EM 4   IT_PROG    3000
+            >          1929  LN 4  EM 4   IT_PROG    1000
+                       1931  LN 6  EM 6   IT_PROG    5000
             F
-            >          1657  LN 6  EM 6   IT_PROG    5000
+            >          1931  LN 6  EM 6   IT_PROG    5000
 
         } 2 failed, of 3: FAILURE
         =========================
@@ -181,9 +181,9 @@ SCENARIO 4: 2 valid records, 1 invalid job id (2 deliberate errors) {
 
             F?  Employee id  Description
             --  -----------  -------------------------------------------------------------------
-                       1655  ONE THOUSAND SIX HUNDRED FIFTY-FIVE
+                       1929  ONE THOUSAND NINE HUNDRED TWENTY-NINE
                           0  ORA-02291: integrity constraint (.) violated - parent key not found
-                       1657  ONE THOUSAND SIX HUNDRED FIFTY-SEVEN
+                       1931  ONE THOUSAND NINE HUNDRED THIRTY-ONE
 
         } 0 failed, of 3: SUCCESS
         =========================
@@ -194,10 +194,10 @@ SCENARIO 4: 2 valid records, 1 invalid job id (2 deliberate errors) {
 } 2 failed, of 7: FAILURE
 =========================
 
-TIMING: Actual = 84, Expected <= 2: FAILURE
-===========================================
+TIMING: Actual = 1, Expected <= 2: SUCCESS
+==========================================
 
-SUMMARY for UT_Emp_WS.ut_AIP_Save_Emps
+SUMMARY for TT_Emp_WS.tt_AIP_Save_Emps
 ======================================
 
 Scenario                                                 # Failed  # Tests  Status
@@ -206,81 +206,81 @@ Scenario                                                 # Failed  # Tests  Stat
 1 invalid job id                                                0        3  SUCCESS
 1 invalid number                                                0        3  SUCCESS
 2 valid records, 1 invalid job id (2 deliberate errors)         2        7  FAILURE
-Timing                                                          1        1  FAILURE
+Timing                                                          0        1  SUCCESS
 -------------------------------------------------------  --------  -------  -------
-Total                                                           3       17  FAILURE
+Total                                                           2       17  FAILURE
 -------------------------------------------------------  --------  -------  -------
 
-Timer Set: UT_Emp_WS.ut_AIP_Save_Emps, Constructed at 01 Oct 2016 09:14:12, written at 09:14:12
+Timer Set: TT_Emp_WS.tt_AIP_Save_Emps, Constructed at 22 Oct 2016 15:05:16, written at 15:05:16
 ===============================================================================================
-[Timer timed: Elapsed (per call): 0.03 (0.000033), CPU (per call): 0.03 (0.000030), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.03 (0.000034), CPU (per call): 0.05 (0.000050), calls: 1000, '***' denotes corrected line below]
 
 Timer       Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------  ----------  ----------  ------------  -------------  -------------
-Setup          0.04        0.03             1        0.03900        0.03000
-Caller         0.25        0.10             3        0.08400        0.03333
-SELECT         0.24        0.05             3        0.07967        0.01667
-(Other)        0.18        0.07             1        0.18400        0.07000
+Setup          0.00        0.00             1        0.00300        0.00000
+Caller         0.00        0.02             3        0.00133        0.00667
+SELECT         0.00        0.00             3        0.00033        0.00000
+(Other)        0.08        0.06             1        0.07700        0.06000
 -------  ----------  ----------  ------------  -------------  -------------
-Total          0.71        0.25             8        0.08925        0.03125
+Total          0.09        0.08             8        0.01063        0.01000
 -------  ----------  ----------  ------------  -------------  -------------
 
-UNIT TEST for UT_Emp_WS.ut_AIP_Get_Dept_Emps
-============================================
+TRAPIT TEST: TT_Emp_WS.tt_AIP_Get_Dept_Emps
+===========================================
 
 Employees created in setup: DS-1 - 4 emps, 1 dep (10), emp-3 has no dep, emp-4 has bad job
 ==========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1658             10              IT_PROG           1000
-2         1659             10        1658  IT_PROG           2000
-3         1660                       1658  IT_PROG           3000
-4         1661             10        1658  AD_ASST           4000
+1         1932             10              IT_PROG           1000
+2         1933             10        1932  IT_PROG           2000
+3         1934                       1932  IT_PROG           3000
+4         1935             10        1932  AD_ASST           4000
 
 Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
 ========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1662             10              IT_PROG           1000
-2         1663             10        1662  IT_PROG           2000
-3         1664                       1662  IT_PROG           3000
-4         1665             10        1662  AD_ASST           4000
-5         1666             20        1662  IT_PROG           5000
+1         1936             10              IT_PROG           1000
+2         1937             10        1936  IT_PROG           2000
+3         1938                       1936  IT_PROG           3000
+4         1939             10        1936  AD_ASST           4000
+5         1940             20        1936  IT_PROG           5000
 
 Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
 ========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1667             10              IT_PROG           1000
-2         1668             10        1667  IT_PROG           2000
-3         1669                       1667  IT_PROG           3000
-4         1670             10        1667  AD_ASST           4000
-5         1671             20        1667  IT_PROG           5000
+1         1941             10              IT_PROG           1000
+2         1942             10        1941  IT_PROG           2000
+3         1943                       1941  IT_PROG           3000
+4         1944             10        1941  AD_ASST           4000
+5         1945             20        1941  IT_PROG           5000
 
 Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
 ========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1672             10              IT_PROG           1000
-2         1673             10        1672  IT_PROG           2000
-3         1674                       1672  IT_PROG           3000
-4         1675             10        1672  AD_ASST           4000
-5         1676             20        1672  IT_PROG           5000
+1         1946             10              IT_PROG           1000
+2         1947             10        1946  IT_PROG           2000
+3         1948                       1946  IT_PROG           3000
+4         1949             10        1946  AD_ASST           4000
+5         1950             20        1946  IT_PROG           5000
 
 Employees created in setup: DS-3 - As dataset 2 but with salaries * 0.1, total below reporting threshold of 1600
 ================================================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1677             10              IT_PROG            100
-2         1678             10        1677  IT_PROG            200
-3         1679                       1677  IT_PROG            300
-4         1680             10        1677  AD_ASST            400
-5         1681             20        1677  IT_PROG            500
+1         1951             10              IT_PROG            100
+2         1952             10        1951  IT_PROG            200
+3         1953                       1951  IT_PROG            300
+4         1954             10        1951  AD_ASST            400
+5         1955             20        1951  IT_PROG            500
 
 SCENARIO 1: DS-1, testing inner, outer joins, analytic over dep, and global ratios with 1 dep (10) - pass dep 10 {
 ==================================================================================================================
@@ -293,10 +293,10 @@ SCENARIO 1: DS-1, testing inner, outer joins, analytic over dep, and global rati
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1658  LN_1       EM_1   01-OCT-2016  IT_PROG    1000                         10  01-OCT-2016
-                   1659  LN_2       EM_2   01-OCT-2016  IT_PROG    2000        1658             10  01-OCT-2016
-                   1660  LN_3       EM_3   01-OCT-2016  IT_PROG    3000        1658                 01-OCT-2016
-                   1661  LN_4       EM_4   01-OCT-2016  AD_ASST    4000        1658             10  01-OCT-2016
+                   1932  LN_1       EM_1   22-OCT-2016  IT_PROG    1000                         10  22-OCT-2016
+                   1933  LN_2       EM_2   22-OCT-2016  IT_PROG    2000        1932             10  22-OCT-2016
+                   1934  LN_3       EM_3   22-OCT-2016  IT_PROG    3000        1932                 22-OCT-2016
+                   1935  LN_4       EM_4   22-OCT-2016  AD_ASST    4000        1932             10  22-OCT-2016
 
         }
         =
@@ -339,11 +339,11 @@ SCENARIO 2: DS-2, testing same as 1 but with extra emp in another dep (20) - pas
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1662  LN_1       EM_1   01-OCT-2016  IT_PROG    1000                         10  01-OCT-2016
-                   1663  LN_2       EM_2   01-OCT-2016  IT_PROG    2000        1662             10  01-OCT-2016
-                   1664  LN_3       EM_3   01-OCT-2016  IT_PROG    3000        1662                 01-OCT-2016
-                   1665  LN_4       EM_4   01-OCT-2016  AD_ASST    4000        1662             10  01-OCT-2016
-                   1666  LN_5       EM_5   01-OCT-2016  IT_PROG    5000        1662             20  01-OCT-2016
+                   1936  LN_1       EM_1   22-OCT-2016  IT_PROG    1000                         10  22-OCT-2016
+                   1937  LN_2       EM_2   22-OCT-2016  IT_PROG    2000        1936             10  22-OCT-2016
+                   1938  LN_3       EM_3   22-OCT-2016  IT_PROG    3000        1936                 22-OCT-2016
+                   1939  LN_4       EM_4   22-OCT-2016  AD_ASST    4000        1936             10  22-OCT-2016
+                   1940  LN_5       EM_5   22-OCT-2016  IT_PROG    5000        1936             20  22-OCT-2016
 
         }
         =
@@ -386,11 +386,11 @@ SCENARIO 3: DS-2, as second scenario, but - pass dep 20 {
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1667  LN_1       EM_1   01-OCT-2016  IT_PROG    1000                         10  01-OCT-2016
-                   1668  LN_2       EM_2   01-OCT-2016  IT_PROG    2000        1667             10  01-OCT-2016
-                   1669  LN_3       EM_3   01-OCT-2016  IT_PROG    3000        1667                 01-OCT-2016
-                   1670  LN_4       EM_4   01-OCT-2016  AD_ASST    4000        1667             10  01-OCT-2016
-                   1671  LN_5       EM_5   01-OCT-2016  IT_PROG    5000        1667             20  01-OCT-2016
+                   1941  LN_1       EM_1   22-OCT-2016  IT_PROG    1000                         10  22-OCT-2016
+                   1942  LN_2       EM_2   22-OCT-2016  IT_PROG    2000        1941             10  22-OCT-2016
+                   1943  LN_3       EM_3   22-OCT-2016  IT_PROG    3000        1941                 22-OCT-2016
+                   1944  LN_4       EM_4   22-OCT-2016  AD_ASST    4000        1941             10  22-OCT-2016
+                   1945  LN_5       EM_5   22-OCT-2016  IT_PROG    5000        1941             20  22-OCT-2016
 
         }
         =
@@ -432,11 +432,11 @@ SCENARIO 4: DS-2, as second scenario, but - pass null dep {
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1672  LN_1       EM_1   01-OCT-2016  IT_PROG    1000                         10  01-OCT-2016
-                   1673  LN_2       EM_2   01-OCT-2016  IT_PROG    2000        1672             10  01-OCT-2016
-                   1674  LN_3       EM_3   01-OCT-2016  IT_PROG    3000        1672                 01-OCT-2016
-                   1675  LN_4       EM_4   01-OCT-2016  AD_ASST    4000        1672             10  01-OCT-2016
-                   1676  LN_5       EM_5   01-OCT-2016  IT_PROG    5000        1672             20  01-OCT-2016
+                   1946  LN_1       EM_1   22-OCT-2016  IT_PROG    1000                         10  22-OCT-2016
+                   1947  LN_2       EM_2   22-OCT-2016  IT_PROG    2000        1946             10  22-OCT-2016
+                   1948  LN_3       EM_3   22-OCT-2016  IT_PROG    3000        1946                 22-OCT-2016
+                   1949  LN_4       EM_4   22-OCT-2016  AD_ASST    4000        1946             10  22-OCT-2016
+                   1950  LN_5       EM_5   22-OCT-2016  IT_PROG    5000        1946             20  22-OCT-2016
 
         }
         =
@@ -471,11 +471,11 @@ SCENARIO 5: DS-3, Salaries total 1500 (< threshold of 1600, so return nothing) -
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1677  LN_1       EM_1   01-OCT-2016  IT_PROG     100                         10  01-OCT-2016
-                   1678  LN_2       EM_2   01-OCT-2016  IT_PROG     200        1677             10  01-OCT-2016
-                   1679  LN_3       EM_3   01-OCT-2016  IT_PROG     300        1677                 01-OCT-2016
-                   1680  LN_4       EM_4   01-OCT-2016  AD_ASST     400        1677             10  01-OCT-2016
-                   1681  LN_5       EM_5   01-OCT-2016  IT_PROG     500        1677             20  01-OCT-2016
+                   1951  LN_1       EM_1   22-OCT-2016  IT_PROG     100                         10  22-OCT-2016
+                   1952  LN_2       EM_2   22-OCT-2016  IT_PROG     200        1951             10  22-OCT-2016
+                   1953  LN_3       EM_3   22-OCT-2016  IT_PROG     300        1951                 22-OCT-2016
+                   1954  LN_4       EM_4   22-OCT-2016  AD_ASST     400        1951             10  22-OCT-2016
+                   1955  LN_5       EM_5   22-OCT-2016  IT_PROG     500        1951             20  22-OCT-2016
 
         }
         =
@@ -499,10 +499,10 @@ SCENARIO 5: DS-3, Salaries total 1500 (< threshold of 1600, so return nothing) -
 } 0 failed, of 1: SUCCESS
 =========================
 
-TIMING: Actual = 7, Expected <= 1: FAILURE
+TIMING: Actual = 1, Expected <= 1: SUCCESS
 ==========================================
 
-SUMMARY for UT_Emp_WS.ut_AIP_Get_Dept_Emps
+SUMMARY for TT_Emp_WS.tt_AIP_Get_Dept_Emps
 ==========================================
 
 Scenario                                                                                              # Failed  # Tests  Status
@@ -512,69 +512,69 @@ DS-2, testing same as 1 but with extra emp in another dep (20) - pass dep 10    
 DS-2, as second scenario, but - pass dep 20                                                                  0        1  SUCCESS
 DS-2, as second scenario, but - pass null dep                                                                0        1  SUCCESS
 DS-3, Salaries total 1500 (< threshold of 1600, so return nothing) - pass dep 10                             0        1  SUCCESS
-Timing                                                                                                       1        1  FAILURE
+Timing                                                                                                       0        1  SUCCESS
 ----------------------------------------------------------------------------------------------------  --------  -------  -------
-Total                                                                                                        1        8  FAILURE
+Total                                                                                                        0        8  SUCCESS
 ----------------------------------------------------------------------------------------------------  --------  -------  -------
 
-Timer Set: UT_Emp_WS.ut_AIP_Get_Dept_Emps, Constructed at 01 Oct 2016 09:14:12, written at 09:14:13
+Timer Set: TT_Emp_WS.tt_AIP_Get_Dept_Emps, Constructed at 22 Oct 2016 15:05:16, written at 15:05:16
 ===================================================================================================
-[Timer timed: Elapsed (per call): 0.03 (0.000034), CPU (per call): 0.03 (0.000030), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.04 (0.000035), CPU (per call): 0.03 (0.000030), calls: 1000, '***' denotes corrected line below]
 
 Timer       Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------  ----------  ----------  ------------  -------------  -------------
-Setup          0.08        0.05             5        0.01660        0.01000
-Caller         0.03        0.01             5        0.00680        0.00200
-(Other)        0.10        0.10             1        0.09500        0.10000
+Setup          0.04        0.02             5        0.00840        0.00400
+Caller         0.01        0.02             5        0.00140        0.00400
+(Other)        0.09        0.10             1        0.09200        0.10000
 -------  ----------  ----------  ------------  -------------  -------------
-Total          0.21        0.16            11        0.01927        0.01455
+Total          0.14        0.14            11        0.01282        0.01273
 -------  ----------  ----------  ------------  -------------  -------------
 
-UNIT TEST for UT_View_Drivers.ut_HR_Test_View_V
-===============================================
+TRAPIT TEST: TT_View_Drivers.tt_HR_Test_View_V
+==============================================
 
 Employees created in setup: DS-1 - 4 emps, 1 dep (10), emp-3 has no dep, emp-4 has bad job
 ==========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1682             10              IT_PROG           1000
-2         1683             10        1682  IT_PROG           2000
-3         1684                       1682  IT_PROG           3000
-4         1685             10        1682  AD_ASST           4000
+1         1956             10              IT_PROG           1000
+2         1957             10        1956  IT_PROG           2000
+3         1958                       1956  IT_PROG           3000
+4         1959             10        1956  AD_ASST           4000
 
 Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
 ========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1686             10              IT_PROG           1000
-2         1687             10        1686  IT_PROG           2000
-3         1688                       1686  IT_PROG           3000
-4         1689             10        1686  AD_ASST           4000
-5         1690             20        1686  IT_PROG           5000
+1         1960             10              IT_PROG           1000
+2         1961             10        1960  IT_PROG           2000
+3         1962                       1960  IT_PROG           3000
+4         1963             10        1960  AD_ASST           4000
+5         1964             20        1960  IT_PROG           5000
 
 Employees created in setup: DS-2 - As dataset 1 but with extra emp-5, in second dep (20)
 ========================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1691             10              IT_PROG           1000
-2         1692             10        1691  IT_PROG           2000
-3         1693                       1691  IT_PROG           3000
-4         1694             10        1691  AD_ASST           4000
-5         1695             20        1691  IT_PROG           5000
+1         1965             10              IT_PROG           1000
+2         1966             10        1965  IT_PROG           2000
+3         1967                       1965  IT_PROG           3000
+4         1968             10        1965  AD_ASST           4000
+5         1969             20        1965  IT_PROG           5000
 
 Employees created in setup: DS-3 - As dataset 2 but with salaries * 0.1, total below reporting threshold of 1600
 ================================================================================================================
 
 #  Employee id  Department id     Manager  Job id          Salary
 -  -----------  -------------  ----------  ----------  ----------
-1         1696             10              IT_PROG            100
-2         1697             10        1696  IT_PROG            200
-3         1698                       1696  IT_PROG            300
-4         1699             10        1696  AD_ASST            400
-5         1700             20        1696  IT_PROG            500
+1         1970             10              IT_PROG            100
+2         1971             10        1970  IT_PROG            200
+3         1972                       1970  IT_PROG            300
+4         1973             10        1970  AD_ASST            400
+5         1974             20        1970  IT_PROG            500
 
 SCENARIO 1: DS-1, testing inner, outer joins, analytic over dep, and global ratios with 1 dep {
 ===============================================================================================
@@ -587,10 +587,10 @@ SCENARIO 1: DS-1, testing inner, outer joins, analytic over dep, and global rati
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1682  LN_1       EM_1   01-OCT-2016  IT_PROG    1000                         10  01-OCT-2016
-                   1683  LN_2       EM_2   01-OCT-2016  IT_PROG    2000        1682             10  01-OCT-2016
-                   1684  LN_3       EM_3   01-OCT-2016  IT_PROG    3000        1682                 01-OCT-2016
-                   1685  LN_4       EM_4   01-OCT-2016  AD_ASST    4000        1682             10  01-OCT-2016
+                   1956  LN_1       EM_1   22-OCT-2016  IT_PROG    1000                         10  22-OCT-2016
+                   1957  LN_2       EM_2   22-OCT-2016  IT_PROG    2000        1956             10  22-OCT-2016
+                   1958  LN_3       EM_3   22-OCT-2016  IT_PROG    3000        1956                 22-OCT-2016
+                   1959  LN_4       EM_4   22-OCT-2016  AD_ASST    4000        1956             10  22-OCT-2016
 
         }
         =
@@ -633,11 +633,11 @@ SCENARIO 2: DS-2, testing same as 1 but with extra emp in another dep {
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1686  LN_1       EM_1   01-OCT-2016  IT_PROG    1000                         10  01-OCT-2016
-                   1687  LN_2       EM_2   01-OCT-2016  IT_PROG    2000        1686             10  01-OCT-2016
-                   1688  LN_3       EM_3   01-OCT-2016  IT_PROG    3000        1686                 01-OCT-2016
-                   1689  LN_4       EM_4   01-OCT-2016  AD_ASST    4000        1686             10  01-OCT-2016
-                   1690  LN_5       EM_5   01-OCT-2016  IT_PROG    5000        1686             20  01-OCT-2016
+                   1960  LN_1       EM_1   22-OCT-2016  IT_PROG    1000                         10  22-OCT-2016
+                   1961  LN_2       EM_2   22-OCT-2016  IT_PROG    2000        1960             10  22-OCT-2016
+                   1962  LN_3       EM_3   22-OCT-2016  IT_PROG    3000        1960                 22-OCT-2016
+                   1963  LN_4       EM_4   22-OCT-2016  AD_ASST    4000        1960             10  22-OCT-2016
+                   1964  LN_5       EM_5   22-OCT-2016  IT_PROG    5000        1960             20  22-OCT-2016
 
         }
         =
@@ -681,11 +681,11 @@ SCENARIO 3: DS-2, passing 'WHERE dep=10' {
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1691  LN_1       EM_1   01-OCT-2016  IT_PROG    1000                         10  01-OCT-2016
-                   1692  LN_2       EM_2   01-OCT-2016  IT_PROG    2000        1691             10  01-OCT-2016
-                   1693  LN_3       EM_3   01-OCT-2016  IT_PROG    3000        1691                 01-OCT-2016
-                   1694  LN_4       EM_4   01-OCT-2016  AD_ASST    4000        1691             10  01-OCT-2016
-                   1695  LN_5       EM_5   01-OCT-2016  IT_PROG    5000        1691             20  01-OCT-2016
+                   1965  LN_1       EM_1   22-OCT-2016  IT_PROG    1000                         10  22-OCT-2016
+                   1966  LN_2       EM_2   22-OCT-2016  IT_PROG    2000        1965             10  22-OCT-2016
+                   1967  LN_3       EM_3   22-OCT-2016  IT_PROG    3000        1965                 22-OCT-2016
+                   1968  LN_4       EM_4   22-OCT-2016  AD_ASST    4000        1965             10  22-OCT-2016
+                   1969  LN_5       EM_5   22-OCT-2016  IT_PROG    5000        1965             20  22-OCT-2016
 
         }
         =
@@ -728,11 +728,11 @@ SCENARIO 4: DS-3, Salaries total 1500 (< threshold of 1600, so return nothing) {
 
             Employee Id  Last Name  Email  Hire Date    Job      Salary  Manager Id  Department Id  Updated
             -----------  ---------  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1696  LN_1       EM_1   01-OCT-2016  IT_PROG     100                         10  01-OCT-2016
-                   1697  LN_2       EM_2   01-OCT-2016  IT_PROG     200        1696             10  01-OCT-2016
-                   1698  LN_3       EM_3   01-OCT-2016  IT_PROG     300        1696                 01-OCT-2016
-                   1699  LN_4       EM_4   01-OCT-2016  AD_ASST     400        1696             10  01-OCT-2016
-                   1700  LN_5       EM_5   01-OCT-2016  IT_PROG     500        1696             20  01-OCT-2016
+                   1970  LN_1       EM_1   22-OCT-2016  IT_PROG     100                         10  22-OCT-2016
+                   1971  LN_2       EM_2   22-OCT-2016  IT_PROG     200        1970             10  22-OCT-2016
+                   1972  LN_3       EM_3   22-OCT-2016  IT_PROG     300        1970                 22-OCT-2016
+                   1973  LN_4       EM_4   22-OCT-2016  AD_ASST     400        1970             10  22-OCT-2016
+                   1974  LN_5       EM_5   22-OCT-2016  IT_PROG     500        1970             20  22-OCT-2016
 
         }
         =
@@ -756,10 +756,10 @@ SCENARIO 4: DS-3, Salaries total 1500 (< threshold of 1600, so return nothing) {
 } 0 failed, of 1: SUCCESS
 =========================
 
-TIMING: Actual = 38, Expected <= 1: FAILURE
-===========================================
+TIMING: Actual = 1, Expected <= 1: SUCCESS
+==========================================
 
-SUMMARY for UT_View_Drivers.ut_HR_Test_View_V
+SUMMARY for TT_View_Drivers.tt_HR_Test_View_V
 =============================================
 
 Scenario                                                                           # Failed  # Tests  Status
@@ -768,26 +768,26 @@ DS-1, testing inner, outer joins, analytic over dep, and global ratios with 1 de
 DS-2, testing same as 1 but with extra emp in another dep                                 0        3  SUCCESS
 DS-2, passing 'WHERE dep=10'                                                              0        2  SUCCESS
 DS-3, Salaries total 1500 (< threshold of 1600, so return nothing)                        0        1  SUCCESS
-Timing                                                                                    1        1  FAILURE
+Timing                                                                                    0        1  SUCCESS
 ---------------------------------------------------------------------------------  --------  -------  -------
-Total                                                                                     1        9  FAILURE
+Total                                                                                     0        9  SUCCESS
 ---------------------------------------------------------------------------------  --------  -------  -------
 
-Timer Set: UT_View_Drivers.ut_HR_Test_View_V, Constructed at 01 Oct 2016 09:14:13, written at 09:14:13
+Timer Set: TT_View_Drivers.tt_HR_Test_View_V, Constructed at 22 Oct 2016 15:05:16, written at 15:05:16
 ======================================================================================================
 [Timer timed: Elapsed (per call): 0.03 (0.000033), CPU (per call): 0.03 (0.000030), calls: 1000, '***' denotes corrected line below]
 
 Timer       Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------  ----------  ----------  ------------  -------------  -------------
-Setup          0.04        0.04             4        0.01050        0.01000
-Caller         0.15        0.09             4        0.03825        0.02250
-(Other)        0.08        0.08             1        0.08200        0.08000
+Setup          0.03        0.03             4        0.00825        0.00750
+Caller         0.01        0.00             4        0.00125        0.00000
+(Other)        0.07        0.08             1        0.07000        0.08000
 -------  ----------  ----------  ------------  -------------  -------------
-Total          0.28        0.21             9        0.03078        0.02333
+Total          0.11        0.11             9        0.01200        0.01222
 -------  ----------  ----------  ------------  -------------  -------------
 
-UNIT TEST for UT_Emp_Batch.ut_AIP_Load_Emps
-===========================================
+TRAPIT TEST: TT_Emp_Batch.tt_AIP_Load_Emps
+==========================================
 
 SCENARIO 1: NV/OV/OU/NI/OI/EI: 1/0/0/0/0/0. Existing J/E: 0/0. [1 valid new record from scratch] {
 ==================================================================================================
@@ -839,7 +839,7 @@ SCENARIO 1: NV/OV/OU/NI/OI/EI: 1/0/0/0/0/0. Existing J/E: 0/0. [1 valid new reco
 
             F?  Employee Id  Name  Email  Hired        Job      Salary  Updated
             --  -----------  ----  -----  -----------  -------  ------  -----------
-                       1702  LN 1  EM 1   01-JAN-2010  IT_PROG  10000   01-OCT-2016
+                       1976  LN 1  EM 1   01-JAN-2010  IT_PROG  10000   22-OCT-2016
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -852,7 +852,7 @@ SCENARIO 1: NV/OV/OU/NI/OI/EI: 1/0/0/0/0/0. Existing J/E: 0/0. [1 valid new reco
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                               2  LOAD_EMPS     employees_20160801.dat               1                  0                  0  01-OCT-2016  01-OCT-2016  S
+                              52  LOAD_EMPS     employees_20160801.dat               1                  0                  0  22-OCT-2016  22-OCT-2016  S
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -885,8 +885,8 @@ SCENARIO 2: NV/OV/OU/NI/OI/EI: 1/1/1/0/0/0. Existing J/E: 1/0. [3 valid records 
             Line
             -----------------------------------------
             ,LN 1,EM 1,01-JAN-2010,IT_PROG,10000
-            1704,LN 2,EM 2,01-JAN-2010,IT_PROG,20000
-            1705,LN 3U,EM 3,01-JAN-2010,IT_PROG,30000
+            1978,LN 2,EM 2,01-JAN-2010,IT_PROG,20000
+            1979,LN 3U,EM 3,01-JAN-2010,IT_PROG,30000
 
         }
         =
@@ -906,7 +906,7 @@ SCENARIO 2: NV/OV/OU/NI/OI/EI: 1/1/1/0/0/0. Existing J/E: 1/0. [3 valid records 
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                           4  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                          54  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         }
         =
@@ -916,8 +916,8 @@ SCENARIO 2: NV/OV/OU/NI/OI/EI: 1/1/1/0/0/0. Existing J/E: 1/0. [3 valid records 
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1704  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
-                   1705  LN 3  EM 3   01-JAN-2010  IT_PROG   30000                             01-JAN-2010
+                   1978  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   1979  LN 3  EM 3   01-JAN-2010  IT_PROG   30000                             01-JAN-2010
 
         }
         =
@@ -930,9 +930,9 @@ SCENARIO 2: NV/OV/OU/NI/OI/EI: 1/1/1/0/0/0. Existing J/E: 1/0. [3 valid records 
 
             F?  Employee Id  Name   Email  Hired        Job      Salary  Updated
             --  -----------  -----  -----  -----------  -------  ------  -----------
-                       1704  LN 2   EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
-                       1705  LN 3U  EM 3   01-JAN-2010  IT_PROG  30000   01-OCT-2016
-                       1706  LN 1   EM 1   01-JAN-2010  IT_PROG  10000   01-OCT-2016
+                       1978  LN 2   EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       1979  LN 3U  EM 3   01-JAN-2010  IT_PROG  30000   22-OCT-2016
+                       1980  LN 1   EM 1   01-JAN-2010  IT_PROG  10000   22-OCT-2016
 
         } 0 failed, of 3: SUCCESS
         =========================
@@ -945,8 +945,8 @@ SCENARIO 2: NV/OV/OU/NI/OI/EI: 1/1/1/0/0/0. Existing J/E: 1/0. [3 valid records 
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                               4  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
-                               5  LOAD_EMPS     employees_20160801.dat               2                  0                  0  01-OCT-2016  01-OCT-2016  S
+                              54  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                              55  LOAD_EMPS     employees_20160801.dat               2                  0                  0  22-OCT-2016  22-OCT-2016  S
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -998,7 +998,7 @@ SCENARIO 3: NV/OV/OU/NI/OI/EI: 0/0/0/0/1/0. Existing J/E: 1/1. Uid not found [1 
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                           7  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                          57  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         }
         =
@@ -1008,7 +1008,7 @@ SCENARIO 3: NV/OV/OU/NI/OI/EI: 0/0/0/0/1/0. Existing J/E: 1/1. Uid not found [1 
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1708  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   1982  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
 
         }
         =
@@ -1021,7 +1021,7 @@ SCENARIO 3: NV/OV/OU/NI/OI/EI: 0/0/0/0/1/0. Existing J/E: 1/1. Uid not found [1 
 
             F?  Employee Id  Name  Email  Hired        Job      Salary  Updated
             --  -----------  ----  -----  -----------  -------  ------  -----------
-                       1708  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       1982  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1031,7 +1031,7 @@ SCENARIO 3: NV/OV/OU/NI/OI/EI: 0/0/0/0/1/0. Existing J/E: 1/1. Uid not found [1 
 
             F?  Job Statistic Id  ORA_ERR_TAG$  ORA_ERR_MESG$       ORA_ERR_OPTYP$  Employee Id  Name  Email  Hired        Job      Salary
             --  ----------------  ------------  ------------------  --------------  -----------  ----  -----  -----------  -------  ------
-                               8                Employee not found  PK                       99  LN 1  EM 1   01-JAN-2010  IT_PROG  10000
+                              58                Employee not found  PK                       99  LN 1  EM 1   01-JAN-2010  IT_PROG  10000
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1041,8 +1041,8 @@ SCENARIO 3: NV/OV/OU/NI/OI/EI: 0/0/0/0/1/0. Existing J/E: 1/1. Uid not found [1 
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                               7  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
-                               8  LOAD_EMPS     employees_20160801.dat               0                  0                  1  01-OCT-2016  01-OCT-2016  F
+                              57  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                              58  LOAD_EMPS     employees_20160801.dat               0                  0                  1  22-OCT-2016  22-OCT-2016  F
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1101,7 +1101,7 @@ SCENARIO 4: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Email too long [1
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                          10  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                          60  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         }
         =
@@ -1111,7 +1111,7 @@ SCENARIO 4: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Email too long [1
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1710  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   1984  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
 
         }
         =
@@ -1124,7 +1124,7 @@ SCENARIO 4: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Email too long [1
 
             F?  Employee Id  Name  Email  Hired        Job      Salary  Updated
             --  -----------  ----  -----  -----------  -------  ------  -----------
-                       1710  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       1984  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1134,7 +1134,7 @@ SCENARIO 4: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Email too long [1
 
             F?  Job Statistic Id  ORA_ERR_TAG$  ORA_ERR_MESG$                                                                             ORA_ERR_OPTYP$  Employee Id  Name  Email                               Hired        Job      Salary
             --  ----------------  ------------  ----------------------------------------------------------------------------------------  --------------  -----------  ----  ----------------------------------  -----------  -------  ------
-                              11                ORA-12899: value too large for column "HR"."EMPLOYEES"."EMAIL" (actual: 34, maximum: 25)  I                      1711  LN 1  EM 1123456789012345678901234567890  01-JAN-2010  IT_PROG  10000
+                              61                ORA-12899: value too large for column "HR"."EMPLOYEES"."EMAIL" (actual: 34, maximum: 25)  I                      1985  LN 1  EM 1123456789012345678901234567890  01-JAN-2010  IT_PROG  10000
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1144,8 +1144,8 @@ SCENARIO 4: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Email too long [1
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                              10  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
-                              11  LOAD_EMPS     employees_20160801.dat               0                  0                  1  01-OCT-2016  01-OCT-2016  F
+                              60  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                              61  LOAD_EMPS     employees_20160801.dat               0                  0                  1  22-OCT-2016  22-OCT-2016  F
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1184,7 +1184,7 @@ SCENARIO 5: NV/OV/OU/NI/OI/EI: 1/0/0/0/1/0. Existing J/E: 1/1. Name too long [1 
 
             Line
             ----------------------------------------------------------------------
-            1713,LN 1123456789012345678901234567890,EM 1,01-JAN-2010,IT_PROG,10000
+            1987,LN 1123456789012345678901234567890,EM 1,01-JAN-2010,IT_PROG,10000
             ,LN 3,EM 3,01-JAN-2010,IT_PROG,30000
 
         }
@@ -1205,7 +1205,7 @@ SCENARIO 5: NV/OV/OU/NI/OI/EI: 1/0/0/0/1/0. Existing J/E: 1/1. Name too long [1 
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                          13  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                          63  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         }
         =
@@ -1215,7 +1215,7 @@ SCENARIO 5: NV/OV/OU/NI/OI/EI: 1/0/0/0/1/0. Existing J/E: 1/1. Name too long [1 
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1713  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   1987  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
 
         }
         =
@@ -1228,8 +1228,8 @@ SCENARIO 5: NV/OV/OU/NI/OI/EI: 1/0/0/0/1/0. Existing J/E: 1/1. Name too long [1 
 
             F?  Employee Id  Name  Email  Hired        Job      Salary  Updated
             --  -----------  ----  -----  -----------  -------  ------  -----------
-                       1713  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
-                       1714  LN 3  EM 3   01-JAN-2010  IT_PROG  30000   01-OCT-2016
+                       1987  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       1988  LN 3  EM 3   01-JAN-2010  IT_PROG  30000   22-OCT-2016
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1239,7 +1239,7 @@ SCENARIO 5: NV/OV/OU/NI/OI/EI: 1/0/0/0/1/0. Existing J/E: 1/1. Name too long [1 
 
             F?  Job Statistic Id  ORA_ERR_TAG$  ORA_ERR_MESG$                                                                                 ORA_ERR_OPTYP$  Employee Id  Name                                Email  Hired        Job      Salary
             --  ----------------  ------------  --------------------------------------------------------------------------------------------  --------------  -----------  ----------------------------------  -----  -----------  -------  ------
-                              14                ORA-12899: value too large for column "HR"."EMPLOYEES"."LAST_NAME" (actual: 34, maximum: 25)  U                      1713  LN 1123456789012345678901234567890  EM 1   01-JAN-2010  IT_PROG  10000
+                              64                ORA-12899: value too large for column "HR"."EMPLOYEES"."LAST_NAME" (actual: 34, maximum: 25)  U                      1987  LN 1123456789012345678901234567890  EM 1   01-JAN-2010  IT_PROG  10000
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1249,8 +1249,8 @@ SCENARIO 5: NV/OV/OU/NI/OI/EI: 1/0/0/0/1/0. Existing J/E: 1/1. Name too long [1 
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                              13  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
-                              14  LOAD_EMPS     employees_20160801.dat               1                  0                  1  01-OCT-2016  01-OCT-2016  S
+                              63  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                              64  LOAD_EMPS     employees_20160801.dat               1                  0                  1  22-OCT-2016  22-OCT-2016  S
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1302,7 +1302,7 @@ SCENARIO 6: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Invalid job [1 in
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                          16  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                          66  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         }
         =
@@ -1312,7 +1312,7 @@ SCENARIO 6: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Invalid job [1 in
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1716  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   1990  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
 
         }
         =
@@ -1325,7 +1325,7 @@ SCENARIO 6: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Invalid job [1 in
 
             F?  Employee Id  Name  Email  Hired        Job      Salary  Updated
             --  -----------  ----  -----  -----------  -------  ------  -----------
-                       1716  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       1990  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1335,7 +1335,7 @@ SCENARIO 6: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Invalid job [1 in
 
             F?  Job Statistic Id  ORA_ERR_TAG$  ORA_ERR_MESG$                                                                    ORA_ERR_OPTYP$  Employee Id  Name  Email  Hired        Job      Salary
             --  ----------------  ------------  -------------------------------------------------------------------------------  --------------  -----------  ----  -----  -----------  -------  ------
-                              17                ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found  I                      1717  LN 1  EM 1   01-JAN-2010  NON_JOB  10000
+                              67                ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found  I                      1991  LN 1  EM 1   01-JAN-2010  NON_JOB  10000
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1345,8 +1345,8 @@ SCENARIO 6: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. Invalid job [1 in
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                              16  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
-                              17  LOAD_EMPS     employees_20160801.dat               0                  0                  1  01-OCT-2016  01-OCT-2016  F
+                              66  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                              67  LOAD_EMPS     employees_20160801.dat               0                  0                  1  22-OCT-2016  22-OCT-2016  F
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1386,8 +1386,8 @@ SCENARIO 7: NV/OV/OU/NI/OI/EI: 0/1/0/1/1/0. Existing J/E: 1/2. 2 invalid jobs [1
             Line
             -----------------------------------------
             ,LN 1,EM 1,01-JAN-2010,NON_JOB,10000
-            1719,LN 2,EM 2,01-JAN-2010,NON_JOB,20000
-            1720,LN 3U,EM 3,01-JAN-2010,IT_PROG,30000
+            1993,LN 2,EM 2,01-JAN-2010,NON_JOB,20000
+            1994,LN 3U,EM 3,01-JAN-2010,IT_PROG,30000
 
         }
         =
@@ -1407,7 +1407,7 @@ SCENARIO 7: NV/OV/OU/NI/OI/EI: 0/1/0/1/1/0. Existing J/E: 1/2. 2 invalid jobs [1
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                          19  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                          69  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         }
         =
@@ -1417,8 +1417,8 @@ SCENARIO 7: NV/OV/OU/NI/OI/EI: 0/1/0/1/1/0. Existing J/E: 1/2. 2 invalid jobs [1
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1719  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
-                   1720  LN 3  EM 3   01-JAN-2010  IT_PROG   30000                             01-JAN-2010
+                   1993  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   1994  LN 3  EM 3   01-JAN-2010  IT_PROG   30000                             01-JAN-2010
 
         }
         =
@@ -1431,8 +1431,8 @@ SCENARIO 7: NV/OV/OU/NI/OI/EI: 0/1/0/1/1/0. Existing J/E: 1/2. 2 invalid jobs [1
 
             F?  Employee Id  Name   Email  Hired        Job      Salary  Updated
             --  -----------  -----  -----  -----------  -------  ------  -----------
-                       1719  LN 2   EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
-                       1720  LN 3U  EM 3   01-JAN-2010  IT_PROG  30000   01-OCT-2016
+                       1993  LN 2   EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       1994  LN 3U  EM 3   01-JAN-2010  IT_PROG  30000   22-OCT-2016
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1442,8 +1442,8 @@ SCENARIO 7: NV/OV/OU/NI/OI/EI: 0/1/0/1/1/0. Existing J/E: 1/2. 2 invalid jobs [1
 
             F?  Job Statistic Id  ORA_ERR_TAG$  ORA_ERR_MESG$                                                                    ORA_ERR_OPTYP$  Employee Id  Name  Email  Hired        Job      Salary
             --  ----------------  ------------  -------------------------------------------------------------------------------  --------------  -----------  ----  -----  -----------  -------  ------
-                              20                ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found  U                      1719  LN 2  EM 2   01-JAN-2010  NON_JOB  20000
-                              20                ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found  I                      1721  LN 1  EM 1   01-JAN-2010  NON_JOB  10000
+                              70                ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found  U                      1993  LN 2  EM 2   01-JAN-2010  NON_JOB  20000
+                              70                ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found  I                      1995  LN 1  EM 1   01-JAN-2010  NON_JOB  10000
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1453,8 +1453,8 @@ SCENARIO 7: NV/OV/OU/NI/OI/EI: 0/1/0/1/1/0. Existing J/E: 1/2. 2 invalid jobs [1
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                              19  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
-                              20  LOAD_EMPS     employees_20160801.dat               1                  0                  2  01-OCT-2016  01-OCT-2016  S
+                              69  LOAD_EMPS     employees_20160101.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                              70  LOAD_EMPS     employees_20160801.dat               1                  0                  2  22-OCT-2016  22-OCT-2016  S
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1487,7 +1487,7 @@ SCENARIO 8: NV/OV/OU/NI/OI/EI: 0/1/0/0/0/1. Existing J/E: 1/2. Name 4001ch [1 va
             Line
             --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             ,123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567
-            1724,LN 3U,EM 3,01-JAN-2010,IT_PROG,30000
+            1998,LN 3U,EM 3,01-JAN-2010,IT_PROG,30000
 
         }
         =
@@ -1507,7 +1507,7 @@ SCENARIO 8: NV/OV/OU/NI/OI/EI: 0/1/0/0/0/1. Existing J/E: 1/2. Name 4001ch [1 va
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                          22  LOAD_EMPS     employees_20160801.dat               0                  0                  2  01-JAN-2010  01-JAN-2010  F
+                          72  LOAD_EMPS     employees_20160801.dat               0                  0                  2  01-JAN-2010  01-JAN-2010  F
 
         }
         =
@@ -1517,8 +1517,8 @@ SCENARIO 8: NV/OV/OU/NI/OI/EI: 0/1/0/0/0/1. Existing J/E: 1/2. Name 4001ch [1 va
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1723  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
-                   1724  LN 3  EM 3   01-JAN-2010  IT_PROG   30000                             01-JAN-2010
+                   1997  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   1998  LN 3  EM 3   01-JAN-2010  IT_PROG   30000                             01-JAN-2010
 
         }
         =
@@ -1531,8 +1531,8 @@ SCENARIO 8: NV/OV/OU/NI/OI/EI: 0/1/0/0/0/1. Existing J/E: 1/2. Name 4001ch [1 va
 
             F?  Employee Id  Name   Email  Hired        Job      Salary  Updated
             --  -----------  -----  -----  -----------  -------  ------  -----------
-                       1723  LN 2   EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
-                       1724  LN 3U  EM 3   01-JAN-2010  IT_PROG  30000   01-OCT-2016
+                       1997  LN 2   EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       1998  LN 3U  EM 3   01-JAN-2010  IT_PROG  30000   22-OCT-2016
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1545,8 +1545,8 @@ SCENARIO 8: NV/OV/OU/NI/OI/EI: 0/1/0/0/0/1. Existing J/E: 1/2. Name 4001ch [1 va
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                              22  LOAD_EMPS     employees_20160801.dat               0                  0                  2  01-JAN-2010  01-JAN-2010  F
-                              23  LOAD_EMPS     employees_20160801.dat               1                  1                  0  01-OCT-2016  01-OCT-2016  S
+                              72  LOAD_EMPS     employees_20160801.dat               0                  0                  2  01-JAN-2010  01-JAN-2010  F
+                              73  LOAD_EMPS     employees_20160801.dat               1                  1                  0  22-OCT-2016  22-OCT-2016  S
 
         } 0 failed, of 2: SUCCESS
         =========================
@@ -1598,7 +1598,7 @@ SCENARIO 9: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. [File already pro
 
             Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                          25  LOAD_EMPS     employees_20160801.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                          75  LOAD_EMPS     employees_20160801.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         }
         =
@@ -1608,7 +1608,7 @@ SCENARIO 9: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. [File already pro
 
             Employee Id  Name  Email  Hired        Job      Salary  Manager Id  Department Id  Updated
             -----------  ----  -----  -----------  -------  ------  ----------  -------------  -----------
-                   1726  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
+                   2000  LN 2  EM 2   01-JAN-2010  IT_PROG   20000                             01-JAN-2010
 
         }
         =
@@ -1621,7 +1621,7 @@ SCENARIO 9: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. [File already pro
 
             F?  Employee Id  Name  Email  Hired        Job      Salary  Updated
             --  -----------  ----  -----  -----------  -------  ------  -----------
-                       1726  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
+                       2000  LN 2  EM 2   01-JAN-2010  IT_PROG  20000   01-JAN-2010
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1634,7 +1634,7 @@ SCENARIO 9: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. [File already pro
 
             F?  Job Statistic Id  Batch job Id  File Name               Records Loaded  Records Failed ET  Records Failed DB  Start Time   End Time     Status
             --  ----------------  ------------  ----------------------  --------------  -----------------  -----------------  -----------  -----------  ------
-                              25  LOAD_EMPS     employees_20160801.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
+                              75  LOAD_EMPS     employees_20160801.dat              10                  0                  2  01-JAN-2010  01-JAN-2010  S
 
         } 0 failed, of 1: SUCCESS
         =========================
@@ -1652,10 +1652,10 @@ SCENARIO 9: NV/OV/OU/NI/OI/EI: 0/0/0/1/0/0. Existing J/E: 1/1. [File already pro
 } 0 failed, of 4: SUCCESS
 =========================
 
-TIMING: Actual = 709, Expected <= 2: FAILURE
+TIMING: Actual = 254, Expected <= 2: FAILURE
 ============================================
 
-SUMMARY for UT_Emp_Batch.ut_AIP_Load_Emps
+SUMMARY for TT_Emp_Batch.tt_AIP_Load_Emps
 =========================================
 
 Scenario                                                                                                                                                        # Failed  # Tests  Status
@@ -1674,20 +1674,20 @@ Timing                                                                          
 Total                                                                                                                                                                  1       50  FAILURE
 --------------------------------------------------------------------------------------------------------------------------------------------------------------  --------  -------  -------
 
-Timer Set: UT_Emp_Batch.ut_AIP_Load_Emps, Constructed at 01 Oct 2016 09:14:13, written at 09:14:19
+Timer Set: TT_Emp_Batch.tt_AIP_Load_Emps, Constructed at 22 Oct 2016 15:05:16, written at 15:05:20
 ==================================================================================================
-[Timer timed: Elapsed (per call): 0.03 (0.000031), CPU (per call): 0.03 (0.000030), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.03 (0.000033), CPU (per call): 0.03 (0.000030), calls: 1000, '***' denotes corrected line below]
 
 Timer           Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -----------  ----------  ----------  ------------  -------------  -------------
-Setup              1.15        0.32             9        0.12789        0.03556
-Caller             3.55        1.43             5        0.70900        0.28600
-Get_Tab_Lis        0.80        0.53             9        0.08833        0.05889
-Get_Err_Lis        0.01        0.02             9        0.00100        0.00222
-Get_Jbs_Lis        0.01        0.00             9        0.00156        0.00000
-(Other)            0.35        0.30             1        0.34800        0.30000
+Setup              0.97        0.23             9        0.10811        0.02556
+Caller             1.27        0.99             5        0.25400        0.19800
+Get_Tab_Lis        0.73        0.59             9        0.08122        0.06556
+Get_Err_Lis        0.00        0.00             9        0.00011        0.00000
+Get_Jbs_Lis        0.01        0.02             9        0.00056        0.00222
+(Other)            0.34        0.35             1        0.34200        0.35000
 -----------  ----------  ----------  ------------  -------------  -------------
-Total              5.86        2.60            42        0.13957        0.06190
+Total              3.32        2.18            42        0.07910        0.05190
 -----------  ----------  ----------  ------------  -------------  -------------
 
 Suite Summary
@@ -1695,15 +1695,15 @@ Suite Summary
 
 Package.Procedure                  Tests  Fails         ELA         CPU
 ---------------------------------  -----  -----  ----------  ----------
-UT_Emp_WS.ut_AIP_Save_Emps            17      3        0.71        0.25
-UT_Emp_WS.ut_AIP_Get_Dept_Emps         8      1        0.21        0.16
-UT_View_Drivers.ut_HR_Test_View_V      9      1        0.28        0.21
-UT_Emp_Batch.ut_AIP_Load_Emps         50      1        5.86        2.60
+TT_Emp_WS.tt_AIP_Save_Emps            17      2        0.09        0.08
+TT_Emp_WS.tt_AIP_Get_Dept_Emps         8      0        0.14        0.14
+TT_View_Drivers.tt_HR_Test_View_V      9      0        0.11        0.11
+TT_Emp_Batch.tt_AIP_Load_Emps         50      1        3.32        2.18
 ---------------------------------  -----  -----  ----------  ----------
-Total                                 84      6        7.07        3.22
+Total                                 84      3        3.66        2.51
 ---------------------------------  -----  -----  ----------  ----------
-Others error in (): ORA-20001: Suite BRENDAN returned error status: ORA-06512: at "DP_2.UT_UTILS", line 151
-ORA-06512: at "DP_2.UT_UTILS", line 818
+Others error in (): ORA-20001: Suite BRENDAN returned error status: ORA-06512: at "DP_3.UTILS_TT", line 152
+ORA-06512: at "DP_3.UTILS_TT", line 819
 ORA-06512: at line 5
 
 

@@ -3,7 +3,7 @@ CREATE OR REPLACE PACKAGE Emp_WS AS
 Description: HR demo web service code. Procedure saves new employees list and returns primary key
              plus same in words, or zero plus error message in output list
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History

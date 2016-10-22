@@ -3,7 +3,7 @@ CREATE OR REPLACE PACKAGE BODY Emp_WS AS
 Description: HR demo web service code. Procedure saves new employees list and returns primary key
              plus same in words, or zero plus error message in output list
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -38,7 +38,7 @@ BEGIN
         hire_date,
         job_id,
         salary,
-        utid
+        ttid
     ) VALUES (
         employees_seq.NEXTVAL,
         p_emp_in_lis(i).last_name,
@@ -46,7 +46,7 @@ BEGIN
         SYSDATE,
         p_emp_in_lis(i).job_id,
         p_emp_in_lis(i).salary,
-        Utils.c_session_id_if_UT
+        Utils.c_session_id_if_TT
     )
     RETURNING emp_out_rec (employee_id, To_Char(To_Date(employee_id,'J'),'JSP')) BULK COLLECT INTO x_emp_out_lis;
 

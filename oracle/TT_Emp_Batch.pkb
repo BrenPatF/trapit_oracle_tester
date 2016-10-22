@@ -1,18 +1,19 @@
-CREATE OR REPLACE PACKAGE BODY UT_Emp_Batch AS
+CREATE OR REPLACE PACKAGE BODY TT_Emp_Batch AS
 /***************************************************************************************************
-Description: Unit testing for HR demo batch code
+Description: Transactional API testing for HR demo batch code
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
 Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        11-Sep-2016 1.0   Created
+Brendan Furey        22-Oct-2016 1.6   TRAPIT name changes, UT->TT etc.
 
 ***************************************************************************************************/
 c_n                     CONSTANT VARCHAR2(1) := 'N';
-c_date_fmt              CONSTANT VARCHAR2(30) := UT_Utils.c_date_fmt;
+c_date_fmt              CONSTANT VARCHAR2(30) := Utils_TT.c_date_fmt;
 c_today_chr             CONSTANT VARCHAR2(30) := To_Char (SYSDATE, c_date_fmt);
 /***************************************************************************************************
 
@@ -26,16 +27,16 @@ END Write_Log;
 
 /***************************************************************************************************
 
-ut_AIP_Load_Emps: Main procedure for unit testing Emp_Batch.AIP_Load_Emps procedure
+tt_AIP_Load_Emps: Main procedure for testing Emp_Batch.AIP_Load_Emps procedure
 
 ***************************************************************************************************/
-PROCEDURE ut_AIP_Load_Emps IS
+PROCEDURE tt_AIP_Load_Emps IS
 
-  c_proc_name             CONSTANT VARCHAR2(61) := 'UT_Emp_Batch.ut_AIP_Load_Emps';
+  c_proc_name             CONSTANT VARCHAR2(61) := 'TT_Emp_Batch.tt_AIP_Load_Emps';
   c_batch_job_id          CONSTANT VARCHAR2(61) := 'LOAD_EMPS';
   c_offset_1              CONSTANT VARCHAR2(20) := '1_OFFSET';
   c_offset_2              CONSTANT VARCHAR2(20) := '2_OFFSET';
-  c_past_date_chr         CONSTANT VARCHAR2(61) := UT_Utils.c_past_date_chr;
+  c_past_date_chr         CONSTANT VARCHAR2(61) := Utils_TT.c_past_date_chr;
   c_ln_prefix             CONSTANT VARCHAR2(20) := 'LN ';
   c_em_prefix             CONSTANT VARCHAR2(20) := 'EM ';
   c_fn_prefix             CONSTANT VARCHAR2(20) := 'FN_';
@@ -202,26 +203,26 @@ PROCEDURE ut_AIP_Load_Emps IS
                                         L1_chr_arr (Utils.List_Delim (c_offset_1 || '1', c_batch_job_id, c_dat_name_1,  '10', '0', '2', c_past_date_chr, c_past_date_chr, c_status_s))
   );
   c_exp_err_2lis           CONSTANT L2_chr_arr := L2_chr_arr (
-                                        UT_Utils.c_empty_list,
-                                        UT_Utils.c_empty_list,
+                                        Utils_TT.c_empty_list,
+                                        Utils_TT.c_empty_list,
                                         L1_chr_arr (Utils.List_Delim (c_offset_1 || '2', '', 'Employee not found', 'PK', c_emp_id_invalid, c_ln_lis(1), c_em_lis(1), c_hd_lis(1), c_jb_lis(1), c_sal_lis(1))),
                                         L1_chr_arr (Utils.List_Delim (c_offset_1 || '2', '', 'ORA-12899: value too large for column "HR"."EMPLOYEES"."EMAIL" (actual: 34, maximum: 25)', 'I', c_offset_2 || '2', c_ln_lis(1), c_em_lis(1) || c_30_chars, c_hd_lis(1), c_jb_lis(1), c_sal_lis(1))),
                                         L1_chr_arr (Utils.List_Delim (c_offset_1 || '2', '', 'ORA-12899: value too large for column "HR"."EMPLOYEES"."LAST_NAME" (actual: 34, maximum: 25)', 'U', c_offset_2 || '1', c_ln_lis(1) || c_30_chars, c_em_lis(1), c_hd_lis(1), c_jb_lis(1), c_sal_lis(1))),
                                         L1_chr_arr (Utils.List_Delim (c_offset_1 || '2', '', 'ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found', 'I', c_offset_2 || '2', c_ln_lis(1), c_em_lis(1), c_hd_lis(1), c_job_id_invalid, c_sal_lis(1))),
                                         L1_chr_arr (Utils.List_Delim (c_offset_1 || '2', '', 'ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found', 'U', c_offset_2 || '1', c_ln_lis(2), c_em_lis(2), c_hd_lis(2), c_job_id_invalid, c_sal_lis(2)),
                                                     Utils.List_Delim (c_offset_1 || '2', '', 'ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found', 'I', c_offset_2 || '3', c_ln_lis(1), c_em_lis(1), c_hd_lis(1), c_job_id_invalid, c_sal_lis(1))),
-                                        UT_Utils.c_empty_list,
-                                        UT_Utils.c_empty_list
+                                        Utils_TT.c_empty_list,
+                                        Utils_TT.c_empty_list
   );
   c_exp_exc_2lis           CONSTANT L2_chr_arr := L2_chr_arr (
-                                        UT_Utils.c_empty_list,
-                                        UT_Utils.c_empty_list,
+                                        Utils_TT.c_empty_list,
+                                        Utils_TT.c_empty_list,
                                         L1_chr_arr ('ORA-20001: Batch failed with too many invalid records!'),
                                         L1_chr_arr ('ORA-20001: Batch failed with too many invalid records!'),
-                                        UT_Utils.c_empty_list,
+                                        Utils_TT.c_empty_list,
                                         L1_chr_arr ('ORA-20001: Batch failed with too many invalid records!'),
-                                        UT_Utils.c_empty_list,
-                                        UT_Utils.c_empty_list,
+                                        Utils_TT.c_empty_list,
+                                        Utils_TT.c_empty_list,
                                         L1_chr_arr ('ORA-20002: File has already been processed successfully!')
   );
 
@@ -258,7 +259,7 @@ PROCEDURE ut_AIP_Load_Emps IS
 
   /***************************************************************************************************
 
-  Setup: Setup procedure for unit testing Emp_Batch.AIP_Load_Emps package. Sets the expected output
+  Setup: Setup procedure for testing Emp_Batch.AIP_Load_Emps package. Sets the expected output
           nested array after determining where the primary key generating sequence is at
 
   ***************************************************************************************************/
@@ -301,8 +302,8 @@ PROCEDURE ut_AIP_Load_Emps IS
 
   BEGIN
 
-    DELETE hr.err$_employees WHERE utid IS NOT NULL; -- DML logging does auto transaction
-    DELETE job_statistics WHERE utid IS NOT NULL; -- job statistics done via auto transaction
+    DELETE hr.err$_employees WHERE ttid IS NOT NULL; -- DML logging does auto transaction
+    DELETE job_statistics WHERE ttid IS NOT NULL; -- job statistics done via auto transaction
     COMMIT;
 
     SELECT Utils.List_Delim (batch_job_id, fail_threshold_perc)
@@ -351,7 +352,7 @@ PROCEDURE ut_AIP_Load_Emps IS
       l_jbs_lis.EXTEND (p_jbs_2lis.COUNT);
       FOR i IN 1..p_jbs_2lis.COUNT LOOP
 
-        DML_API_UT_Bren.Ins_jbs (
+        DML_API_TT_Bren.Ins_jbs (
                             p_batch_job_id      => p_jbs_2lis(i)(1),
                             p_file_name         => p_jbs_2lis(i)(2),
                             p_records_loaded    => p_jbs_2lis(i)(3),
@@ -370,7 +371,7 @@ PROCEDURE ut_AIP_Load_Emps IS
       l_emp_lis.EXTEND (p_emp_2lis.COUNT);
       FOR i IN 1..p_emp_2lis.COUNT LOOP
 
-        l_last_seq_emp := DML_API_UT_HR.Ins_Emp (
+        l_last_seq_emp := DML_API_TT_HR.Ins_Emp (
                             p_emp_ind     => i,
                             p_dep_id      => NULL,
                             p_mgr_id      => NULL,
@@ -482,7 +483,7 @@ PROCEDURE ut_AIP_Load_Emps IS
     BEGIN
 
       Emp_Batch.AIP_Load_Emps (p_file_name => p_file_name, p_file_count => p_file_count);
-      Timer_Set.Increment_Time (l_timer_set, UT_Utils.c_call_timer);
+      Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_call_timer);
 
     EXCEPTION
       WHEN OTHERS THEN
@@ -494,16 +495,16 @@ PROCEDURE ut_AIP_Load_Emps IS
     Get_Err_Lis (x_err_lis => l_err_lis); Timer_Set.Increment_Time (l_timer_set, 'Get_Err_Lis');
     Get_Jbs_Lis (x_jbs_lis => l_jbs_lis); Timer_Set.Increment_Time (l_timer_set, 'Get_Jbs_Lis');
 
-    x_act_2lis := L2_chr_arr (UT_Utils.List_or_Empty (l_tab_lis),
-                              UT_Utils.List_or_Empty (l_err_lis),
-                              UT_Utils.List_or_Empty (l_jbs_lis),
-                              UT_Utils.List_or_Empty (l_exc_lis));
+    x_act_2lis := L2_chr_arr (Utils_TT.List_or_Empty (l_tab_lis),
+                              Utils_TT.List_or_Empty (l_err_lis),
+                              Utils_TT.List_or_Empty (l_jbs_lis),
+                              Utils_TT.List_or_Empty (l_exc_lis));
 
   END Call_Proc;
 
 BEGIN
 
-  l_timer_set := UT_Utils.Init (c_proc_name);
+  l_timer_set := Utils_TT.Init (c_proc_name);
   l_act_3lis.EXTEND (c_file_3lis.COUNT);
   l_inp_3lis.EXTEND (c_file_3lis.COUNT);
   l_exp_3lis.EXTEND (c_file_3lis.COUNT);
@@ -527,15 +528,15 @@ BEGIN
 
   END LOOP;
 
-  UT_Utils.Check_UT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_3lis, l_exp_3lis, l_timer_set, c_ms_limit,
+  Utils_TT.Check_TT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_3lis, l_exp_3lis, l_timer_set, c_ms_limit,
                              c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_fields_2lis);
 
 EXCEPTION
   WHEN OTHERS THEN
     Utils.Write_Other_Error;
     RAISE;
-END ut_AIP_Load_Emps;
+END tt_AIP_Load_Emps;
 
-END UT_Emp_Batch;
+END TT_Emp_Batch;
 /
 SHO ERR

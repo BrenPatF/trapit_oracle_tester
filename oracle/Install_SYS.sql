@@ -6,10 +6,10 @@ SPOOL Install_SYS.log
 /***************************************************************************************************
 
 Author:      Brendan Furey
-Description: Script for SYS schema to create the new schema for Brendan's database unit testing
+Description: Script for SYS schema to create the new schema for Brendan's TRAPIT API testing
              framework design patterns demo. """Directory needs to be changed"""
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -20,7 +20,7 @@ Brendan Furey        11-Sep-2016 1.1   Directory
 
 ***************************************************************************************************/
 REM
-REM Run this script from sys schema to create new schema for Brendan's unit testing demo
+REM Run this script from sys schema to create new schema for Brendan's testing demo
 REM
 
 DEFINE DEMO_USER=&1
@@ -46,5 +46,6 @@ CREATE OR REPLACE DIRECTORY input_dir AS 'C:\Users\Brend_000\Documents\Home - Ch
 /
 GRANT ALL ON DIRECTORY input_dir TO PUBLIC
 /
-
+GRANT EXECUTE ON UTL_File TO PUBLIC
+/
 SPOOL OFF

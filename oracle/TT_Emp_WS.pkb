@@ -1,17 +1,17 @@
-CREATE OR REPLACE PACKAGE BODY UT_Emp_WS AS
+CREATE OR REPLACE PACKAGE BODY TT_Emp_WS AS
 /***************************************************************************************************
-Description: Unit testing for HR demo web service code (Emp_WS) using Brendan's database unit
-             testing framework.
+Description: Transactional API testing for HR demo web service code (Emp_WS) using Brendan's TRAPIT
+             API testing framework.
 
              It was published initially with three utility packages and the base package for the
              articles linked in the link below:
 
-                 UT_Utils:  Utility procedures for Brendan's database unit testing framework
+                 Utils_TT:  Utility procedures for Brendan's TRAPIT API testing framework
                  Utils:     General utilities
                  Timer_Set: Code timing utility
                  Emp_WS:    HR demo web service base code
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -19,13 +19,15 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        08-May-2016 1.0   Initial
 Brendan Furey        21-May-2016 1.1   Re-factored: setup at procedure level; new type names;
-                                       Write_Session_Results moved to Check_UT_Results; etc.
-Brendan Furey        25-Jun-2016 1.2   Removed ut_Setup and ut_Teardown following removal of uPLSQL
-Brendan Furey        09-Jul-2016 1.3   Passing new input arrays to Check_UT_Results for printing per
+                                       Write_Session_Results moved to Check_TT_Results; etc.
+Brendan Furey        25-Jun-2016 1.2   Removed tt_Setup and ut_Teardown following removal of uPLSQL
+Brendan Furey        09-Jul-2016 1.3   Passing new input arrays to Check_TT_Results for printing per
                                        scenario
-Brendan Furey        11-Sep-2016 1.4   ut_AIP_Get_Dept_Emps added
-Brendan Furey        01-Oct-2016 1.5   ut_AIP_Get_Dept_Emps: Call timing added; also, null dept
+Brendan Furey        11-Sep-2016 1.4   tt_AIP_Get_Dept_Emps added
+Brendan Furey        01-Oct-2016 1.5   tt_AIP_Get_Dept_Emps: Call timing added; also, null dept
                                        scenario added
+Brendan Furey        22-Oct-2016 1.6   TRAPIT name changes, UT->TT etc.
+
 ***************************************************************************************************/
 
 c_n                     CONSTANT VARCHAR2(1) := 'N';
@@ -42,12 +44,12 @@ END Write_Log;
 
 /***************************************************************************************************
 
-ut_AIP_Save_Emps: Main procedure for unit testing Emp_WS.AIP_Save_Emps procedure
+tt_AIP_Save_Emps: Main procedure for testing Emp_WS.AIP_Save_Emps procedure
 
 ***************************************************************************************************/
-PROCEDURE ut_AIP_Save_Emps IS
+PROCEDURE tt_AIP_Save_Emps IS
 
-  c_proc_name CONSTANT  VARCHAR2(61) := 'UT_Emp_WS.ut_AIP_Save_Emps';
+  c_proc_name CONSTANT  VARCHAR2(61) := 'TT_Emp_WS.tt_AIP_Save_Emps';
 
   c_ln_prefix             CONSTANT VARCHAR2(20) := 'LN ';
   c_em_prefix             CONSTANT VARCHAR2(20) := 'EM ';
@@ -99,7 +101,7 @@ PROCEDURE ut_AIP_Save_Emps IS
 
   /***************************************************************************************************
 
-  Setup: Setup procedure for unit testing Emp_WS.AIP_Save_Emps package. Sets the expected output
+  Setup: Setup procedure for testing Emp_WS.AIP_Save_Emps package. Sets the expected output
           nested array after determining where the primary key generating sequence is at
 
   ***************************************************************************************************/
@@ -114,14 +116,14 @@ PROCEDURE ut_AIP_Save_Emps IS
     g_ws_exp_3lis := L3_chr_arr ( -- each call results in a list of 2 output lists: first is the table records; second is the out array
                         L2_chr_arr (L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+1), c_ln (1), c_em (1), c_job_id, c_salary (1))), -- valid char, num pair
                                     L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+1), To_Char(To_Date(l_last_seq_val+1,'J'),'JSP'))),
-                                    UT_Utils.c_empty_list
+                                    Utils_TT.c_empty_list
                         ),
-                        L2_chr_arr (UT_Utils.c_empty_list,
+                        L2_chr_arr (Utils_TT.c_empty_list,
                                     L1_chr_arr (Utils.List_Delim (0, 'ORA-02291: integrity constraint (.) violated - parent key not found')),
-                                    UT_Utils.c_empty_list
+                                    Utils_TT.c_empty_list
                         ),
-                        L2_chr_arr (UT_Utils.c_empty_list,
-                                    UT_Utils.c_empty_list,
+                        L2_chr_arr (Utils_TT.c_empty_list,
+                                    Utils_TT.c_empty_list,
                                     L1_chr_arr ('ORA-06502: PL/SQL: numeric or value error: character to number conversion error')
                         ),
                         L2_chr_arr (L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+3), c_ln (4), c_em (4), c_job_id, c_salary (1)), -- c_salary (1) should be c_salary (4)
@@ -130,7 +132,7 @@ PROCEDURE ut_AIP_Save_Emps IS
                                     L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+3), To_Char(To_Date(l_last_seq_val+3,'J'),'JSP')),
                                                 Utils.List_Delim (0, 'ORA-02291: integrity constraint (.) violated - parent key not found'),
                                                 Utils.List_Delim (To_Char(l_last_seq_val+5), To_Char(To_Date(l_last_seq_val+5,'J'),'JSP'))),
-                                    UT_Utils.c_empty_list
+                                    Utils_TT.c_empty_list
                         )
                      );
 
@@ -165,7 +167,7 @@ PROCEDURE ut_AIP_Save_Emps IS
       Emp_WS.AIP_Save_Emps (
                 p_emp_in_lis        => l_emp_in_lis,
                 x_emp_out_lis       => x_emp_out_lis);
-      Timer_Set.Increment_Time (p_timer_set_ind => l_timer_set, p_timer_name => UT_Utils.c_call_timer);
+      Timer_Set.Increment_Time (p_timer_set_ind => l_timer_set, p_timer_name => Utils_TT.c_call_timer);
 
     END Do_Save;
 
@@ -176,7 +178,7 @@ PROCEDURE ut_AIP_Save_Emps IS
       SELECT Utils.List_Delim (employee_id, last_name, email, job_id, salary)
         BULK COLLECT INTO x_tab_lis
         FROM employees
-       WHERE utid = Utils.c_session_id_if_UT
+       WHERE ttid = Utils.c_session_id_if_TT
        ORDER BY employee_id;
       Timer_Set.Increment_Time (p_timer_set_ind => l_timer_set, p_timer_name => 'SELECT');
 
@@ -215,13 +217,13 @@ PROCEDURE ut_AIP_Save_Emps IS
         l_err_lis := L1_chr_arr (SQLERRM);
     END;
 
-    x_ws_out_2lis := L2_chr_arr (UT_Utils.List_or_Empty (l_tab_lis), UT_Utils.List_or_Empty (l_arr_lis), UT_Utils.List_or_Empty (l_err_lis));
+    x_ws_out_2lis := L2_chr_arr (Utils_TT.List_or_Empty (l_tab_lis), Utils_TT.List_or_Empty (l_arr_lis), Utils_TT.List_or_Empty (l_err_lis));
 
   END Call_WS;
 
 BEGIN
 
-  l_timer_set := UT_Utils.Init (c_proc_name);
+  l_timer_set := Utils_TT.Init (c_proc_name);
   Setup;
   Timer_Set.Increment_Time (l_timer_set, 'Setup');
   l_ws_act_3lis.EXTEND (c_params_3lis.COUNT);
@@ -243,23 +245,23 @@ BEGIN
 
   END LOOP;
 
-  UT_Utils.Check_UT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_ws_act_3lis, g_ws_exp_3lis, l_timer_set, c_ws_ms_limit,
+  Utils_TT.Check_TT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_ws_act_3lis, g_ws_exp_3lis, l_timer_set, c_ws_ms_limit,
                              c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_fields_2lis);
 
 EXCEPTION
   WHEN OTHERS THEN
     Utils.Write_Other_Error;
     RAISE;
-END ut_AIP_Save_Emps;
+END tt_AIP_Save_Emps;
 
 /***************************************************************************************************
 
-ut_AIP_Get_Dept_Emps: Main procedure for unit testing Emp_WS.uAIP_Get_Dept_Emps procedure
+tt_AIP_Get_Dept_Emps: Main procedure for testing Emp_WS.uAIP_Get_Dept_Emps procedure
 
 ***************************************************************************************************/
-PROCEDURE ut_AIP_Get_Dept_Emps IS
+PROCEDURE tt_AIP_Get_Dept_Emps IS
 
-  c_proc_name           CONSTANT VARCHAR2(61) := 'UT_Emp_WS.ut_AIP_Get_Dept_Emps';
+  c_proc_name           CONSTANT VARCHAR2(61) := 'TT_Emp_WS.tt_AIP_Get_Dept_Emps';
   c_dep_id_1            CONSTANT PLS_INTEGER := 10;
   c_dep_id_2            CONSTANT PLS_INTEGER := 20;
   c_dep_nm_1            CONSTANT VARCHAR2(100) := 'Administration';
@@ -269,7 +271,7 @@ PROCEDURE ut_AIP_Get_Dept_Emps IS
   c_base_sal            CONSTANT PLS_INTEGER := 1000;
   c_out_group_lis       CONSTANT L1_chr_arr := L1_chr_arr ('Select results');
 
-  c_ln_pre              CONSTANT VARCHAR2(10) := DML_API_UT_HR.c_ln_pre;
+  c_ln_pre              CONSTANT VARCHAR2(10) := DML_API_TT_HR.c_ln_pre;
 
   c_dep_lis             CONSTANT L1_chr_arr := L1_chr_arr (c_dep_id_1, c_dep_id_1, c_dep_id_2, NULL, c_dep_id_1);
 
@@ -309,8 +311,8 @@ PROCEDURE ut_AIP_Get_Dept_Emps IS
                                                L1_chr_arr (
                                        Utils.List_Delim (c_ln_pre || '5',   c_dep_nm_2, c_ln_pre || '1', '5000',  '1',    '1.67')
                                                ),
-                                               ut_Utils.c_empty_list,
-                                               ut_Utils.c_empty_list
+                                               Utils_TT.c_empty_list,
+                                               Utils_TT.c_empty_list
                         );
 
   c_scenario_ds_lis     CONSTANT L1_num_arr := L1_num_arr (1, 2, 2, 2, 3);
@@ -369,7 +371,7 @@ Setup: Local procedure to create test records for a given scenario; rolled back 
     x_inp_lis.EXTEND (c_dataset_3lis (p_call_ind).COUNT - 1);
     FOR i IN 2..c_dataset_3lis (p_call_ind).COUNT LOOP
 
-      l_emp_id := DML_API_UT_HR.Ins_Emp (
+      l_emp_id := DML_API_TT_HR.Ins_Emp (
                             p_emp_ind  => i - 1,
                             p_dep_id   => c_dataset_3lis (p_call_ind)(i)(1),
                             p_mgr_id   => l_mgr_id,
@@ -387,7 +389,7 @@ Setup: Local procedure to create test records for a given scenario; rolled back 
 
 BEGIN
 
-  l_timer_set := UT_Utils.Init (c_proc_name);
+  l_timer_set := Utils_TT.Init (c_proc_name);
   l_act_2lis.EXTEND (c_exp_2lis.COUNT);
   l_inp_3lis.EXTEND (c_exp_2lis.COUNT);
 
@@ -399,17 +401,17 @@ BEGIN
     Setup (c_scenario_ds_lis (i), l_inp_3lis (i)(1));
 
     l_inp_3lis (i)(2) := L1_chr_arr (c_dep_lis(i));
-    Timer_Set.Increment_Time (l_timer_set, UT_Utils.c_setup_timer);
+    Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_setup_timer);
 
     Emp_WS.AIP_Get_Dept_Emps (p_dep_id  => c_dep_lis(i),
                               x_emp_csr => l_emp_csr);
-    l_act_2lis(i) := UT_Utils.List_or_Empty (UT_Utils.Cursor_to_Array (x_csr => l_emp_csr));
-    Timer_Set.Increment_Time (l_timer_set, UT_Utils.c_call_timer);
+    l_act_2lis(i) := Utils_TT.List_or_Empty (Utils_TT.Cursor_to_Array (x_csr => l_emp_csr));
+    Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_call_timer);
     ROLLBACK;
 
   END LOOP;
 
-  UT_Utils.Check_UT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_2lis, c_exp_2lis, l_timer_set, c_ms_limit,
+  Utils_TT.Check_TT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_2lis, c_exp_2lis, l_timer_set, c_ms_limit,
                              c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_out_field_2lis);
 
 EXCEPTION
@@ -418,9 +420,9 @@ EXCEPTION
     Utils.Write_Other_Error;
     RAISE;
 
-END ut_AIP_Get_Dept_Emps;
+END tt_AIP_Get_Dept_Emps;
 
-END UT_Emp_WS;
+END TT_Emp_WS;
 /
 SHO ERR
 

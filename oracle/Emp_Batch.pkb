@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE BODY Emp_Batch AS
 /***************************************************************************************************
 Description: HR demo batch code. Procedure saves new employees from file via external table
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -98,7 +98,7 @@ BEGIN
                  tgt.job_id             = src.job_id,
                  tgt.salary             = src.salary,
                  tgt.update_date        = SYSDATE,
-                 tgt.utid               = Utils.c_session_id_if_UT
+                 tgt.ttid               = Utils.c_session_id_if_TT
   LOG ERRORS INTO hr.err$_employees REJECT LIMIT UNLIMITED;
   l_n_updated := SQL%ROWCOUNT;
 
@@ -110,7 +110,7 @@ BEGIN
                  job_id,
                  salary,
                  update_date,
-                 utid
+                 ttid
   )
   SELECT         employees_seq.NEXTVAL,
                  src.last_name,
@@ -119,7 +119,7 @@ BEGIN
                  src.job_id,
                  src.salary,
                  SYSDATE,
-                 Utils.c_session_id_if_UT
+                 Utils.c_session_id_if_TT
     FROM employees_et src
    WHERE src.employee_id IS NULL
   LOG ERRORS INTO hr.err$_employees REJECT LIMIT UNLIMITED;
@@ -139,7 +139,7 @@ BEGIN
          hire_date,
          job_id,
          salary,
-         utid
+         ttid
   )
   SELECT 'Employee not found',
          'PK',
@@ -149,7 +149,7 @@ BEGIN
          src.hire_date,
          src.job_id,
          src.salary,
-         Utils.c_session_id_if_UT
+         Utils.c_session_id_if_TT
     FROM employees_et src
     LEFT JOIN hr.employees tgt
         ON tgt.employee_id = src.employee_id

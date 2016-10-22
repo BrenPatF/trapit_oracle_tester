@@ -1,21 +1,22 @@
-CREATE OR REPLACE PACKAGE BODY DML_API_UT_Bren AS
+CREATE OR REPLACE PACKAGE BODY DML_API_TT_Bren AS
 /***************************************************************************************************
-Description: This package contains Bren (i.e. demo schema) UT DML procedures for  Brendan's
-             database unit testing framework demo test data
+Description: This package contains Bren (i.e. demo schema) DML procedures for Brendan's
+             TRAPIT API testing framework demo test data
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
 Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan              11-Sep-2016 1.0   Initial
+Brendan Furey        22-Oct-2016 1.1   TRAPIT name changes, UT->TT etc.
 
 ***************************************************************************************************/
 
 /***************************************************************************************************
 
-Ins_Emp: Inserts a record in job_statistics table for unit testing, setting the new utid column to
+Ins_Emp: Inserts a record in job_statistics table for testing, setting the new ttid column to
          session id
 
 ***************************************************************************************************/
@@ -40,7 +41,7 @@ BEGIN
         start_time,
         end_time,
         job_status,
-        utid
+        ttid
   ) VALUES (
         job_statistics_seq.NEXTVAL,
         p_batch_job_id,
@@ -59,13 +60,13 @@ BEGIN
                 records_loaded,
                 records_failed_et,
                 records_failed_db,
-                To_Char (start_time, UT_Utils.c_date_fmt),
-                To_Char (end_time, UT_Utils.c_date_fmt),
+                To_Char (start_time, Utils_TT.c_date_fmt),
+                To_Char (end_time, Utils_TT.c_date_fmt),
                 job_status)
          INTO x_rec;
 
 END Ins_Jbs;
 
-END DML_API_UT_Bren;
+END DML_API_TT_Bren;
 /
 SHO ERR

@@ -3,10 +3,10 @@ CREATE OR REPLACE PACKAGE BODY Utils AS
 Description: This package contains general utility procedures. It was published initially with two
              other utility packages for the articles linked in the link below:
 
-                 UT_Utils:  Utility procedures for Brendan's database unit testing framework
+                 Utils_TT:  Utility procedures for Brendan's TRAPIT API testing framework
                  Timer_Set: Code timing utility
 
-Further details: 'Brendan's Database Unit Testing Framework'
+Further details: 'TRAPIT - TRansactional API Testing in Oracle'
                  http://aprogrammerwrites.eu/?p=1723
 
 Modification History
@@ -24,7 +24,7 @@ Brendan Furey        08-Sep-2016 1.6   g_line_printed, List_Delim, Pr_List_As_Li
 ***************************************************************************************************/
 c_lines                 CONSTANT VARCHAR2(1000) := '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------';
 c_equals                CONSTANT VARCHAR2(1000) := '=======================================================================================================================================================================================================';
-c_in_dir               CONSTANT VARCHAR2(30) := 'INPUT_DIR';
+c_in_dir                CONSTANT VARCHAR2(30) := 'INPUT_DIR';
 
 g_log_header_id         PLS_INTEGER := 0;
 g_line_lis              L1_chr_arr;
