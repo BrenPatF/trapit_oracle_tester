@@ -1,11 +1,11 @@
-# db_unit_test
-Unit test utility packages for Oracle plus demo base and test programs for Oracle's HR demo schema.
+# trapit_oracle_tester
+TRansactional API Test (TRAPIT) utility packages for Oracle plus demo base and test programs for Oracle's HR demo schema.
 
-The test utility packages and types are designed as a lightweight PL/SQL-based framework for unit testing that can be considered as an alternative to utPLSQL.
+The test utility packages and types are designed as a lightweight PL/SQL-based framework for API testing that can be considered as an alternative to utPLSQL.
 
 This article provides example output and links to articles describing design patterns the framework is designed to facilitate, as well as anti-patterns it is designed to discourage:
 
-Brendan's Database Unit Testing Framework
+TRAPIT - TRansactional API Testing in Oracle
     http://aprogrammerwrites.eu/?p=1723
 
 Pre-requisites
@@ -21,7 +21,7 @@ Output logging
 ==============
 The testing utility packages use my own simple logging framework, installed as part of the installation scripts. To replace this with your own preferred logging framework, simply edit the procedure Utils.Write_Log to output using your own logging procedure, and optionally drop the log_headers and log_lines tables, along with the three Utils.*_Log methods.
 
-As far as I know the code should work on any recent-ish version - I have tested on 11.2 and 12.1. See these links for more information.<a href=</a>
+As far as I know the code should work on any recent-ish version - I have tested on 11.2 and 12.1.
 
 Install steps
 =============
