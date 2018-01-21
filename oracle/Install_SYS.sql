@@ -42,7 +42,7 @@ GRANT UNLIMITED TABLESPACE TO &DEMO_USER ;
 GRANT CREATE PROCEDURE TO &DEMO_USER ;
 
 PROMPT Directory input_dir - change to a writeable directory on your system
-CREATE OR REPLACE DIRECTORY input_dir AS 'C:\Users\Brend_000\Documents\Home - Chronos\SQL\Input'
+CREATE OR REPLACE DIRECTORY input_dir AS 'C:\input'
 /
 GRANT ALL ON DIRECTORY input_dir TO PUBLIC
 /

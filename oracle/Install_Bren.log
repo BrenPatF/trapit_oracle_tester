@@ -1,12 +1,18 @@
 Common types creation
 =====================
 Drop type L3_chr_arr
+DROP TYPE L3_chr_arr
+*
+ERROR at line 1:
+ORA-04043: object L3_CHR_ARR does not exist
 
-Type dropped.
 
 Drop type L2_chr_arr
+DROP TYPE L2_chr_arr
+*
+ERROR at line 1:
+ORA-04043: object L2_CHR_ARR does not exist
 
-Type dropped.
 
 Create type L1_chr_arr
 
@@ -51,11 +57,17 @@ Grant succeeded.
 Common tables creation
 ======================
 Create table log_headers
+DROP TABLE log_lines
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
 
-Table dropped.
 
+DROP TABLE log_headers
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
 
-Table dropped.
 
 
 Table created.
@@ -70,8 +82,11 @@ Synonym created.
 
 Grant succeeded.
 
+DROP SEQUENCE log_headers_s
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist
 
-Sequence dropped.
 
 
 Sequence created.
@@ -92,8 +107,11 @@ Synonym created.
 
 Grant succeeded.
 
+DROP SEQUENCE log_lines_s
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist
 
-Sequence dropped.
 
 
 Sequence created.
@@ -154,8 +172,11 @@ No errors.
 HR Types creation
 =================
 Input types creation
+DROP TYPE emp_in_arr
+*
+ERROR at line 1:
+ORA-04043: object EMP_IN_ARR does not exist
 
-Type dropped.
 
 
 Type created.
@@ -164,8 +185,11 @@ Type created.
 Type created.
 
 Output types creation
+DROP TYPE emp_out_arr
+*
+ERROR at line 1:
+ORA-04043: object EMP_OUT_ARR does not exist
 
-Type dropped.
 
 
 Type created.
@@ -175,17 +199,11 @@ Type created.
 
 HR synonyms AND views creation
 ==============================
-CREATE SYNONYM departments FOR hr.departments
-               *
-ERROR at line 1:
-ORA-00955: name is already used by an existing object
+
+Synonym created.
 
 
-CREATE SYNONYM employees_seq FOR hr.employees_seq
-               *
-ERROR at line 1:
-ORA-00955: name is already used by an existing object
-
+Synonym created.
 
 employees view
 
@@ -237,18 +255,27 @@ Package created.
 Package body created.
 
 Create employees_et
+DROP TABLE employees_et
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
 
-Table dropped.
 
 
 Table created.
 
 Create batch_jobs
+DROP TABLE job_statistics
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
 
-Table dropped.
 
+DROP TABLE batch_jobs
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
 
-Table dropped.
 
 
 Table created.
@@ -261,8 +288,11 @@ Create job_statistics
 
 Table created.
 
+DROP SEQUENCE job_statistics_seq
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist
 
-Sequence dropped.
 
 
 Sequence created.

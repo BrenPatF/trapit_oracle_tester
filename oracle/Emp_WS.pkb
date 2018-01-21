@@ -11,6 +11,7 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        04-May-2016 1.0   Created
 Brendan Furey        11-Sep-2016 1.1   AIP_Get_Dept_Emps added
+Brendan Furey        21-Jan-2018 1.2   AIP_Get_Dept_Emps: Make SQL static; remove PARTITION BY
 
 ***************************************************************************************************/
 
@@ -83,27 +84,25 @@ AIP_Get_Dept_Emps: HR demo web service getter entry point procedure
 PROCEDURE AIP_Get_Dept_Emps (p_dep_id           PLS_INTEGER,      -- department id
                              x_emp_csr      OUT SYS_REFCURSOR) IS -- reference cursor
 
-  qry_str       VARCHAR2(4000) := q'[
+BEGIN
+
+  OPEN x_emp_csr FOR
   WITH all_emps AS (
         SELECT Avg (salary) avg_sal, SUM (salary) sal_tot_g
           FROM employees e
-)
-SELECT e.last_name, d.department_name, m.last_name manager, e.salary,
-       Round (e.salary / Avg (e.salary) OVER (PARTITION BY e.department_id), 2) sal_rat,
-       Round (e.salary / a.avg_sal, 2) sal_rat_g
-  FROM all_emps a
- CROSS JOIN employees e
-  JOIN departments d
-    ON d.department_id = e.department_id
-  LEFT JOIN employees m
-    ON m.employee_id = e.manager_id
- WHERE e.job_id != 'AD_ASST'
-   AND a.sal_tot_g >= 1600
-   AND d.department_id = :1]';
-
-BEGIN
-
-  OPEN x_emp_csr FOR qry_str USING p_dep_id;
+  )
+  SELECT e.last_name, d.department_name, m.last_name manager, e.salary,
+         Round (e.salary / Avg (e.salary) OVER (), 2) sal_rat,
+         Round (e.salary / a.avg_sal, 2) sal_rat_g
+    FROM all_emps a
+   CROSS JOIN employees e
+    JOIN departments d
+      ON d.department_id = e.department_id
+    LEFT JOIN employees m
+      ON m.employee_id = e.manager_id
+   WHERE e.job_id != 'AD_ASST'
+     AND a.sal_tot_g >= 1600
+     AND d.department_id = p_dep_id;
 
 END AIP_Get_Dept_Emps;
 
