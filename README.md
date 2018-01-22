@@ -25,7 +25,7 @@ As far as I know the code should work on any recent-ish version - I have tested 
 Install steps
 =============
  	Extract all the files into a directory
-        Update Install_SYS.sql to ensure Oracle directory points to a writable directory on the database sever (in repo now is set to 'C:\input')
+ 	Update Install_SYS.sql to ensure Oracle directory points to a writable directory on the database sever (in repo now is set to 'C:\input')
  	Run Install_SYS.sql as a DBA passing new library schema name as parameter (eg @Install_SYS trapit)
  	Run Install_HR.sql from the HR schema passing library utilities schema name as parameter  (eg @Install_HR trapit)
  	Run Install_Bren.sql from the schema for the library utilities (@Install_Bren)
