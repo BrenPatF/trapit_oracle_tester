@@ -9,7 +9,8 @@ Modification History
 Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        11-Sep-2016 1.0   Created
-Brendan Furey        22-Oct-2016 1.6   TRAPIT name changes, UT->TT etc.
+Brendan Furey        22-Oct-2016 1.1   TRAPIT name changes, UT->TT etc.
+Brendan Furey        27-Jan-2018 1.2   Re-factor to emphasise single underlying design pattern
 
 ***************************************************************************************************/
 c_n                     CONSTANT VARCHAR2(1) := 'N';
@@ -245,7 +246,7 @@ PROCEDURE tt_AIP_Load_Emps IS
                                                         L1_chr_arr ('*Employee Id', 'Name', 'Email', 'Hired', 'Job', '*Salary', '*Manager Id', '*Department Id', 'Updated')
   );
   c_out_group_lis         CONSTANT L1_chr_arr := L1_chr_arr ('Employee', 'Error', 'Job Statistic', 'Exception');
-  c_fields_2lis           CONSTANT L2_chr_arr := L2_chr_arr (
+  c_out_field_2lis        CONSTANT L2_chr_arr := L2_chr_arr (
                                                         L1_chr_arr ('*Employee Id', 'Name', 'Email', 'Hired', 'Job', 'Salary', 'Updated'),
                                                         L1_chr_arr ('*Job Statistic Id', 'ORA_ERR_TAG$', 'ORA_ERR_MESG$', 'ORA_ERR_OPTYP$', '*Employee Id', 'Name', 'Email', 'Hired', 'Job', 'Salary'),
                                                         L1_chr_arr ('*Job Statistic Id', 'Batch job Id', 'File Name', '*Records Loaded', '*Records Failed ET', '*Records Failed DB', 'Start Time', 'End Time', 'Status'),
@@ -259,11 +260,24 @@ PROCEDURE tt_AIP_Load_Emps IS
 
   /***************************************************************************************************
 
-  Setup: Setup procedure for testing Emp_Batch.AIP_Load_Emps package. Sets the expected output
-          nested array after determining where the primary key generating sequence is at
+  Setup_Array: Array setup procedure
 
   ***************************************************************************************************/
-  PROCEDURE Setup (p_exp_emp_lis          L1_chr_arr,    -- expected values for emplyees
+  PROCEDURE Setup_Array IS
+  BEGIN
+
+    l_act_3lis.EXTEND (c_file_3lis.COUNT);
+    l_inp_3lis.EXTEND (c_file_3lis.COUNT);
+    l_exp_3lis.EXTEND (c_file_3lis.COUNT);
+
+  END Setup_Array;
+
+  /***************************************************************************************************
+
+  Setup_DB: Database setup procedure for testing AIP_Load_Emps
+
+  ***************************************************************************************************/
+  PROCEDURE Setup_DB (p_exp_emp_lis          L1_chr_arr,    -- expected values for emplyees
                    p_exp_jbs_lis          L1_chr_arr,    -- expected values for job statistics
                    p_exp_err_lis          L1_chr_arr,    -- expected values for errors table
                    p_exp_exc_lis          L1_chr_arr,    -- expected values for exceptions
@@ -402,18 +416,30 @@ PROCEDURE tt_AIP_Load_Emps IS
                               l_exp_jbs_lis,
                               p_exp_exc_lis
                   );
-  END Setup;
+  END Setup_DB;
 
   /***************************************************************************************************
 
-  Call_Proc: Takes input list of lists for single call to web service procedure, calls the procedure
-           with the specific array type list as input, converts the specific array type output list
-           to our generic list of lists format allowing for error cases. Procedure call is timed
+  Purely_Wrap_API: Design pattern has the API call wrapped in a 'pure' procedure, called once per 
+                   scenario, with the output 'actuals' array including everything affected by the API,
+                   whether as output parameters, or on database tables, etc. The inputs are also
+                   extended from the API parameters to include any other effective inputs. Assertion 
+                   takes place after all scenarios and is against the extended outputs, with extended
+                   inputs also listed. The API call is timed
 
   ***************************************************************************************************/
-  PROCEDURE Call_Proc (p_file_name      VARCHAR2,
-                       p_file_count     PLS_INTEGER,
-                       x_act_2lis   OUT L2_chr_arr) IS
+  PROCEDURE Purely_Wrap_API (p_file_name            VARCHAR2,      -- original file name
+                             p_file_count           PLS_INTEGER,   -- number of lines in file
+                             p_exp_emp_lis          L1_chr_arr,    -- expected values for employees
+                             p_exp_jbs_lis          L1_chr_arr,    -- expected values for job statistics
+                             p_exp_err_lis          L1_chr_arr,    -- expected values for errors table
+                             p_exp_exc_lis          L1_chr_arr,    -- expected values for exceptions
+                             p_dat_2lis             L2_chr_arr,    -- data file inputs
+                             p_emp_2lis             L2_chr_arr,    -- employees inputs
+                             p_jbs_2lis             L2_chr_arr,    -- job statistics inputs
+                             x_inp_2lis         OUT L2_chr_arr,    -- generic inputs list (for scenario)
+                             x_exp_2lis         OUT L2_chr_arr,    -- generic expected values list (for scenario)
+                             x_act_2lis         OUT L2_chr_arr) IS -- generic actual values list (for scenario)
 
     l_tab_lis           L1_chr_arr;
     l_err_lis           L1_chr_arr;
@@ -480,7 +506,18 @@ PROCEDURE tt_AIP_Load_Emps IS
 
   BEGIN
 
-    BEGIN
+    Setup_DB (p_exp_emp_lis        => p_exp_emp_lis,
+              p_exp_jbs_lis        => p_exp_jbs_lis,
+              p_exp_err_lis        => p_exp_err_lis,
+              p_exp_exc_lis        => p_exp_exc_lis,
+              p_dat_2lis           => p_dat_2lis,
+              p_emp_2lis           => p_emp_2lis,
+              p_jbs_2lis           => p_jbs_2lis,
+              x_inp_2lis           => x_inp_2lis,
+              x_exp_2lis           => x_exp_2lis);
+   Timer_Set.Increment_Time (l_timer_set, 'Setup_DB');
+
+   BEGIN
 
       Emp_Batch.AIP_Load_Emps (p_file_name => p_file_name, p_file_count => p_file_count);
       Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_call_timer);
@@ -499,37 +536,38 @@ PROCEDURE tt_AIP_Load_Emps IS
                               Utils_TT.List_or_Empty (l_err_lis),
                               Utils_TT.List_or_Empty (l_jbs_lis),
                               Utils_TT.List_or_Empty (l_exc_lis));
+    ROLLBACK;
 
-  END Call_Proc;
+  END Purely_Wrap_API;
 
 BEGIN
-
+--
+-- Every testing main section should be similar to this, with array setup, then loop over scenarios
+-- making a 'pure'(-ish) call to specific, local Purely_Wrap_API, with single assertion call outside
+-- the loop
+--
   l_timer_set := Utils_TT.Init (c_proc_name);
-  l_act_3lis.EXTEND (c_file_3lis.COUNT);
-  l_inp_3lis.EXTEND (c_file_3lis.COUNT);
-  l_exp_3lis.EXTEND (c_file_3lis.COUNT);
+  Setup_Array;
 
   FOR i IN 1..c_file_3lis.COUNT LOOP
 
-    Setup (p_exp_emp_lis        => c_exp_emp_2lis(i),
-           p_exp_jbs_lis        => c_exp_jbs_2lis(i),
-           p_exp_err_lis        => c_exp_err_2lis(i),
-           p_exp_exc_lis        => c_exp_exc_2lis(i),
-           p_dat_2lis           => c_file_3lis(i),
-           p_emp_2lis           => c_emp_3lis(i),
-           p_jbs_2lis           => c_jbs_3lis(i),
-           x_inp_2lis           => l_inp_3lis(i),
-           x_exp_2lis           => l_exp_3lis(i));
-    Timer_Set.Increment_Time (l_timer_set, 'Setup');
-
-    Call_Proc (c_file_3lis(i)(1)(1), c_file_3lis(i)(2).COUNT, l_act_3lis(i));
-
-    ROLLBACK;
+    Purely_Wrap_API (p_file_name          => c_file_3lis(i)(1)(1),
+                     p_file_count         => c_file_3lis(i)(2).COUNT,
+                     p_exp_emp_lis        => c_exp_emp_2lis(i),
+                     p_exp_jbs_lis        => c_exp_jbs_2lis(i),
+                     p_exp_err_lis        => c_exp_err_2lis(i),
+                     p_exp_exc_lis        => c_exp_exc_2lis(i),
+                     p_dat_2lis           => c_file_3lis(i),
+                     p_emp_2lis           => c_emp_3lis(i),
+                     p_jbs_2lis           => c_jbs_3lis(i),
+                     x_inp_2lis           => l_inp_3lis(i),
+                     x_exp_2lis           => l_exp_3lis(i),
+                     x_act_2lis           => l_act_3lis(i));
 
   END LOOP;
 
-  Utils_TT.Check_TT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_3lis, l_exp_3lis, l_timer_set, c_ms_limit,
-                             c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_fields_2lis);
+  Utils_TT.Is_Deeply (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_3lis, l_exp_3lis, l_timer_set, c_ms_limit,
+                      c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_out_field_2lis);
 
 EXCEPTION
   WHEN OTHERS THEN

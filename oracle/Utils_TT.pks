@@ -24,6 +24,7 @@ Brendan Furey        09-Jul-2016 1.3   Check_TT_Results: Write_Inp_Group added t
                                        per scenario, with extra parameters for the inputs
 Brendan Furey        09-Sep-2016 1.4   Cursor_to_Array added
 Brendan Furey        22-Oct-2016 1.5   TRAPIT name changes, UT->TT etc.
+Brendan Furey        27-Jan-2018 1.6   Check_TT_Results name change: -> Is_Deeply
 
 ***************************************************************************************************/
 c_date_fmt              CONSTANT VARCHAR2(11) := 'DD-MON-YYYY';
@@ -37,7 +38,7 @@ c_tt_suite_bren         CONSTANT PLS_INTEGER := 1;
 FUNCTION Init (p_proc_name VARCHAR2) RETURN PLS_INTEGER;
 PROCEDURE Run_Suite (p_suite_id PLS_INTEGER);
 
-PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,
+PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
                             p_test_lis                  L1_chr_arr,
                             p_inp_3lis                  L3_chr_arr,
                             p_act_3lis                  L3_chr_arr,
@@ -49,7 +50,7 @@ PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,
                             p_out_group_lis             L1_chr_arr,
                             p_fields_2lis               L2_chr_arr);
 
-PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,
+PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
                             p_test_lis                  L1_chr_arr,
                             p_inp_3lis                  L3_chr_arr,
                             p_act_2lis                  L2_chr_arr,
@@ -61,7 +62,7 @@ PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,
                             p_out_group_lis             L1_chr_arr,
                             p_fields_2lis               L2_chr_arr);
 
-PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,
+PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
                             p_test_lis                  L1_chr_arr,
                             p_inp_3lis                  L3_chr_arr,
                             p_act_lis                   L1_chr_arr,

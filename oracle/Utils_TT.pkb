@@ -33,6 +33,7 @@ Brendan Furey        19-Aug-2016 1.6   Package begin section: Added nls date for
 Brendan Furey        08-Sep-2016 1.7   Set_Result_Row: Increased max length to 32767 for variable
 Brendan Furey        09-Sep-2016 1.8   Cursor_to_Array added
 Brendan Furey        22-Oct-2016 1.9   TRAPIT name changes, UT->TT etc.
+Brendan Furey        27-Jan-2018 1.6   Check_TT_Results name change: -> Is_Deeply
 
 ***************************************************************************************************/
 c_status_f              CONSTANT VARCHAR2(10) := 'F';
@@ -156,25 +157,25 @@ END Write_Suite_Results;
 
 /***************************************************************************************************
 
-Check_TT_Results: TRAPIT utility to check results from testing, L3_chr_arr version
+Is_Deeply: TRAPIT utility to check results from testing, L3_chr_arr version
 
 ***************************************************************************************************/
-PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
-                            p_test_lis                  L1_chr_arr,    -- test descriptions
-                            p_inp_3lis                  L3_chr_arr,    -- actual result strings
-                            p_act_3lis                  L3_chr_arr,    -- actual result strings
-                            p_exp_3lis                  L3_chr_arr,    -- expected result strings
-                            p_timer_set                 PLS_INTEGER,   -- timer set index
-                            p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
-                            p_inp_group_lis             L1_chr_arr,    -- input group names
-                            p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
-                            p_out_group_lis             L1_chr_arr,    -- output group names
-                            p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
+PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling procedure
+                     p_test_lis                  L1_chr_arr,    -- test descriptions
+                     p_inp_3lis                  L3_chr_arr,    -- actual result strings
+                     p_act_3lis                  L3_chr_arr,    -- actual result strings
+                     p_exp_3lis                  L3_chr_arr,    -- expected result strings
+                     p_timer_set                 PLS_INTEGER,   -- timer set index
+                     p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
+                     p_inp_group_lis             L1_chr_arr,    -- input group names
+                     p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
+                     p_out_group_lis             L1_chr_arr,    -- output group names
+                     p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
 
-  l_num_fails_sce                L1_num_arr :=  L1_num_arr();
-  l_num_tests_sce                L1_num_arr :=  L1_num_arr();
-  l_tot_fails                    PLS_INTEGER := 0;
-  l_tot_tests                    PLS_INTEGER := 0;
+  l_num_fails_sce    L1_num_arr :=  L1_num_arr();
+  l_num_tests_sce    L1_num_arr :=  L1_num_arr();
+  l_tot_fails        PLS_INTEGER := 0;
+  l_tot_tests        PLS_INTEGER := 0;
 
   /***************************************************************************************************
 
@@ -643,28 +644,28 @@ BEGIN
   Summary_Section (l_num_fails_sce, l_num_tests_sce, l_tot_fails, l_tot_tests);
   Set_Global_Summary (l_tot_fails, l_tot_tests + 1);
 
-END Check_TT_Results;
+END Is_Deeply;
 
 /***************************************************************************************************
 
-Check_TT_Results: TRAPIT utility to check results from testing, L2_chr_arr version just calls L3_chr_arr
-                  version
+Is_Deeply: TRAPIT utility to check results from testing, L2_chr_arr version just calls L3_chr_arr
+           version
 
 ***************************************************************************************************/
-PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
-                            p_test_lis                  L1_chr_arr,    -- test descriptions
-                            p_inp_3lis                  L3_chr_arr,    -- input strings
-                            p_act_2lis                  L2_chr_arr,    -- actual result strings
-                            p_exp_2lis                  L2_chr_arr,    -- expected result strings
-                            p_timer_set                 PLS_INTEGER,   -- timer set index
-                            p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
-                            p_inp_group_lis             L1_chr_arr,    -- input group names
-                            p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
-                            p_out_group_lis             L1_chr_arr,    -- output group names
-                            p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
+PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling procedure
+                     p_test_lis                  L1_chr_arr,    -- test descriptions
+                     p_inp_3lis                  L3_chr_arr,    -- input strings
+                     p_act_2lis                  L2_chr_arr,    -- actual result strings
+                     p_exp_2lis                  L2_chr_arr,    -- expected result strings
+                     p_timer_set                 PLS_INTEGER,   -- timer set index
+                     p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
+                     p_inp_group_lis             L1_chr_arr,    -- input group names
+                     p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
+                     p_out_group_lis             L1_chr_arr,    -- output group names
+                     p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
 
-  l_act_3lis               L3_chr_arr := L3_chr_arr();
-  l_exp_3lis               L3_chr_arr := L3_chr_arr();
+  l_act_3lis         L3_chr_arr := L3_chr_arr();
+  l_exp_3lis         L3_chr_arr := L3_chr_arr();
 
 BEGIN
 
@@ -679,56 +680,56 @@ BEGIN
 
   END LOOP;
 
-  Check_TT_Results (        p_proc_name       => p_proc_name,
-                            p_test_lis        => p_test_lis,
-                            p_inp_3lis        => p_inp_3lis,
-                            p_act_3lis        => l_act_3lis,
-                            p_exp_3lis        => l_exp_3lis,
-                            p_timer_set       => p_timer_set,
-                            p_ms_limit        => p_ms_limit,
-                            p_inp_group_lis   => p_inp_group_lis,
-                            p_inp_fields_2lis => p_inp_fields_2lis,
-                            p_out_group_lis   => p_out_group_lis,
-                            p_fields_2lis     => p_fields_2lis);
+  Is_Deeply (p_proc_name       => p_proc_name,
+             p_test_lis        => p_test_lis,
+             p_inp_3lis        => p_inp_3lis,
+             p_act_3lis        => l_act_3lis,
+             p_exp_3lis        => l_exp_3lis,
+             p_timer_set       => p_timer_set,
+             p_ms_limit        => p_ms_limit,
+             p_inp_group_lis   => p_inp_group_lis,
+             p_inp_fields_2lis => p_inp_fields_2lis,
+             p_out_group_lis   => p_out_group_lis,
+             p_fields_2lis     => p_fields_2lis);
 
-END Check_TT_Results;
+END Is_Deeply;
 
 /***************************************************************************************************
 
-Check_TT_Results: TRAPIT utility to check results from testing, L1_chr_arr version just calls L3_chr_arr
+Is_Deeply: TRAPIT utility to check results from testing, L1_chr_arr version just calls L3_chr_arr
                   version
 
 ***************************************************************************************************/
-PROCEDURE Check_TT_Results (p_proc_name                 VARCHAR2,      -- calling procedure
-                            p_test_lis                  L1_chr_arr,    -- test descriptions
-                            p_inp_3lis                  L3_chr_arr,    -- input strings
-                            p_act_lis                   L1_chr_arr,    -- actual result strings
-                            p_exp_lis                   L1_chr_arr,    -- expected result strings
-                            p_timer_set                 PLS_INTEGER,   -- timer set index
-                            p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
-                            p_inp_group_lis             L1_chr_arr,    -- input group names
-                            p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
-                            p_out_group_lis             L1_chr_arr,    -- output group names
-                            p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
+PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling procedure
+                     p_test_lis                  L1_chr_arr,    -- test descriptions
+                     p_inp_3lis                  L3_chr_arr,    -- input strings
+                     p_act_lis                   L1_chr_arr,    -- actual result strings
+                     p_exp_lis                   L1_chr_arr,    -- expected result strings
+                     p_timer_set                 PLS_INTEGER,   -- timer set index
+                     p_ms_limit                  PLS_INTEGER,   -- call time limit in ms
+                     p_inp_group_lis             L1_chr_arr,    -- input group names
+                     p_inp_fields_2lis           L2_chr_arr,    -- input fields descriptions
+                     p_out_group_lis             L1_chr_arr,    -- output group names
+                     p_fields_2lis               L2_chr_arr) IS -- test fields descriptions
 
-  l_act_3lis               L3_chr_arr := L3_chr_arr (L2_chr_arr (p_act_lis));
-  l_exp_3lis               L3_chr_arr := L3_chr_arr (L2_chr_arr (p_exp_lis));
+  l_act_3lis         L3_chr_arr := L3_chr_arr (L2_chr_arr (p_act_lis));
+  l_exp_3lis         L3_chr_arr := L3_chr_arr (L2_chr_arr (p_exp_lis));
 
 BEGIN
 
-  Check_TT_Results (        p_proc_name       => p_proc_name,
-                            p_test_lis        => p_test_lis,
-                            p_inp_3lis        => p_inp_3lis,
-                            p_act_3lis        => l_act_3lis,
-                            p_exp_3lis        => l_exp_3lis,
-                            p_timer_set       => p_timer_set,
-                            p_ms_limit        => p_ms_limit,
-                            p_inp_group_lis   => p_inp_group_lis,
-                            p_inp_fields_2lis => p_inp_fields_2lis,
-                            p_out_group_lis   => p_out_group_lis,
-                            p_fields_2lis     => p_fields_2lis);
+  Is_Deeply (p_proc_name       => p_proc_name,
+             p_test_lis        => p_test_lis,
+             p_inp_3lis        => p_inp_3lis,
+             p_act_3lis        => l_act_3lis,
+             p_exp_3lis        => l_exp_3lis,
+             p_timer_set       => p_timer_set,
+             p_ms_limit        => p_ms_limit,
+             p_inp_group_lis   => p_inp_group_lis,
+             p_inp_fields_2lis => p_inp_fields_2lis,
+             p_out_group_lis   => p_out_group_lis,
+             p_fields_2lis     => p_fields_2lis);
 
-END Check_TT_Results;
+END Is_Deeply;
 
 /***************************************************************************************************
 

@@ -17,15 +17,24 @@ new   1: GRANT ALL ON employees_seq TO trapit
 Grant succeeded.
 
 Drop ttid from employees, then update_date
+ALTER TABLE employees DROP (ttid)
+                            *
+ERROR at line 1:
+ORA-00904: "TTID": invalid identifier
 
-Table altered.
 
+ALTER TABLE employees DROP (update_date)
+                            *
+ERROR at line 1:
+ORA-00904: "UPDATE_DATE": invalid identifier
 
-Table altered.
 
 Drop and recreate err$_employees via DBMS_ERRLOG.create_error_log
+DROP TABLE err$_employees
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
 
-Table dropped.
 
 
 PL/SQL procedure successfully completed.

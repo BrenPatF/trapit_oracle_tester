@@ -21,9 +21,10 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        21-May-2016 1.0   Created
 Brendan Furey        25-Jun-2016 1.1   Removed tt_Setup and ut_Teardown following removal of uPLSQL
-Brendan Furey        09-Jul-2016 1.2   Passing new input arrays to Check_TT_Results for printing per
+Brendan Furey        09-Jul-2016 1.2   Passing new input arrays to Is_Deeply for printing per
                                        scenario
 Brendan Furey        22-Oct-2016 1.3   TRAPIT name changes, UT->TT etc.
+Brendan Furey        27-Jan-2018 1.4   Re-factor to emphasise single underlying design pattern
 
 ***************************************************************************************************/
 c_out_group_lis       CONSTANT L1_chr_arr := L1_chr_arr ('Select results');
@@ -125,13 +126,35 @@ PROCEDURE tt_HR_Test_View_V IS
   c_ms_limit            CONSTANT PLS_INTEGER := 1;
   l_timer_set                    PLS_INTEGER;
   l_inp_3lis                     L3_chr_arr := L3_chr_arr();
-/***************************************************************************************************
 
-Setup: Local procedure to create test records for a given scenario; rolled back after query executed
+  /***************************************************************************************************
 
-***************************************************************************************************/
-  PROCEDURE Setup (p_call_ind           PLS_INTEGER,   -- scenario index
-                   x_inp_lis        OUT L1_chr_arr) IS -- input list
+  Setup_Array: Array setup procedure
+
+  ***************************************************************************************************/
+  PROCEDURE Setup_Array IS
+  BEGIN
+
+    l_act_2lis.EXTEND (c_exp_2lis.COUNT);
+    l_inp_3lis.EXTEND (c_exp_2lis.COUNT);
+
+    FOR i IN 1..c_exp_2lis.COUNT LOOP
+
+      l_inp_3lis (i) := L2_chr_arr();
+      l_inp_3lis (i).EXTEND(2);
+      l_inp_3lis(i)(2) := L1_chr_arr (c_where_lis(i));
+
+    END LOOP;
+
+  END Setup_Array;
+
+  /***************************************************************************************************
+
+  Setup_DB: Create test records for a given scenario for testing view
+
+  ***************************************************************************************************/
+  PROCEDURE Setup_DB (p_call_ind           PLS_INTEGER,   -- scenario index
+                      x_inp_lis        OUT L1_chr_arr) IS -- input list, first group, employees
 
     l_emp_id            PLS_INTEGER;
     l_mgr_id            PLS_INTEGER;
@@ -159,33 +182,54 @@ Setup: Local procedure to create test records for a given scenario; rolled back 
 
     END LOOP;
 
-  END Setup;
+  END Setup_DB;
+
+  /***************************************************************************************************
+
+  Purely_Wrap_API: Design pattern has the API call wrapped in a 'pure' procedure, called once per 
+                   scenario, with the output 'actuals' array including everything affected by the API,
+                   whether as output parameters, or on database tables, etc. The inputs are also
+                   extended from the API parameters to include any other effective inputs. Assertion 
+                   takes place after all scenarios and is against the extended outputs, with extended
+                   inputs also listed. The API call is timed
+
+  ***************************************************************************************************/
+  PROCEDURE Purely_Wrap_API (p_scenario_ds      VARCHAR2,      -- index of input dataset
+                             p_where            VARCHAR2,      -- input where clause for
+                             x_inp_lis_1    OUT L1_chr_arr,    -- first input group, employees
+                             x_act_lis      OUT L1_chr_arr) IS -- generic actual values list (for scenario)
+  BEGIN
+
+    Setup_DB (p_scenario_ds, x_inp_lis_1);
+
+    Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_setup_timer);
+ 
+    x_act_lis := Utils_TT.Get_View (
+                            p_view_name         => c_view_name,
+                            p_sel_field_lis     => c_sel_lis,
+                            p_where             => p_where,
+                            p_timer_set         => l_timer_set);
+    ROLLBACK;
+
+  END Purely_Wrap_API;
 
 BEGIN
-
+--
+-- Every testing main section should be similar to this, with array setup, then loop over scenarios
+-- making a 'pure'(-ish) call to specific, local Purely_Wrap_API, with single assertion call outside
+-- the loop
+--
   l_timer_set := Utils_TT.Init (c_proc_name);
-  l_act_2lis.EXTEND (c_exp_2lis.COUNT);
-  l_inp_3lis.EXTEND (c_exp_2lis.COUNT);
+  Setup_Array;
 
   FOR i IN 1..c_exp_2lis.COUNT LOOP
 
-    l_inp_3lis (i) := L2_chr_arr();
-    l_inp_3lis (i).EXTEND(2);
-
-    Setup (c_scenario_ds_lis (i), l_inp_3lis (i)(1));
-
-    l_inp_3lis (i)(2) := L1_chr_arr (c_where_lis(i));
-    Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_setup_timer);
-    l_act_2lis(i) := Utils_TT.Get_View (
-                            p_view_name         => c_view_name,
-                            p_sel_field_lis     => c_sel_lis,
-                            p_where             => c_where_lis(i),
-                            p_timer_set         => l_timer_set);
+    Purely_Wrap_API (c_scenario_ds_lis(i), c_where_lis(i), l_inp_3lis(i)(1), l_act_2lis(i));
 
   END LOOP;
 
-  Utils_TT.Check_TT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_2lis, c_exp_2lis, l_timer_set, c_ms_limit,
-                             c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_out_field_2lis);
+  Utils_TT.Is_Deeply (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_2lis, c_exp_2lis, l_timer_set, c_ms_limit,
+                      c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_out_field_2lis);
 
 EXCEPTION
 

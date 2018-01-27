@@ -27,6 +27,7 @@ Brendan Furey        11-Sep-2016 1.4   tt_AIP_Get_Dept_Emps added
 Brendan Furey        01-Oct-2016 1.5   tt_AIP_Get_Dept_Emps: Call timing added; also, null dept
                                        scenario added
 Brendan Furey        22-Oct-2016 1.6   TRAPIT name changes, UT->TT etc.
+Brendan Furey        27-Jan-2018 1.7   Re-factor to emphasise single underlying design pattern
 
 ***************************************************************************************************/
 
@@ -71,9 +72,9 @@ PROCEDURE tt_AIP_Save_Emps IS
                       L1_chr_arr (c_ln (5),    c_em (5),        c_job_id_invalid, c_salary (5)),  -- invalid job id
                       L1_chr_arr (c_ln (6),    c_em (6),        c_job_id,         c_salary (6)))  -- valid
   );
-  g_ws_exp_3lis                   L3_chr_arr;
+  g_exp_3lis                   L3_chr_arr;
 
-  c_ws_ms_limit           CONSTANT PLS_INTEGER := 2;
+  c_ws_ms_limit          CONSTANT PLS_INTEGER := 2;
   c_scenario_lis         CONSTANT L1_chr_arr := L1_chr_arr (
                                '1 valid record',
                                '1 invalid job id',
@@ -88,24 +89,24 @@ PROCEDURE tt_AIP_Save_Emps IS
                                                                 'Job',
                                                                 '*Salary')
   );
-  c_out_group_lis         CONSTANT L1_chr_arr := L1_chr_arr ('Employee', 'Output array', 'Exception');
-  c_fields_2lis           CONSTANT L2_chr_arr :=  L2_chr_arr (
-                                      L1_chr_arr ('*Employee id', 'Name', 'Email', 'Job', '*Salary'),
-                                      L1_chr_arr ('*Employee id', 'Description'),
-                                      L1_chr_arr ('Error message')
+  c_out_group_lis       CONSTANT L1_chr_arr := L1_chr_arr ('Employee', 'Output array', 'Exception');
+  c_out_field_2lis      CONSTANT L2_chr_arr :=  L2_chr_arr (
+                                    L1_chr_arr ('*Employee id', 'Name', 'Email', 'Job', '*Salary'),
+                                    L1_chr_arr ('*Employee id', 'Description'),
+                                    L1_chr_arr ('Error message')
   );
-  l_timer_set             PLS_INTEGER;
-  l_inp_3lis              L3_chr_arr := L3_chr_arr();
+  l_timer_set           PLS_INTEGER;
+  l_inp_3lis            L3_chr_arr := L3_chr_arr();
 
-  l_ws_act_3lis           L3_chr_arr := L3_chr_arr();
+  l_act_3lis         L3_chr_arr := L3_chr_arr();
 
   /***************************************************************************************************
 
-  Setup: Setup procedure for testing Emp_WS.AIP_Save_Emps package. Sets the expected output
-          nested array after determining where the primary key generating sequence is at
+  Setup_Array: Array setup procedure for testing AIP_Save_Emps. Sets the expected 
+               output nested array after determining where the primary key generating sequence is at
 
   ***************************************************************************************************/
-  PROCEDURE Setup IS
+  PROCEDURE Setup_Array IS
     l_last_seq_val         PLS_INTEGER;
   BEGIN
 
@@ -113,7 +114,7 @@ PROCEDURE tt_AIP_Save_Emps IS
       INTO l_last_seq_val
       FROM DUAL;
 
-    g_ws_exp_3lis := L3_chr_arr ( -- each call results in a list of 2 output lists: first is the table records; second is the out array
+    g_exp_3lis := L3_chr_arr ( -- each call results in a list of 2 output lists: first is the table records; second is the out array
                         L2_chr_arr (L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+1), c_ln (1), c_em (1), c_job_id, c_salary (1))), -- valid char, num pair
                                     L1_chr_arr (Utils.List_Delim (To_Char(l_last_seq_val+1), To_Char(To_Date(l_last_seq_val+1,'J'),'JSP'))),
                                     Utils_TT.c_empty_list
@@ -136,17 +137,41 @@ PROCEDURE tt_AIP_Save_Emps IS
                         )
                      );
 
-  END Setup;
+    l_act_3lis.EXTEND (c_params_3lis.COUNT);
+    l_inp_3lis.EXTEND (c_params_3lis.COUNT);
+
+    FOR i IN 1..c_params_3lis.COUNT LOOP
+
+      l_inp_3lis(i) := L2_chr_arr();
+      l_inp_3lis(i).EXTEND(1);
+      l_inp_3lis(i)(1) := L1_chr_arr();
+      l_inp_3lis(i)(1).EXTEND(c_params_3lis(i).COUNT);
+      FOR j IN 1..c_params_3lis(i).COUNT LOOP
+
+        l_inp_3lis(i)(1)(j) := Utils.List_Delim (c_params_3lis(i)(j)(1), c_params_3lis(i)(j)(2), c_params_3lis(i)(j)(3), c_params_3lis(i)(j)(4));
+
+      END LOOP;
+
+    END LOOP;
+
+  END Setup_Array;
 
   /***************************************************************************************************
 
-  Call_WS: Takes input list of lists for single call to web service procedure, calls the procedure
-           with the specific array type list as input, converts the specific array type output list
-           to our generic list of lists format allowing for error cases. Procedure call is timed
+  Purely_Wrap_API: Design pattern has the API call wrapped in a 'pure' procedure, called once per 
+                   scenario, with the output 'actuals' array including everything affected by the API,
+                   whether as output parameters, or on database tables, etc. The inputs are also
+                   extended from the API parameters to include any other effective inputs. Assertion 
+                   takes place after all scenarios and is against the extended outputs, with extended
+                   inputs also listed. The API call is timed
+
+                   Here, input is list of lists for single call to web service procedure, the specific
+                   array type output list is converted to our generic list of lists format allowing 
+                   for error cases. 
 
   ***************************************************************************************************/
-  PROCEDURE Call_WS (p_ws_inp_2lis        L2_chr_arr,       -- input list of lists (record, field)
-                     x_ws_out_2lis    OUT L2_chr_arr) IS    -- output list of lists (group, record)
+  PROCEDURE Purely_Wrap_API (p_inp_2lis        L2_chr_arr,       -- input list of lists (record, field)
+                             x_act_2lis    OUT L2_chr_arr) IS    -- output list of lists (group, record)
 
     l_emp_out_lis       emp_out_arr;
     l_tab_lis           L1_chr_arr;
@@ -158,9 +183,9 @@ PROCEDURE tt_AIP_Save_Emps IS
       l_emp_in_lis        emp_in_arr := emp_in_arr();
     BEGIN
 
-      FOR i IN 1..p_ws_inp_2lis.COUNT LOOP
+      FOR i IN 1..p_inp_2lis.COUNT LOOP
         l_emp_in_lis.EXTEND;
-        l_emp_in_lis (l_emp_in_lis.COUNT) := emp_in_rec (p_ws_inp_2lis(i)(1), p_ws_inp_2lis(i)(2), p_ws_inp_2lis(i)(3), p_ws_inp_2lis(i)(4));
+        l_emp_in_lis (l_emp_in_lis.COUNT) := emp_in_rec (p_inp_2lis(i)(1), p_inp_2lis(i)(2), p_inp_2lis(i)(3), p_inp_2lis(i)(4));
       END LOOP;
 
       Timer_Set.Init_Time (p_timer_set_ind => l_timer_set);
@@ -217,36 +242,29 @@ PROCEDURE tt_AIP_Save_Emps IS
         l_err_lis := L1_chr_arr (SQLERRM);
     END;
 
-    x_ws_out_2lis := L2_chr_arr (Utils_TT.List_or_Empty (l_tab_lis), Utils_TT.List_or_Empty (l_arr_lis), Utils_TT.List_or_Empty (l_err_lis));
+    x_act_2lis := L2_chr_arr (Utils_TT.List_or_Empty (l_tab_lis), Utils_TT.List_or_Empty (l_arr_lis), Utils_TT.List_or_Empty (l_err_lis));
+    ROLLBACK;
 
-  END Call_WS;
+  END Purely_Wrap_API;
 
 BEGIN
-
+--
+-- Every testing main section should be similar to this, with array setup, then loop over scenarios
+-- making a 'pure'(-ish) call to specific, local Purely_Wrap_API, with single assertion call outside
+-- the loop
+--
   l_timer_set := Utils_TT.Init (c_proc_name);
-  Setup;
-  Timer_Set.Increment_Time (l_timer_set, 'Setup');
-  l_ws_act_3lis.EXTEND (c_params_3lis.COUNT);
-  l_inp_3lis.EXTEND (c_params_3lis.COUNT);
+  Setup_Array;
+  Timer_Set.Increment_Time (l_timer_set, 'Setup_Array');
 
   FOR i IN 1..c_params_3lis.COUNT LOOP
 
-    Call_WS (c_params_3lis(i), l_ws_act_3lis(i));
-    l_inp_3lis(i) := L2_chr_arr();
-    l_inp_3lis(i).EXTEND(1);
-    l_inp_3lis(i)(1) := L1_chr_arr();
-    l_inp_3lis(i)(1).EXTEND(c_params_3lis(i).COUNT);
-    FOR j IN 1..c_params_3lis(i).COUNT LOOP
-
-      l_inp_3lis(i)(1)(j) := Utils.List_Delim (c_params_3lis(i)(j)(1), c_params_3lis(i)(j)(2), c_params_3lis(i)(j)(3), c_params_3lis(i)(j)(4));
-
-    END LOOP;
-    ROLLBACK;
+    Purely_Wrap_API (c_params_3lis(i), l_act_3lis(i));
 
   END LOOP;
 
-  Utils_TT.Check_TT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_ws_act_3lis, g_ws_exp_3lis, l_timer_set, c_ws_ms_limit,
-                             c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_fields_2lis);
+  Utils_TT.Is_Deeply (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_3lis, g_exp_3lis, l_timer_set, c_ws_ms_limit,
+                      c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_out_field_2lis);
 
 EXCEPTION
   WHEN OTHERS THEN
@@ -256,7 +274,7 @@ END tt_AIP_Save_Emps;
 
 /***************************************************************************************************
 
-tt_AIP_Get_Dept_Emps: Main procedure for testing Emp_WS.uAIP_Get_Dept_Emps procedure
+tt_AIP_Get_Dept_Emps: Main procedure for testing Emp_WS.AIP_Get_Dept_Emps procedure
 
 ***************************************************************************************************/
 PROCEDURE tt_AIP_Get_Dept_Emps IS
@@ -351,13 +369,35 @@ PROCEDURE tt_AIP_Get_Dept_Emps IS
   l_timer_set                    PLS_INTEGER;
   l_inp_3lis                     L3_chr_arr := L3_chr_arr();
   l_emp_csr                      SYS_REFCURSOR;
-/***************************************************************************************************
 
-Setup: Local procedure to create test records for a given scenario; rolled back after call
+  /***************************************************************************************************
 
-***************************************************************************************************/
-  PROCEDURE Setup (p_call_ind           PLS_INTEGER,   -- scenario index
-                   x_inp_lis        OUT L1_chr_arr) IS -- input list
+  Setup_Array: Array setup procedure for testing AIP_Get_Dept_Emps
+
+  ***************************************************************************************************/
+  PROCEDURE Setup_Array IS
+  BEGIN
+
+    l_act_2lis.EXTEND (c_exp_2lis.COUNT);
+    l_inp_3lis.EXTEND (c_exp_2lis.COUNT);
+
+    FOR i IN 1..c_exp_2lis.COUNT LOOP
+
+      l_inp_3lis (i) := L2_chr_arr();
+      l_inp_3lis (i).EXTEND(2);
+      l_inp_3lis (i)(2) := L1_chr_arr (c_dep_lis(i));
+
+    END LOOP;
+
+  END Setup_Array;
+
+  /***************************************************************************************************
+
+  Setup_DB: Create test records for a given scenario for testing AIP_Get_Dept_Emps
+
+  ***************************************************************************************************/
+  PROCEDURE Setup_DB (p_call_ind           PLS_INTEGER,   -- index of input dataset
+                      x_inp_lis        OUT L1_chr_arr) IS -- input list, employees
 
     l_emp_id            PLS_INTEGER;
     l_mgr_id            PLS_INTEGER;
@@ -385,34 +425,52 @@ Setup: Local procedure to create test records for a given scenario; rolled back 
 
     END LOOP;
 
-  END Setup;
+  END Setup_DB;
 
-BEGIN
+  /***************************************************************************************************
 
-  l_timer_set := Utils_TT.Init (c_proc_name);
-  l_act_2lis.EXTEND (c_exp_2lis.COUNT);
-  l_inp_3lis.EXTEND (c_exp_2lis.COUNT);
+  Purely_Wrap_API: Design pattern has the API call wrapped in a 'pure' procedure, called once per 
+                   scenario, with the output 'actuals' array including everything affected by the API,
+                   whether as output parameters, or on database tables, etc. The inputs are also
+                   extended from the API parameters to include any other effective inputs. Assertion 
+                   takes place after all scenarios and is against the extended outputs, with extended
+                   inputs also listed. The API call is timed
 
-  FOR i IN 1..c_exp_2lis.COUNT LOOP
+  ***************************************************************************************************/
+  PROCEDURE Purely_Wrap_API (p_scenario_ds      PLS_INTEGER,   -- index of input dataset
+                             p_dep_id           PLS_INTEGER,   -- input department id
+                             x_inp_lis      OUT L1_chr_arr,    -- generic inputs list (for scenario)
+                             x_act_lis      OUT L1_chr_arr) IS -- generic actual values list (for scenario)
+  BEGIN
 
-    l_inp_3lis (i) := L2_chr_arr();
-    l_inp_3lis (i).EXTEND(2);
-
-    Setup (c_scenario_ds_lis (i), l_inp_3lis (i)(1));
-
-    l_inp_3lis (i)(2) := L1_chr_arr (c_dep_lis(i));
+    Setup_DB (p_scenario_ds, x_inp_lis);
     Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_setup_timer);
 
-    Emp_WS.AIP_Get_Dept_Emps (p_dep_id  => c_dep_lis(i),
+    Emp_WS.AIP_Get_Dept_Emps (p_dep_id  => p_dep_id,
                               x_emp_csr => l_emp_csr);
-    l_act_2lis(i) := Utils_TT.List_or_Empty (Utils_TT.Cursor_to_Array (x_csr => l_emp_csr));
+    x_act_lis := Utils_TT.List_or_Empty (Utils_TT.Cursor_to_Array (x_csr => l_emp_csr));
     Timer_Set.Increment_Time (l_timer_set, Utils_TT.c_call_timer);
     ROLLBACK;
 
+  END Purely_Wrap_API;
+
+BEGIN
+--
+-- Every testing main section should be similar to this, with array setup, then loop over scenarios
+-- making a 'pure'(-ish) call to specific, local Purely_Wrap_API, with single assertion call outside
+-- the loop
+--
+  l_timer_set := Utils_TT.Init (c_proc_name);
+  Setup_Array;
+
+  FOR i IN 1..c_exp_2lis.COUNT LOOP
+
+    Purely_Wrap_API (c_scenario_ds_lis(i), c_dep_lis(i), l_inp_3lis(i)(1), l_act_2lis(i));
+
   END LOOP;
 
-  Utils_TT.Check_TT_Results (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_2lis, c_exp_2lis, l_timer_set, c_ms_limit,
-                             c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_out_field_2lis);
+  Utils_TT.Is_Deeply (c_proc_name, c_scenario_lis, l_inp_3lis, l_act_2lis, c_exp_2lis, l_timer_set, c_ms_limit,
+                      c_inp_group_lis, c_inp_field_2lis, c_out_group_lis, c_out_field_2lis);
 
 EXCEPTION
 
