@@ -278,14 +278,14 @@ PROCEDURE tt_AIP_Load_Emps IS
 
   ***************************************************************************************************/
   PROCEDURE Setup_DB (p_exp_emp_lis          L1_chr_arr,    -- expected values for emplyees
-                   p_exp_jbs_lis          L1_chr_arr,    -- expected values for job statistics
-                   p_exp_err_lis          L1_chr_arr,    -- expected values for errors table
-                   p_exp_exc_lis          L1_chr_arr,    -- expected values for exceptions
-                   p_dat_2lis             L2_chr_arr,    -- data file inputs
-                   p_emp_2lis             L2_chr_arr,    -- employees inputs
-                   p_jbs_2lis             L2_chr_arr,    -- job statistics inputs
-                   x_inp_2lis         OUT L2_chr_arr,    -- generic inputs list
-                   x_exp_2lis         OUT L2_chr_arr) IS -- generic expected values list
+                      p_exp_jbs_lis          L1_chr_arr,    -- expected values for job statistics
+                      p_exp_err_lis          L1_chr_arr,    -- expected values for errors table
+                      p_exp_exc_lis          L1_chr_arr,    -- expected values for exceptions
+                      p_dat_2lis             L2_chr_arr,    -- data file inputs
+                      p_emp_2lis             L2_chr_arr,    -- employees inputs
+                      p_jbs_2lis             L2_chr_arr,    -- job statistics inputs
+                      x_inp_2lis         OUT L2_chr_arr,    -- generic inputs list
+                      x_exp_2lis         OUT L2_chr_arr) IS -- generic expected values list
 
     l_last_seq_emp      PLS_INTEGER;
     l_last_seq_jbs      PLS_INTEGER;
