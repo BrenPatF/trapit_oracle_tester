@@ -179,14 +179,14 @@ SELECT
         ttid
   FROM  hr.employees
  WHERE (ttid = SYS_Context ('userenv', 'sessionid') OR
-        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
+        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'TT')
 /
 PROMPT err$_employees view
 CREATE OR REPLACE VIEW err$_employees AS
 SELECT *
   FROM  hr.err$_employees
  WHERE (ttid = SYS_Context ('userenv', 'sessionid') OR
-        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
+        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'TT')
 /
 PROMPT hr_test_view_v view
 CREATE OR REPLACE VIEW hr_test_view_v AS
@@ -305,7 +305,7 @@ SELECT job_statistic_id,
        ttid
   FROM job_statistics
  WHERE (ttid = SYS_Context ('userenv', 'sessionid') OR
-        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'UT')
+        Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'TT')
 /
 PROMPT Create DML_API_Bren package
 @DML_API_Bren.pks

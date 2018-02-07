@@ -912,7 +912,7 @@ END Cursor_to_Array;
 
 BEGIN
 
-  DBMS_Application_Info.Set_Client_Info (client_info => 'UT');
+  DBMS_Application_Info.Set_Client_Info (client_info => 'TT');
   Utils.c_session_id_if_TT := SYS_Context ('userenv', 'sessionid');
   DBMS_Session.Set_NLS('nls_date_format', '''DD-MON-YYYY''');--c_date_fmt); - constant did not work
 

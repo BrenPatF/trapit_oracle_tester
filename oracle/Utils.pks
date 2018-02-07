@@ -25,7 +25,7 @@ g_list_delimiter                 VARCHAR2(30) := '|';
 c_time_fmt              CONSTANT VARCHAR2(30) := 'HH24:MI:SS';
 c_datetime_fmt          CONSTANT VARCHAR2(30) := 'DD Mon RRRR ' || c_time_fmt;
 c_fld_delim             CONSTANT VARCHAR2(30) := '  ';
-Is_TT_Mode              CONSTANT BOOLEAN := Substr (SYS_Context ('userenv', 'client_info'), 1, 2) = 'UT';
+Is_TT_Mode              CONSTANT BOOLEAN := Substr (SYS_Context ('userenv', 'client_info'), 1, 2) = 'TT';
 c_session_id_if_TT               VARCHAR2(30);
 
 FUNCTION Create_Log (p_description VARCHAR2 DEFAULT NULL) RETURN PLS_INTEGER;
