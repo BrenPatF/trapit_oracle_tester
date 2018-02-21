@@ -203,7 +203,6 @@ PROCEDURE tt_AIP_Save_Emps IS
       SELECT Utils.List_Delim (employee_id, last_name, email, job_id, salary)
         BULK COLLECT INTO x_tab_lis
         FROM employees
-       WHERE ttid = Utils.c_session_id_if_TT
        ORDER BY employee_id;
       Timer_Set.Increment_Time (p_timer_set_ind => l_timer_set, p_timer_name => 'SELECT');
 

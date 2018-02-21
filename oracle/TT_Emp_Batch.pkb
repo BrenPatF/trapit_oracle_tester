@@ -277,7 +277,7 @@ PROCEDURE tt_AIP_Load_Emps IS
   Setup_DB: Database setup procedure for testing AIP_Load_Emps
 
   ***************************************************************************************************/
-  PROCEDURE Setup_DB (p_exp_emp_lis          L1_chr_arr,    -- expected values for emplyees
+  PROCEDURE Setup_DB (p_exp_emp_lis          L1_chr_arr,    -- expected values for employees
                       p_exp_jbs_lis          L1_chr_arr,    -- expected values for job statistics
                       p_exp_err_lis          L1_chr_arr,    -- expected values for errors table
                       p_exp_exc_lis          L1_chr_arr,    -- expected values for exceptions
@@ -315,10 +315,6 @@ PROCEDURE tt_AIP_Load_Emps IS
     END Replace_Seq_Offset;
 
   BEGIN
-
-    DELETE hr.err$_employees WHERE ttid IS NOT NULL; -- DML logging does auto transaction
-    DELETE job_statistics WHERE ttid IS NOT NULL; -- job statistics done via auto transaction
-    COMMIT;
 
     SELECT Utils.List_Delim (batch_job_id, fail_threshold_perc)
       INTO l_batch_job
@@ -537,6 +533,11 @@ PROCEDURE tt_AIP_Load_Emps IS
                               Utils_TT.List_or_Empty (l_jbs_lis),
                               Utils_TT.List_or_Empty (l_exc_lis));
     ROLLBACK;
+
+    DELETE err$_employees; -- DML logging does auto transaction
+    DELETE job_statistics_v; -- job statistics done via auto transaction
+    COMMIT;
+
 
   END Purely_Wrap_API;
 
