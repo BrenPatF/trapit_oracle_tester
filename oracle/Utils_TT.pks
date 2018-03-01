@@ -27,19 +27,20 @@ Brendan Furey        22-Oct-2016 1.5   TRAPIT name changes, UT->TT etc.
 Brendan Furey        27-Jan-2018 1.6   Check_TT_Results name change: -> Is_Deeply
 
 ***************************************************************************************************/
-c_date_fmt              CONSTANT VARCHAR2(11) := 'DD-MON-YYYY';
-c_past_date             CONSTANT DATE := To_Date ('01-JAN-2010', c_date_fmt);
-c_past_date_chr         CONSTANT VARCHAR2(11) := To_Char (c_past_date, c_date_fmt);
-c_call_timer            CONSTANT VARCHAR2(30) := 'Caller';
-c_setup_timer           CONSTANT VARCHAR2(30) := 'Setup';
-c_empty_list            CONSTANT L1_chr_arr := L1_chr_arr ('EMPTY');
-c_tt_suite_bren         CONSTANT PLS_INTEGER := 1;
+c_date_fmt                  CONSTANT VARCHAR2(11) := 'DD-MON-YYYY';
+c_past_date                 CONSTANT DATE := To_Date ('01-JAN-2010', c_date_fmt);
+c_past_date_chr             CONSTANT VARCHAR2(11) := To_Char (c_past_date, c_date_fmt);
+c_call_timer                CONSTANT VARCHAR2(30) := 'Caller';
+c_setup_timer               CONSTANT VARCHAR2(30) := 'Setup';
+c_empty_list                CONSTANT L1_chr_arr := L1_chr_arr ('EMPTY');
+c_tt_suite_bren             CONSTANT PLS_INTEGER := 1;
 
-FUNCTION Init (p_proc_name VARCHAR2) RETURN PLS_INTEGER;
-PROCEDURE Run_Suite (p_suite_id PLS_INTEGER);
+FUNCTION Init (             p_proc_name                 VARCHAR2)
+                            RETURN                      PLS_INTEGER;
+PROCEDURE Run_Suite (       p_suite_id                  PLS_INTEGER);
 
-PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
-                            p_test_lis                  L1_chr_arr,
+PROCEDURE Is_Deeply (       p_proc_name                 VARCHAR2,
+                            p_scenario_lis              L1_chr_arr,
                             p_inp_3lis                  L3_chr_arr,
                             p_act_3lis                  L3_chr_arr,
                             p_exp_3lis                  L3_chr_arr,
@@ -50,8 +51,8 @@ PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
                             p_out_group_lis             L1_chr_arr,
                             p_fields_2lis               L2_chr_arr);
 
-PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
-                            p_test_lis                  L1_chr_arr,
+PROCEDURE Is_Deeply (       p_proc_name                 VARCHAR2,
+                            p_scenario_lis              L1_chr_arr,
                             p_inp_3lis                  L3_chr_arr,
                             p_act_2lis                  L2_chr_arr,
                             p_exp_2lis                  L2_chr_arr,
@@ -62,8 +63,8 @@ PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
                             p_out_group_lis             L1_chr_arr,
                             p_fields_2lis               L2_chr_arr);
 
-PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
-                            p_test_lis                  L1_chr_arr,
+PROCEDURE Is_Deeply (       p_proc_name                 VARCHAR2,
+                            p_scenario_lis              L1_chr_arr,
                             p_inp_3lis                  L3_chr_arr,
                             p_act_lis                   L1_chr_arr,
                             p_exp_lis                   L1_chr_arr,
@@ -74,12 +75,17 @@ PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,
                             p_out_group_lis             L1_chr_arr,
                             p_fields_2lis               L2_chr_arr);
 
-FUNCTION List_or_Empty (p_list L1_chr_arr) RETURN L1_chr_arr;
-FUNCTION Get_View (    p_view_name         VARCHAR2,
-                       p_sel_field_lis     L1_chr_arr,
-                       p_where             VARCHAR2 DEFAULT NULL,
-                       p_timer_set         PLS_INTEGER) RETURN L1_chr_arr;
-FUNCTION Cursor_to_Array (x_csr IN OUT SYS_REFCURSOR, p_filter VARCHAR2 DEFAULT NULL) RETURN L1_chr_arr;
+FUNCTION List_or_Empty (    p_list L1_chr_arr)          RETURN L1_chr_arr;
+
+FUNCTION Get_View (         p_view_name                 VARCHAR2,
+                            p_sel_field_lis             L1_chr_arr,
+                            p_where                     VARCHAR2 DEFAULT NULL,
+                            p_timer_set                 PLS_INTEGER) 
+                            RETURN                      L1_chr_arr;
+
+FUNCTION Cursor_to_Array (  x_csr                IN OUT SYS_REFCURSOR, 
+                            p_filter                    VARCHAR2 DEFAULT NULL) 
+                            RETURN                      L1_chr_arr;
 
 END Utils_TT;
 /

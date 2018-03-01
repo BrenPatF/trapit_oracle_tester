@@ -17,6 +17,7 @@ Who                  When        Which What
 -------------------- ----------- ----- -------------------------------------------------------------
 Brendan Furey        04-May-2016 1.0   Created
 Brendan Furey        11-Sep-2016 1.1   Directory
+Brendan Furey        01-Mar-2018 1.2   INHERIT PRIVILEGES to avoid ORA-06598 from 12c security
 
 ***************************************************************************************************/
 REM
@@ -40,6 +41,8 @@ GRANT CREATE SEQUENCE TO &DEMO_USER ;
 GRANT CREATE VIEW TO &DEMO_USER ;
 GRANT UNLIMITED TABLESPACE TO &DEMO_USER ;
 GRANT CREATE PROCEDURE TO &DEMO_USER ;
+
+GRANT INHERIT PRIVILEGES ON USER sys TO trapit;
 
 PROMPT Directory input_dir - change to a writeable directory on your system
 CREATE OR REPLACE DIRECTORY input_dir AS 'C:\input'

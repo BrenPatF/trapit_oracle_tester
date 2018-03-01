@@ -161,7 +161,7 @@ Is_Deeply: TRAPIT utility to check results from testing, L3_chr_arr version
 
 ***************************************************************************************************/
 PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling procedure
-                     p_test_lis                  L1_chr_arr,    -- test descriptions
+                     p_scenario_lis              L1_chr_arr,    -- test descriptions
                      p_inp_3lis                  L3_chr_arr,    -- actual result strings
                      p_act_3lis                  L3_chr_arr,    -- actual result strings
                      p_exp_3lis                  L3_chr_arr,    -- expected result strings
@@ -534,7 +534,7 @@ PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling proce
 
     FOR i IN 1..p_act_3lis.COUNT LOOP -- scenario/call loop
 
-      Utils.Heading ('SCENARIO ' || i || ': ' || p_test_lis(i) || ' {');
+      Utils.Heading ('SCENARIO ' || i || ': ' || p_scenario_lis(i) || ' {');
       Utils.Heading ('INPUTS', 1);
 
       IF p_inp_3lis IS NULL THEN
@@ -578,7 +578,7 @@ PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling proce
 
     l_tot_status                   VARCHAR2(10);
     l_timing_status                VARCHAR2(10);
-    l_max_len_sce                  PLS_INTEGER := Utils.Max_Len (p_test_lis);
+    l_max_len_sce                  PLS_INTEGER := Utils.Max_Len (p_scenario_lis);
     l_ms                           PLS_INTEGER;
     l_timing_fail                  PLS_INTEGER;
 
@@ -593,7 +593,7 @@ PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling proce
     Utils.Col_Headers (L1_chr_arr ('Scenario', '# Failed', '# Tests', 'Status'), L1_num_arr (l_max_len_sce, -8, -7, 7));
     FOR i IN 1..p_act_3lis.COUNT LOOP
 
-      Utils.Pr_List_As_Line (L1_chr_arr (p_test_lis(i), p_num_fails_sce(i), p_num_tests_sce(i), CASE WHEN p_num_fails_sce(i) = 0 THEN c_status_word_s ELSE c_status_word_f END),
+      Utils.Pr_List_As_Line (L1_chr_arr (p_scenario_lis(i), p_num_fails_sce(i), p_num_tests_sce(i), CASE WHEN p_num_fails_sce(i) = 0 THEN c_status_word_s ELSE c_status_word_f END),
                              L1_num_arr (l_max_len_sce, -8, -7, 7));
       x_tot_fails := x_tot_fails + p_num_fails_sce(i);
       x_tot_tests := x_tot_tests + p_num_tests_sce(i);
@@ -653,7 +653,7 @@ Is_Deeply: TRAPIT utility to check results from testing, L2_chr_arr version just
 
 ***************************************************************************************************/
 PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling procedure
-                     p_test_lis                  L1_chr_arr,    -- test descriptions
+                     p_scenario_lis              L1_chr_arr,    -- test descriptions
                      p_inp_3lis                  L3_chr_arr,    -- input strings
                      p_act_2lis                  L2_chr_arr,    -- actual result strings
                      p_exp_2lis                  L2_chr_arr,    -- expected result strings
@@ -681,7 +681,7 @@ BEGIN
   END LOOP;
 
   Is_Deeply (p_proc_name       => p_proc_name,
-             p_test_lis        => p_test_lis,
+             p_scenario_lis    => p_scenario_lis,
              p_inp_3lis        => p_inp_3lis,
              p_act_3lis        => l_act_3lis,
              p_exp_3lis        => l_exp_3lis,
@@ -701,7 +701,7 @@ Is_Deeply: TRAPIT utility to check results from testing, L1_chr_arr version just
 
 ***************************************************************************************************/
 PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling procedure
-                     p_test_lis                  L1_chr_arr,    -- test descriptions
+                     p_scenario_lis              L1_chr_arr,    -- test descriptions
                      p_inp_3lis                  L3_chr_arr,    -- input strings
                      p_act_lis                   L1_chr_arr,    -- actual result strings
                      p_exp_lis                   L1_chr_arr,    -- expected result strings
@@ -718,7 +718,7 @@ PROCEDURE Is_Deeply (p_proc_name                 VARCHAR2,      -- calling proce
 BEGIN
 
   Is_Deeply (p_proc_name       => p_proc_name,
-             p_test_lis        => p_test_lis,
+             p_scenario_lis    => p_scenario_lis,
              p_inp_3lis        => p_inp_3lis,
              p_act_3lis        => l_act_3lis,
              p_exp_3lis        => l_exp_3lis,
