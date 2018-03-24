@@ -1,12 +1,13 @@
 # trapit_oracle_tester
 TRansactional API Test (TRAPIT) utility packages for Oracle plus demo base and test programs for Oracle's HR demo schema.
 
-The test utility packages and types are designed as a lightweight PL/SQL-based framework for API testing that can be considered as an alternative to utPLSQL.
+The test utility packages and types are designed as a lightweight PL/SQL-based framework for API testing that can be considered as an alternative to utPLSQL. The framework is based on the idea that all API testing programs can follow a universal design pattern for testing APIs, using the concept of a ‘pure’ function as a wrapper to manage the ‘impurity’ inherent in database APIs. I explained the concepts involved in a presentation at the Oracle User Group Ireland Conference in March 2018:
 
-This article provides example output and links to articles describing design patterns the framework is designed to facilitate, as well as anti-patterns it is designed to discourage:
+<a href="https://www.slideshare.net/brendanfurey7/database-api-viewed-as-a-mathematical-function-insights-into-testing" target="_blank">The Database API Viewed As A Mathematical Function: Insights into Testing</a>
+
+The following article provides example output and links to articles describing design patterns the framework is designed to facilitate, as well as anti-patterns it is designed to discourage:
 
 <a href="http://aprogrammerwrites.eu/?p=1723" target="_blank">TRAPIT - TRansactional API Testing in Oracle</a>
-    
 
 Pre-requisites
 ==============
