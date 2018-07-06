@@ -2,6 +2,7 @@ SET SERVEROUTPUT ON
 SET TRIMSPOOL ON
 SET PAGES 1000
 SET LINES 500
+WHENEVER SQLERROR CONTINUE 
 SPOOL Install_Bren.log
 /***************************************************************************************************
 
@@ -18,6 +19,7 @@ Who                  When        Which What
 Brendan Furey        04-May-2016 1.0   Created
 Brendan Furey        11-Sep-2016 1.1   Generic array field size increased from 4000 to 32767; also
                                        various additions for new TRAPIT examples
+Brendan Furey        06-Jul-2018 1.2   Initial JSON version
 
 ***************************************************************************************************/
 
@@ -26,6 +28,9 @@ REM Run this script from schema for Brendan's TRAPIT API testing framework desig
 PROMPT Common types creation
 PROMPT =====================
 
+PROMPT Drop type L4_chr_arr
+DROP TYPE L4_chr_arr
+/
 PROMPT Drop type L3_chr_arr
 DROP TYPE L3_chr_arr
 /
@@ -41,6 +46,9 @@ CREATE OR REPLACE TYPE L2_chr_arr IS VARRAY(32767) OF L1_chr_arr
 PROMPT Create type L3_chr_arr
 CREATE OR REPLACE TYPE L3_chr_arr IS VARRAY(32767) OF L2_chr_arr
 /
+PROMPT Create type L4_chr_arr
+CREATE OR REPLACE TYPE L4_chr_arr IS VARRAY(32767) OF L3_chr_arr
+/
 CREATE OR REPLACE PUBLIC SYNONYM L1_chr_arr FOR L1_chr_arr
 /
 GRANT EXECUTE ON L1_chr_arr TO PUBLIC
@@ -52,6 +60,10 @@ GRANT EXECUTE ON L2_chr_arr TO PUBLIC
 CREATE OR REPLACE PUBLIC SYNONYM L3_chr_arr FOR L3_chr_arr
 /
 GRANT EXECUTE ON L3_chr_arr TO PUBLIC
+/
+CREATE OR REPLACE PUBLIC SYNONYM L4_chr_arr FOR L4_chr_arr
+/
+GRANT EXECUTE ON L4_chr_arr TO PUBLIC
 /
 PROMPT Create type L1_num_arr
 CREATE OR REPLACE TYPE L1_num_arr IS VARRAY(32767) OF NUMBER
@@ -157,9 +169,9 @@ CREATE TYPE emp_out_arr AS TABLE OF emp_out_rec
 /
 PROMPT HR synonyms AND views creation
 PROMPT ==============================
-CREATE SYNONYM departments FOR hr.departments
+CREATE OR REPLACE SYNONYM departments FOR hr.departments
 /
-CREATE SYNONYM employees_seq FOR hr.employees_seq
+CREATE OR REPLACE SYNONYM employees_seq FOR hr.employees_seq
 /
 PROMPT employees view
 CREATE OR REPLACE VIEW employees AS
@@ -307,6 +319,69 @@ SELECT job_statistic_id,
  WHERE (ttid = SYS_Context ('userenv', 'sessionid') OR
         Substr (Nvl (SYS_Context ('userenv', 'client_info'), 'XX'), 1, 2) != 'TT')
 /
+
+PROMPT Dropping tables
+DROP TABLE tt_units
+/
+PROMPT tt_units
+CREATE TABLE tt_units (
+    package_nm                   VARCHAR2(30) NOT NULL,
+    procedure_nm                 VARCHAR2(30) NOT NULL,
+    description                  VARCHAR2(500),
+    active_yn                    VARCHAR2(1),
+    input_data                   CLOB,
+    output_data                  CLOB,
+    CONSTRAINT uni_pk            PRIMARY KEY (package_nm, procedure_nm),
+    CONSTRAINT uni_js1           CHECK (input_data IS JSON),
+    CONSTRAINT uni_js2           CHECK (output_data IS JSON))
+/
+COMMENT ON TABLE tt_units IS 'Unit test metadata'
+/
+
+PROMPT Read in json files
+DECLARE
+  PROCEDURE Add_Ttu (p_package_nm VARCHAR2, p_procedure_nm VARCHAR2, p_active_yn VARCHAR2, p_input_file VARCHAR2) IS
+
+    l_src_file      BFILE := BFileName( 'INPUT_DIR', p_input_file);
+    l_dest_lob      CLOB;
+    l_dest_offset   INTEGER := 1;
+    l_src_offset    INTEGER := 1;
+    l_lang_context  NUMBER := DBMS_LOB.Default_Lang_Ctx;
+    l_warning       NUMBER;
+
+  BEGIN
+
+    DBMS_LOB.CreateTemporary(l_dest_lob,true);
+
+    DBMS_LOB.Open(l_src_file, DBMS_LOB.Lob_readonly);
+    DBMS_LOB.LoadCLOBFromFile( 
+                dest_lob     => l_dest_lob,
+                src_bfile    => l_src_file,
+                amount       => DBMS_LOB.LOBMAXSIZE,
+                dest_offset  => l_dest_offset,
+                src_offset   => l_src_offset,
+                bfile_csid   => DBMS_LOB.Default_Csid,
+                lang_context => l_lang_context,
+                warning      => l_warning );
+
+    INSERT INTO tt_units (package_nm, procedure_nm, active_yn, input_data)
+    VALUES (p_package_nm, p_procedure_nm, p_active_yn, l_dest_lob);
+    COMMIT;
+    DBMS_LOB.FreeTemporary(l_dest_lob);
+    DBMS_LOB.Close(l_src_file);
+
+  END Add_Ttu;
+
+BEGIN
+
+  Add_Ttu ('TT_EMP_BATCH', 'tt_AIP_Load_Emps', 'Y', 'tt_AIP_Load_Emps.json');
+  Add_Ttu ('TT_EMP_WS', 'tt_AIP_Get_Dept_Emps', 'Y', 'tt_AIP_Get_Dept_Emps.json');
+  Add_Ttu ('TT_EMP_WS', 'tt_AIP_Save_Emps', 'Y', 'tt_AIP_Save_Emps.json');
+  Add_Ttu ('TT_VIEW_DRIVERS', 'tt_HR_Test_View_V', 'Y', 'tt_HR_Test_View_V.json');
+
+END;
+/
+
 PROMPT Create DML_API_Bren package
 @DML_API_Bren.pks
 @DML_API_Bren.pkb

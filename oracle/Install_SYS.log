@@ -53,6 +53,8 @@ new   1: GRANT CREATE PROCEDURE TO trapit
 
 Grant succeeded.
 
+old   1: GRANT INHERIT PRIVILEGES ON USER sys TO &DEMO_USER
+new   1: GRANT INHERIT PRIVILEGES ON USER sys TO trapit
 
 Grant succeeded.
 

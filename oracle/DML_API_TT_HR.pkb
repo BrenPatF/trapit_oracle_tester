@@ -30,8 +30,7 @@ FUNCTION Ins_Emp (p_emp_ind       PLS_INTEGER,           -- employee index
                   p_last_name     VARCHAR2 DEFAULT NULL, -- last name
                   p_email         VARCHAR2 DEFAULT NULL, -- email address
                   p_hire_date     DATE DEFAULT SYSDATE,  -- hire date
-                  p_update_date   DATE DEFAULT SYSDATE,  -- update date
-                  x_rec       OUT VARCHAR2)              -- output record
+                  p_update_date   DATE DEFAULT SYSDATE)              -- output record
                   RETURN PLS_INTEGER IS                  -- employee id created
   l_emp_id PLS_INTEGER;
 BEGIN
@@ -58,16 +57,8 @@ BEGIN
         p_dep_id,
         p_update_date,
         SYS_Context ('userenv', 'sessionid')
-  ) RETURNING employee_id, Utils.List_Delim (   employee_id,
-                                                last_name,
-                                                email,
-                                                To_Char (hire_date,Utils_TT.c_date_fmt),
-                                                job_id,
-                                                salary,
-                                                manager_id,
-                                                department_id,
-                                                To_Char (update_date, Utils_TT.c_date_fmt))
-         INTO l_emp_id, x_rec;
+  ) RETURNING employee_id
+         INTO l_emp_id;
 
   RETURN l_emp_id;
 

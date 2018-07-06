@@ -27,8 +27,8 @@ PROCEDURE Ins_Jbs (p_batch_job_id        VARCHAR2,    -- batch job id
                    p_records_failed_db   PLS_INTEGER, -- records that failed validation in the database
                    p_start_time          DATE,        -- job start time
                    p_end_time            DATE,        -- job end time
-                   p_job_status          VARCHAR2,    -- job status
-                   x_rec             OUT VARCHAR2) IS -- output record
+                   p_job_status          VARCHAR2) IS -- output record
+  l_job_statistic_id  PLS_INTEGER;
 BEGIN
 
   INSERT INTO job_statistics (
@@ -53,17 +53,8 @@ BEGIN
         p_end_time,
         p_job_status,
         SYS_Context ('userenv', 'sessionid')
-  ) RETURNING Utils.List_Delim (
-                job_statistic_id,
-                batch_job_id,
-                file_name,
-                records_loaded,
-                records_failed_et,
-                records_failed_db,
-                To_Char (start_time, Utils_TT.c_date_fmt),
-                To_Char (end_time, Utils_TT.c_date_fmt),
-                job_status)
-         INTO x_rec;
+  ) RETURNING job_statistic_id
+         INTO l_job_statistic_id;
 
 END Ins_Jbs;
 

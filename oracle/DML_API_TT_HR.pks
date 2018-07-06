@@ -27,8 +27,7 @@ FUNCTION Ins_Emp (p_emp_ind       PLS_INTEGER,
                   p_last_name     VARCHAR2 DEFAULT NULL,
                   p_email         VARCHAR2 DEFAULT NULL,
                   p_hire_date     DATE DEFAULT SYSDATE,
-                  p_update_date   DATE DEFAULT SYSDATE,
-                  x_rec       OUT VARCHAR2) RETURN PLS_INTEGER;
+                  p_update_date   DATE DEFAULT SYSDATE) RETURN PLS_INTEGER;
 
 END DML_API_TT_HR;
 /

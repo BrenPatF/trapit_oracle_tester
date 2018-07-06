@@ -8,7 +8,7 @@ DECLARE
 BEGIN
 
   Utils.Clear_Log;
-  Utils_TT.Run_Suite (Utils_TT.c_tt_suite_bren);
+  Utils_TT.Run_Suite;
 
 EXCEPTION
   WHEN OTHERS THEN

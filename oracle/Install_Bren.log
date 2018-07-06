@@ -1,5 +1,12 @@
 Common types creation
 =====================
+Drop type L4_chr_arr
+DROP TYPE L4_chr_arr
+*
+ERROR at line 1:
+ORA-04043: object L4_CHR_ARR does not exist
+
+
 Drop type L3_chr_arr
 DROP TYPE L3_chr_arr
 *
@@ -25,6 +32,16 @@ Type created.
 Create type L3_chr_arr
 
 Type created.
+
+Create type L4_chr_arr
+
+Type created.
+
+
+Synonym created.
+
+
+Grant succeeded.
 
 
 Synonym created.
@@ -166,9 +183,22 @@ Synonym created.
 Grant succeeded.
 
 
-Package body created.
+Warning: Package Body created with compilation errors.
 
-No errors.
+Errors for PACKAGE BODY UTILS_TT:
+
+LINE/COL ERROR
+-------- -----------------------------------------------------------------
+124/3    PL/SQL: Item ignored
+124/40   PLS-00201: identifier 'TT_UNITS' must be declared
+135/3    PL/SQL: SQL Statement ignored
+137/10   PL/SQL: ORA-00942: table or view does not exist
+141/5    PL/SQL: Statement ignored
+141/39   PLS-00487: Invalid reference to variable 'TT_UNITS%ROWTYPE'
+252/3    PL/SQL: SQL Statement ignored
+254/10   PL/SQL: ORA-00942: table or view does not exist
+341/3    PL/SQL: SQL Statement ignored
+341/10   PL/SQL: ORA-00942: table or view does not exist
 HR Types creation
 =================
 Input types creation
@@ -254,6 +284,7 @@ Package created.
 
 Package body created.
 
+No errors.
 Create employees_et
 DROP TABLE employees_et
            *
@@ -300,6 +331,24 @@ Sequence created.
 job_statistics_v view
 
 View created.
+
+Dropping tables
+DROP TABLE tt_units
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+tt_units
+
+Table created.
+
+
+Comment created.
+
+Read in json files
+
+PL/SQL procedure successfully completed.
 
 Create DML_API_Bren package
 
