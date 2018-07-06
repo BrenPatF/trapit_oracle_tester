@@ -33,8 +33,6 @@ c_past_date                 CONSTANT DATE := To_Date ('01-JAN-2010', c_date_fmt)
 c_past_date_chr             CONSTANT VARCHAR2(11) := To_Char (c_past_date, c_date_fmt);
 c_call_timer                CONSTANT VARCHAR2(30) := 'Caller';
 c_setup_timer               CONSTANT VARCHAR2(30) := 'Setup';
-c_empty_list                CONSTANT L1_chr_arr := L1_chr_arr ();
-c_tt_suite_bren             CONSTANT PLS_INTEGER := 1;
 
 FUNCTION Get_Inputs (		p_package_nm                VARCHAR2,
                             p_procedure_nm              VARCHAR2,
