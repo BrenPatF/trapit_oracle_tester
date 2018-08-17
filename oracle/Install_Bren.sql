@@ -127,21 +127,6 @@ CREATE OR REPLACE PUBLIC SYNONYM log_lines_s FOR log_lines_s
 GRANT SELECT ON log_lines_s TO PUBLIC
 /
 
-PROMPT Packages creation
-PROMPT =================
-
-PROMPT Create package Utils
-@Utils.pks
-@Utils.pkb
-
-PROMPT Create package Timer_Set
-@Timer_Set.pks
-@Timer_Set.pkb
-
-PROMPT Create package Utils_TT
-@Utils_TT.pks
-@Utils_TT.pkb
-
 PROMPT HR Types creation
 PROMPT =================
 
@@ -218,24 +203,6 @@ SELECT e.last_name, d.department_name, m.last_name manager, e.salary,
  WHERE e.job_id != 'AD_ASST'
    AND a.sal_tot_g >= 1600
 /
-PROMPT HR Packages creation
-PROMPT ====================
-
-PROMPT Create package DML_API_TT_HR
-@DML_API_TT_HR.pks
-@DML_API_TT_HR.pkb
-
-PROMPT Create package Emp_WS
-@Emp_WS.pks
-@Emp_WS.pkb
-
-PROMPT Create package TT_Emp_WS
-@TT_Emp_WS.pks
-@TT_Emp_WS.pkb
-
-PROMPT Create package TT_View_Drivers
-@TT_View_Drivers.pks
-@TT_View_Drivers.pkb
 
 PROMPT Create employees_et
 DROP TABLE employees_et
@@ -381,6 +348,40 @@ BEGIN
 
 END;
 /
+
+PROMPT Packages creation
+PROMPT =================
+
+PROMPT Create package Utils
+@Utils.pks
+@Utils.pkb
+
+PROMPT Create package Timer_Set
+@Timer_Set.pks
+@Timer_Set.pkb
+
+PROMPT Create package Utils_TT
+@Utils_TT.pks
+@Utils_TT.pkb
+
+PROMPT HR Packages creation
+PROMPT ====================
+
+PROMPT Create package DML_API_TT_HR
+@DML_API_TT_HR.pks
+@DML_API_TT_HR.pkb
+
+PROMPT Create package Emp_WS
+@Emp_WS.pks
+@Emp_WS.pkb
+
+PROMPT Create package TT_Emp_WS
+@TT_Emp_WS.pks
+@TT_Emp_WS.pkb
+
+PROMPT Create package TT_View_Drivers
+@TT_View_Drivers.pks
+@TT_View_Drivers.pkb
 
 PROMPT Create DML_API_Bren package
 @DML_API_Bren.pks

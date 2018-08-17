@@ -6,81 +6,81 @@ PL/SQL procedure successfully completed.
 TRAPIT TEST: TT_EMP_BATCH.tt_AIP_Load_Emps
 ==========================================
 
-Timer Set: TT_EMP_BATCH.tt_AIP_Load_Emps, Constructed at 06 Jul 2018 09:12:46, written at 09:12:51
+Timer Set: TT_EMP_BATCH.tt_AIP_Load_Emps, Constructed at 17 Aug 2018 07:11:42, written at 07:11:47
 ==================================================================================================
-[Timer timed: Elapsed (per call): 0.01 (0.000007), CPU (per call): 0.01 (0.000010), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.01 (0.000009), CPU (per call): 0.01 (0.000010), calls: 1000, '***' denotes corrected line below]
 
 Timer                         Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------------------------  ----------  ----------  ------------  -------------  -------------
-Get Inputs                       0.02        0.02             1        0.01500        0.02000
-Setup_DB                         0.28        0.14             9        0.03089        0.01556
-Caller                           2.89        0.51             5        0.57720        0.10200
-Get_Tab_Lis                      1.66        0.29             9        0.18389        0.03222
-Get_Err_Lis                      0.01        0.01             9        0.00078        0.00111
-Get_Jbs_Lis                      0.01        0.02             9        0.00078        0.00222
-Set Output CLOB                  0.00        0.00             1        0.00400        0.00000
-Output CLOB to table/file        0.05        0.00             1        0.04800        0.00000
+Get Inputs                       0.06        0.05             1        0.06200        0.05000
+Setup_DB                         0.30        0.17             9        0.03278        0.01889
+Caller                           3.10        0.64             5        0.62060        0.12800
+Get_Tab_Lis                      1.81        0.30             9        0.20089        0.03333
+Get_Err_Lis                      0.01        0.01             9        0.00089        0.00111
+Get_Jbs_Lis                      0.01        0.00             9        0.00078        0.00000
+Set Output CLOB                  0.01        0.00             1        0.00500        0.00000
+Output CLOB to table/file        0.06        0.02             1        0.05600        0.02000
 (Other)                          0.00        0.00             1        0.00000        0.00000
 -------------------------  ----------  ----------  ------------  -------------  -------------
-Total                            4.90        0.99            45        0.10889        0.02200
+Total                            5.34        1.19            45        0.11876        0.02644
 -------------------------  ----------  ----------  ------------  -------------  -------------
 
 TRAPIT TEST: TT_EMP_WS.tt_AIP_Get_Dept_Emps
 ===========================================
 
-Timer Set: TT_EMP_WS.tt_AIP_Get_Dept_Emps, Constructed at 06 Jul 2018 09:12:51, written at 09:12:51
+Timer Set: TT_EMP_WS.tt_AIP_Get_Dept_Emps, Constructed at 17 Aug 2018 07:11:47, written at 07:11:47
 ===================================================================================================
-[Timer timed: Elapsed (per call): 0.01 (0.000008), CPU (per call): 0.02 (0.000020), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.01 (0.000008), CPU (per call): 0.00 (0.000000), calls: 1000, '***' denotes corrected line below]
 
 Timer                         Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------------------------  ----------  ----------  ------------  -------------  -------------
 Get Inputs                       0.00        0.00             1        0.00300        0.00000
-Setup                            0.01        0.00             5        0.00140        0.00000
-Caller                           0.01        0.02             5        0.00240        0.00400
-Set Output CLOB                  0.00        0.00             1        0.00100        0.00000
-Output CLOB to table/file        0.01        0.01             1        0.01400        0.01000
+Setup                            0.01        0.01             5        0.00180        0.00200
+Caller                           0.01        0.02             5        0.00280        0.00400
+Set Output CLOB                  0.00        0.00             1        0.00200        0.00000
+Output CLOB to table/file        0.01        0.00             1        0.01300        0.00000
 (Other)                          0.00        0.00             1        0.00000        0.00000
 -------------------------  ----------  ----------  ------------  -------------  -------------
-Total                            0.04        0.03            14        0.00264        0.00214
+Total                            0.04        0.03            14        0.00293        0.00214
 -------------------------  ----------  ----------  ------------  -------------  -------------
 
 TRAPIT TEST: TT_EMP_WS.tt_AIP_Save_Emps
 =======================================
 
-Timer Set: TT_EMP_WS.tt_AIP_Save_Emps, Constructed at 06 Jul 2018 09:12:51, written at 09:12:51
+Timer Set: TT_EMP_WS.tt_AIP_Save_Emps, Constructed at 17 Aug 2018 07:11:47, written at 07:11:47
 ===============================================================================================
-[Timer timed: Elapsed (per call): 0.01 (0.000008), CPU (per call): 0.02 (0.000020), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.01 (0.000008), CPU (per call): 0.00 (0.000000), calls: 1000, '***' denotes corrected line below]
 
 Timer                         Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------------------------  ----------  ----------  ------------  -------------  -------------
-Get Inputs                       0.00        0.00             1        0.00200        0.00000
+Get Inputs                       0.00        0.02             1        0.00200        0.02000
 Get_Offsets                      0.00        0.00             1        0.00000        0.00000
 Caller                           0.00        0.00             3        0.00133        0.00000
-SELECT                           0.00        0.01             3        0.00133        0.00333
-Set Output CLOB                  0.00        0.00             1        0.00200        0.00000
-Output CLOB to table/file        0.01        0.00             1        0.00900        0.00000
-(Other)                          0.00        0.00             1        0.00000        0.00000
+SELECT                           0.01        0.00             3        0.00233        0.00000
+Set Output CLOB                  0.00        0.00             1        0.00100        0.00000
+Output CLOB to table/file        0.01        0.00             1        0.00800        0.00000
+(Other)                          0.00        0.00             1        0.00100        0.00000
 -------------------------  ----------  ----------  ------------  -------------  -------------
-Total                            0.02        0.01            11        0.00191        0.00091
+Total                            0.02        0.02            11        0.00209        0.00182
 -------------------------  ----------  ----------  ------------  -------------  -------------
 
 TRAPIT TEST: TT_VIEW_DRIVERS.tt_HR_Test_View_V
 ==============================================
 
-Timer Set: TT_VIEW_DRIVERS.tt_HR_Test_View_V, Constructed at 06 Jul 2018 09:12:51, written at 09:12:51
+Timer Set: TT_VIEW_DRIVERS.tt_HR_Test_View_V, Constructed at 17 Aug 2018 07:11:47, written at 07:11:47
 ======================================================================================================
-[Timer timed: Elapsed (per call): 0.01 (0.000009), CPU (per call): 0.02 (0.000020), calls: 1000, '***' denotes corrected line below]
+[Timer timed: Elapsed (per call): 0.01 (0.000009), CPU (per call): 0.00 (0.000000), calls: 1000, '***' denotes corrected line below]
 
 Timer                         Elapsed         CPU         Calls       Ela/Call       CPU/Call
 -------------------------  ----------  ----------  ------------  -------------  -------------
-Get Inputs                       0.00        0.00             1        0.00200        0.00000
-Setup                            0.01        0.00             4        0.00150        0.00000
-Caller                           0.02        0.03             4        0.00550        0.00750
+Get Inputs                       0.00        0.00             1        0.00300        0.00000
+Setup                            0.00        0.00             4        0.00100        0.00000
+Caller                           0.03        0.03             4        0.00675        0.00750
 Set Output CLOB                  0.00        0.00             1        0.00100        0.00000
-Output CLOB to table/file        0.02        0.00             1        0.01700        0.00000
+Output CLOB to table/file        0.01        0.00             1        0.00900        0.00000
 (Other)                          0.00        0.00             1        0.00000        0.00000
 -------------------------  ----------  ----------  ------------  -------------  -------------
-Total                            0.05        0.03            12        0.00400        0.00250
+Total                            0.04        0.03            12        0.00367        0.00250
 -------------------------  ----------  ----------  ------------  -------------  -------------
 
 80 rows selected.

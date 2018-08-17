@@ -139,66 +139,6 @@ Synonym created.
 
 Grant succeeded.
 
-Packages creation
-=================
-Create package Utils
-
-Package created.
-
-No errors.
-
-Synonym created.
-
-
-Grant succeeded.
-
-
-Package body created.
-
-No errors.
-Create package Timer_Set
-
-Package created.
-
-No errors.
-
-Grant succeeded.
-
-
-Synonym created.
-
-
-Package body created.
-
-No errors.
-Create package Utils_TT
-
-Package created.
-
-No errors.
-
-Synonym created.
-
-
-Grant succeeded.
-
-
-Warning: Package Body created with compilation errors.
-
-Errors for PACKAGE BODY UTILS_TT:
-
-LINE/COL ERROR
--------- -----------------------------------------------------------------
-124/3    PL/SQL: Item ignored
-124/40   PLS-00201: identifier 'TT_UNITS' must be declared
-135/3    PL/SQL: SQL Statement ignored
-137/10   PL/SQL: ORA-00942: table or view does not exist
-141/5    PL/SQL: Statement ignored
-141/39   PLS-00487: Invalid reference to variable 'TT_UNITS%ROWTYPE'
-252/3    PL/SQL: SQL Statement ignored
-254/10   PL/SQL: ORA-00942: table or view does not exist
-341/3    PL/SQL: SQL Statement ignored
-341/10   PL/SQL: ORA-00942: table or view does not exist
 HR Types creation
 =================
 Input types creation
@@ -247,44 +187,6 @@ hr_test_view_v view
 
 View created.
 
-HR Packages creation
-====================
-Create package DML_API_TT_HR
-
-Package created.
-
-No errors.
-
-Package created.
-
-
-Package body created.
-
-No errors.
-Create package Emp_WS
-
-Package created.
-
-
-Package body created.
-
-No errors.
-Create package TT_Emp_WS
-
-Package created.
-
-
-Package body created.
-
-No errors.
-Create package TT_View_Drivers
-
-Package created.
-
-
-Package body created.
-
-No errors.
 Create employees_et
 DROP TABLE employees_et
            *
@@ -350,6 +252,91 @@ Read in json files
 
 PL/SQL procedure successfully completed.
 
+Packages creation
+=================
+Create package Utils
+
+Package created.
+
+No errors.
+
+Synonym created.
+
+
+Grant succeeded.
+
+
+Package body created.
+
+No errors.
+Create package Timer_Set
+
+Package created.
+
+No errors.
+
+Grant succeeded.
+
+
+Synonym created.
+
+
+Package body created.
+
+No errors.
+Create package Utils_TT
+
+Package created.
+
+No errors.
+
+Synonym created.
+
+
+Grant succeeded.
+
+
+Package body created.
+
+No errors.
+HR Packages creation
+====================
+Create package DML_API_TT_HR
+
+Package created.
+
+No errors.
+
+Package created.
+
+
+Package body created.
+
+No errors.
+Create package Emp_WS
+
+Package created.
+
+
+Package body created.
+
+No errors.
+Create package TT_Emp_WS
+
+Package created.
+
+
+Package body created.
+
+No errors.
+Create package TT_View_Drivers
+
+Package created.
+
+
+Package body created.
+
+No errors.
 Create DML_API_Bren package
 
 Package created.
