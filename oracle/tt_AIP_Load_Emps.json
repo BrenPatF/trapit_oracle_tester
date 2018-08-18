@@ -33,7 +33,7 @@
             "Salary",
             "Manager Id",
             "Department Id",
-            "Updated"
+            "Updated Time"
          ]
       },
       "out":{
@@ -44,7 +44,8 @@
             "Hired",
             "Job",
             "Salary",
-            "Updated"
+            "Updated Time",
+            "Updated Offset (s)"
          ],
          "Error":[
             "Job Statistic Id",
@@ -67,6 +68,8 @@
             "Records Failed DB",
             "Start Time",
             "End Time",
+            "Start Time Offset (s)",
+            "End Time Offset (s)",
             "Status"
          ],
          "Exception":[
@@ -95,12 +98,12 @@
          },
          "out":{
             "Employee":[
-               "1|LN 1|EM 1|01-JAN-2010|IT_PROG|10000|0"
+               "1|LN 1|EM 1|01-JAN-2010|IT_PROG|10000|UNTESTED|IN [0, 5]"
             ],
             "Error":[
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160801.dat|1|0|0|0|0|S"
+               "1|LOAD_EMPS|employees_20160801.dat|1|0|0|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|S"
             ],
             "Exception":[
             ]
@@ -120,24 +123,24 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|S"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000",
-               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11",
+               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000",
-               "2|LN 3U|EM 3|01-JAN-2010|IT_PROG|30000|0",
-               "3|LN 1|EM 1|01-JAN-2010|IT_PROG|10000|0"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED",
+               "2|LN 3U|EM 3|01-JAN-2010|IT_PROG|30000|UNTESTED|IN [0, 5]",
+               "3|LN 1|EM 1|01-JAN-2010|IT_PROG|10000|UNTESTED|IN [0, 5]"
             ],
             "Error":[
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S",
-               "2|LOAD_EMPS|employees_20160801.dat|2|0|0|0|0|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|S",
+               "2|LOAD_EMPS|employees_20160801.dat|2|0|0|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|S"
             ],
             "Exception":[
             ]
@@ -155,22 +158,22 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|S"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED"
             ],
             "Error":[
                "2||Employee not found|PK|99|LN 1|EM 1|01-JAN-2010|IT_PROG|10000"
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S",
-               "2|LOAD_EMPS|employees_20160801.dat|0|0|1|0|0|F"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|S",
+               "2|LOAD_EMPS|employees_20160801.dat|0|0|1|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|F"
             ],
             "Exception":[
                "ORA-20001: Batch failed with too many invalid records!"
@@ -189,22 +192,22 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|S"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED"
             ],
             "Error":[
                "2||ORA-12899: value too large for column \"HR\".\"EMPLOYEES\".\"EMAIL\" (actual: 34, maximum: 25)|I|2|LN 1|EM 1123456789012345678901234567890|01-JAN-2010|IT_PROG|10000"
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S",
-               "2|LOAD_EMPS|employees_20160801.dat|0|0|1|0|0|F"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|S",
+               "2|LOAD_EMPS|employees_20160801.dat|0|0|1|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|F"
             ],
             "Exception":[
                "ORA-20001: Batch failed with too many invalid records!"
@@ -224,23 +227,23 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|S"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000",
-               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|0"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED",
+               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|UNTESTED|IN [0, 5]"
             ],
             "Error":[
                "2||ORA-12899: value too large for column \"HR\".\"EMPLOYEES\".\"LAST_NAME\" (actual: 34, maximum: 25)|U|1|LN 1123456789012345678901234567890|EM 1|01-JAN-2010|IT_PROG|10000"
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S",
-               "2|LOAD_EMPS|employees_20160801.dat|1|0|1|0|0|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|S",
+               "2|LOAD_EMPS|employees_20160801.dat|1|0|1|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|S"
             ],
             "Exception":[
             ]
@@ -258,22 +261,22 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "286|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S"
+               "286|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|S"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED"
             ],
             "Error":[
                "2||ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found|I|2|LN 1|EM 1|01-JAN-2010|NON_JOB|10000"
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S",
-               "2|LOAD_EMPS|employees_20160801.dat|0|0|1|0|0|F"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|S",
+               "2|LOAD_EMPS|employees_20160801.dat|0|0|1|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|F"
             ],
             "Exception":[
                "ORA-20001: Batch failed with too many invalid records!"
@@ -294,25 +297,25 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|S"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000",
-               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11",
+               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000",
-               "2|LN 3U|EM 3|01-JAN-2010|IT_PROG|30000|0"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED",
+               "2|LN 3U|EM 3|01-JAN-2010|IT_PROG|30000|UNTESTED|IN [0, 5]"
             ],
             "Error":[
                "2||ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found|U|1|LN 2|EM 2|01-JAN-2010|NON_JOB|20000",
                "2||ORA-02291: integrity constraint (HR.EMP_JOB_FK) violated - parent key not found|I|3|LN 1|EM 1|01-JAN-2010|NON_JOB|10000"
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|1500|1500|S",
-               "2|LOAD_EMPS|employees_20160801.dat|1|0|2|0|0|S"
+               "1|LOAD_EMPS|employees_20160101.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|S",
+               "2|LOAD_EMPS|employees_20160801.dat|1|0|2|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|S"
             ],
             "Exception":[
             ]
@@ -331,23 +334,23 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "1|LOAD_EMPS|employees_20160801.dat|0|0|2|1500|1500|F"
+               "1|LOAD_EMPS|employees_20160801.dat|0|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|F"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000",
-               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11",
+               "2|LN 3|EM 3|01-JAN-2010|IT_PROG|30000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000",
-               "2|LN 3U|EM 3|01-JAN-2010|IT_PROG|30000|0"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED",
+               "2|LN 3U|EM 3|01-JAN-2010|IT_PROG|30000|UNTESTED|IN [0, 5]"
             ],
             "Error":[
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160801.dat|0|0|2|1500|1500|F",
-               "2|LOAD_EMPS|employees_20160801.dat|1|1|0|0|0|S"
+               "1|LOAD_EMPS|employees_20160801.dat|0|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|F",
+               "2|LOAD_EMPS|employees_20160801.dat|1|1|0|UNTESTED|UNTESTED|IN [0, 5]|IN [0, 5]|S"
             ],
             "Exception":[
             ]
@@ -365,20 +368,20 @@
                "LOAD_EMPS|70"
             ],
             "Statistics Table":[
-               "1|LOAD_EMPS|employees_20160801.dat|10|0|2|1500|1500|S"
+               "1|LOAD_EMPS|employees_20160801.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|S"
             ],
             "Employees Table":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|||03-MAR-2015 04:37:11"
             ]
          },
          "out":{
             "Employee":[
-               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|1000"
+               "1|LN 2|EM 2|01-JAN-2010|IT_PROG|20000|03-MAR-2015 04:37:11|UNTESTED"
             ],
             "Error":[
             ],
             "Job Statistic":[
-               "1|LOAD_EMPS|employees_20160801.dat|10|0|2|1500|1500|S"
+               "1|LOAD_EMPS|employees_20160801.dat|10|0|2|10-MAY-2017 15:01:45|10-MAY-2017 15:03:11|UNTESTED|UNTESTED|S"
             ],
             "Exception":[
                "ORA-20002: File has already been processed successfully!"

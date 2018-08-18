@@ -16,6 +16,7 @@ Brendan Furey        06-Jul-2018 1.3   Initial JSON version
 ***************************************************************************************************/
 c_date_fmt              CONSTANT VARCHAR2(30) := Utils_TT.c_date_fmt;
 c_dat_name              CONSTANT VARCHAR2(20) := 'employees.dat';
+c_seconds_in_day        CONSTANT PLS_INTEGER := 86400;
 
 /***************************************************************************************************
 
@@ -26,8 +27,7 @@ PROCEDURE tt_AIP_Load_Emps IS
 
   c_proc_nm               CONSTANT VARCHAR2(30) := 'tt_AIP_Load_Emps';
   c_timer_set_nm          CONSTANT VARCHAR2(61) := $$PLSQL_UNIT || '.' ||c_proc_nm;
-  c_past_date_chr         CONSTANT VARCHAR2(61) := Utils_TT.c_past_date_chr;
-
+  c_fmt_datetime          CONSTANT VARCHAR2(61) := 'DD-MON-YYYY hh24:mi:ss';
   c_ms_limit              CONSTANT PLS_INTEGER := 2;
 
   l_timer_set                      PLS_INTEGER;
@@ -65,8 +65,8 @@ PROCEDURE tt_AIP_Load_Emps IS
                             p_records_loaded    => p_jbs_2lis(i)(4),
                             p_records_failed_et => p_jbs_2lis(i)(5),
                             p_records_failed_db => p_jbs_2lis(i)(6),
-                            p_start_time        => Trunc (SYSDATE) - p_jbs_2lis(i)(7),
-                            p_end_time          => Trunc (SYSDATE) - p_jbs_2lis(i)(8),
+                            p_start_time        => To_Date(p_jbs_2lis(i)(7), c_fmt_datetime),
+                            p_end_time          => To_Date(p_jbs_2lis(i)(8), c_fmt_datetime),
                             p_job_status        => p_jbs_2lis(i)(9));
       END LOOP;
 
@@ -89,7 +89,7 @@ PROCEDURE tt_AIP_Load_Emps IS
                             p_last_name   => p_emp_2lis(i)(2),
                             p_email       => p_emp_2lis(i)(3),
                             p_hire_date   => p_emp_2lis(i)(4),
-                            p_update_date => Trunc (SYSDATE) - p_emp_2lis(i)(9));
+                            p_update_date => To_Date(p_emp_2lis(i)(9), c_fmt_datetime));
       END LOOP;
 
     END IF;
@@ -139,7 +139,8 @@ PROCEDURE tt_AIP_Load_Emps IS
                  To_Char (hire_date, c_date_fmt),
                  job_id,
                  salary,
-                 Trunc(SYSDATE) - Trunc(update_date))
+                 To_Char(update_date, c_fmt_datetime),
+                 c_seconds_in_day*(SYSDATE - update_date))
         BULK COLLECT INTO x_tab_lis
         FROM employees
        ORDER BY employee_id;
@@ -177,8 +178,10 @@ PROCEDURE tt_AIP_Load_Emps IS
                  records_loaded,
                  records_failed_et,
                  records_failed_db,
-                 Trunc(SYSDATE) - Trunc(start_time),
-                 Trunc(SYSDATE) - Trunc(end_time),
+                 To_Char(start_time, c_fmt_datetime),
+                 To_Char(end_time, c_fmt_datetime),
+                 c_seconds_in_day*(SYSDATE - start_time),
+                 c_seconds_in_day*(SYSDATE - end_time),
                  job_status)
         BULK COLLECT INTO x_jbs_lis
         FROM job_statistics_v

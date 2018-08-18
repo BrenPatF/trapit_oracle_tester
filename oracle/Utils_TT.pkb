@@ -342,7 +342,7 @@ BEGIN
      SET output_data    = l_out_clob
    WHERE package_nm     = p_package_nm
      AND procedure_nm   = p_procedure_nm;
-  DBMS_XSLPROCESSOR.clob2file(l_out_clob, 'INPUT_DIR', p_package_nm || '.' || p_procedure_nm || '_OUT.json');
+  DBMS_XSLPROCESSOR.clob2file(l_out_clob, 'INPUT_DIR', Lower(Substr(p_package_nm || '.' || p_procedure_nm, 1, 51)) || '_out.json');
   Timer_Set.Increment_Time(p_timer_set, 'Output CLOB to table/file');
   Timer_Set.Write_Times(p_timer_set);
 

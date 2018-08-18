@@ -38,7 +38,7 @@
                "1|LN 1|EM 1|IT_PROG|1000"
             ],
             "Output array":[
-               "1|UNTESTED"
+               "1|LIKE /^[A-Z -]+[A-Z]$/"
             ],
             "Exception":[
             ]
@@ -91,9 +91,9 @@
                "5|LN 6|EM 6|IT_PROG|5000"
             ],
             "Output array":[
-               "3|UNTESTED",
+               "3|LIKE /^[A-Z -]+[A-Z]$/",
                "0|ORA-02291: integrity constraint (.) violated - parent key not found",
-               "5|UNTESTED"
+               "5|LIKE /^[A-Z -]+[A-Z]$/"
             ],
             "Exception":[
             ]
