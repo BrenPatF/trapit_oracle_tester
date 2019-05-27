@@ -1,52 +1,134 @@
-# trapit_oracle_tester
-TRansactional API Test (TRAPIT) utility packages for Oracle plus demo base and test programs for Oracle's HR demo schema.
+# Trapit
+Oracle PL/SQL unit testing module.
 
-The test utility packages and types are designed as a lightweight PL/SQL-based framework for API testing that can be considered as an alternative to utPLSQL. The framework is based on the idea that all API testing programs can follow a universal design pattern for testing APIs, using the concept of a ‘pure’ function as a wrapper to manage the ‘impurity’ inherent in database APIs. I explained the concepts involved in a presentation at the Oracle User Group Ireland Conference in March 2018:
+TRansactional API Testing (TRAPIT) framework for Oracle PL/SQL unit testing.
 
-<a href="https://www.slideshare.net/brendanfurey7/database-api-viewed-as-a-mathematical-function-insights-into-testing" target="_blank">The Database API Viewed As A Mathematical Function: Insights into Testing</a>
+This is a lightweight PL/SQL-based framework for API testing that can be considered as an alternative to utPLSQL. The framework is based on the idea that all API testing programs can follow a universal design pattern for testing APIs, using the concept of a â€˜pureâ€™ function as a wrapper to manage the â€˜impurityâ€™ inherent in database APIs. In this approach, a 'pure' wrapper function is constructed that takes input parameters and returns a value, and is tested within a loop over scenario records read from a JSON file. I explained the concepts involved in a presentation at the Oracle User Group Ireland Conference in March 2018:
 
-The following article provides example output and links to articles describing design patterns the framework is designed to facilitate, as well as anti-patterns it is designed to discourage:
+- [The Database API Viewed As A Mathematical Function: Insights into Testing](https://www.slideshare.net/brendanfurey7/database-api-viewed-as-a-mathematical-function-insights-into-testing)
 
-<a href="http://aprogrammerwrites.eu/?p=1723" target="_blank">TRAPIT - TRansactional API Testing in Oracle</a>
+I later named the approach 'The Math Function Unit Testing design pattern':
+- [The Math Function Unit Testing design pattern, implemented in nodejs](https://github.com/BrenPatF/trapit_nodejs_tester)
 
-6 July 2018: json_input_output feature branch created that moves all inputs out of the packages and into JSON files, and creates output JSON files that include the actuals. A new table is added to store the input and output JSON files by package and procedure. The output files can be used as inputs to a Nodejs program, recently added to GitHub, to produce result reports formatted in both HTML and text. The input JSON files are read into the new table at installation time, and read from the table thereafter. The Nodejs project includes the formatted reports for this Oracle project. The output JSON files are written to Oracle directory input_dir (and the input JSON files are read from there), but I have copied them into the project oracle root for reference.
+This module is a pre-requisite for the unit testing parts of these other Oracle GitHub modules:
+- [Utils - Oracle PL/SQL general utilities module](https://github.com/BrenPatF/oracle_plsql_utils)
+- [Log_Set - Oracle logging module](https://github.com/BrenPatF/log_set_oracle)
+- [Timer_Set - Oracle PL/SQL code timing module](https://github.com/BrenPatF/timer_set_oracle)
 
-<a href="https://github.com/BrenPatF/trapit_nodejs_tester" target="_blank">trapit_nodejs_tester</a>
+Note: The code from earlier versions of this repo has been moved to a new repo, oracle_plsql_api_demos, where it will be refactored to demonstrate the API calls, along with unit testing, code timing and message logging.
 
-Pre-requisites
-==============
-In order to run the demo unit test suite, you must have installed Oracle's HR demo schema on your Oracle instance:
+## Usage
 
-<a href="https://docs.oracle.com/cd/E11882_01/server.112/e10831/installation.htm#COMSC001" target="_blank">Oracle Database Sample Schemas</a>
-    
-There are no other dependencies outside this project, other than that the latest, JSON, version produces JSON outputs but not formatted reports, which can be obtained from my Nodejs project, mentioned above. I may add a PL/SQL formatter at a later date.
+In order to use the framework for unit testing, the following preliminary steps are required: 
+* A JSON file is created containing the input test data including expected return values in the required format. The input JSON file essentially consists of two objects: 
+  * `meta`: inp and out objects each containing group objects with arrays of field names
+  * `scenarios`: scenario objects containing inp and out objects, with inp and out objects containing, for each group defined in meta, an array of input records and an array of expected output records, respectively, records being in delimited fields format
+* A unit test PL/SQL program is created as a public procedure in a package (see example below). The program calls:
+  * Trapit.Get_Inputs to get the JSON data and translate into PL/SQL arrays
+  * Trapit.Set_Outputs to convert actual results in PL/SQL arrays into JSON, and write the output JSON file
+* A record is inserted into the tt_units table using the Trapit.Add_Ttu procedure, passing names of package, procedure, JSON file (which should be placed in an Oracle directory, INPUT_DIR) and an active Y/N flag
 
-Output logging
-==============
-The testing utility packages use my own simple logging framework, installed as part of the installation scripts. To replace this with your own preferred logging framework, simply edit the procedure Utils.Write_Log to output using your own logging procedure, and optionally drop the log_headers and log_lines tables, along with the three Utils.*_Log methods.
+Once the preliminary steps are executed, the following steps run the unit test program: 
+* The procedure Trapit.Run_Tests is called to run active test programs, writing JSON output files both to the tt_units table and to the Oracle directory, INPUT_DIR
+* Open a DOS or Powershell window in the trapit npm package folder (`see Install 3: Install npm trapit package below`) after placing the output JSON file in the subfolder ./examples/externals and run:
+```
+$ node ./examples/externals/test-externals
+```
+The nodejs program produces listings of the results in HTML and/or text format. The unit test steps can easily be automated in Powershell (or in a Unix script).
 
-As far as I know, prior to the latest JSON version, the code should work on any recent-ish version - I have tested on 11.2 and 12.1. The JSON version may require 12.2.
+### Example test program main procedure from Utils module
+```
+PROCEDURE Test_API IS
 
-Install steps
-=============
- 	Extract all the files into a directory
- 	Update Install_SYS.sql to ensure Oracle directory input_dir points to a writable directory on the database sever (in repo now is set to 'C:\input')
-	Copy the input JSON files to the directory pointed to by input_dir:
-		TT_EMP_BATCH.tt_AIP_Load_Emps.json
-		TT_EMP_WS.tt_AIP_Get_Dept_Emps.json
-		TT_EMP_WS.tt_AIP_Save_Emps.json
-		TT_VIEW_DRIVERS.tt_HR_Test_View_V.json
- 	Run Install_SYS.sql as a DBA passing new library schema name as parameter (eg @Install_SYS trapit)
- 	Run Install_HR.sql from the HR schema passing library utilities schema name as parameter  (eg @Install_HR trapit)
- 	Run Install_Bren.sql from the schema for the library utilities (@Install_Bren)
- 	Check log files for any errors
+  PROC_NM                        CONSTANT VARCHAR2(30) := 'Test_API';
+  l_act_3lis                     L3_chr_arr := L3_chr_arr();
+  l_sces_4lis                    L4_chr_arr;
+  l_scenarios                    Trapit.scenarios_rec;
+  l_delim                        VARCHAR2(10);
+BEGIN
 
-Running the demo test suite
-===========================
-Run R_Suite_br.sql from the schema for the library utilities in the installation directory.
+  l_scenarios := Trapit.Get_Inputs(p_package_nm  => $$PLSQL_UNIT,
+                                   p_procedure_nm => PROC_NM);
+  l_sces_4lis := l_scenarios.scenarios_4lis;
+  l_delim := l_scenarios.delim;
+  l_act_3lis.EXTEND(l_sces_4lis.COUNT);
+  FOR i IN 1..l_sces_4lis.COUNT LOOP
+    l_act_3lis(i) := purely_Wrap_API(p_delim    => l_delim,
+                                     p_inp_3lis => l_sces_4lis(i));
+  END LOOP;
 
-Java driver
-===========
-I have included a java program that can be used to call the web service base procedure. This is not required for the Oracle code, but I thought it might make a useful template for JDBC integration testing:
+  Trapit.Set_Outputs(p_package_nm   => $$PLSQL_UNIT,
+                     p_procedure_nm => PROC_NM,
+                     p_act_3lis     => l_act_3lis);
+END Test_API;
+```
 
-<a href="http://aprogrammerwrites.eu/?p=1676" target="_blank">A Template Script for JDBC Integration Testing of Oracle Procedures</a>
+## API
+### l_scenarios Trapit.scenarios_rec := Trapit.Get_Inputs(p_package_nm, p_procedure_nm)
+Returns a record containing a delimiter and 4-level list of scenario metadata for testing the given package procedure, with parameters as follows:
+
+* `p_package_nm`: package name
+* `p_procedure_nm`: procedure name
+
+Return Value
+* `scenarios_rec`: record type with two fields:
+  * `delim`: record delimiter
+  * `scenarios_4lis`: 4-level list of scenario input values - (scenario, group, record, field)
+
+### Trapit.Set_Outputs(p_package_nm, p_procedure_nm, p_act_3lis)
+Adds the actual results data into the JSON input object for testing the given package procedure and writes it to file, and to a column in tt_units table, with parameters as follows:
+
+* `p_package_nm`: package name
+* `p_procedure_nm`: procedure name
+* `p_act_3lis`: 3-level list of actual values as delimited records, by scenario and group
+
+### Trapit.Run_Tests
+Runs the unit test program for each package procedure set to active in tt_units table.
+
+### Trapit.Add_Ttu(p_package_nm, p_procedure_nm, p_active_yn, p_input_file)
+Adds a record to tt_units table, with parameters as follows:
+
+* `p_package_nm`: package name
+* `p_procedure_nm`: procedure name
+* `p_active_yn`: active Y/N flag
+* `p_input_file`: name of input file, which has to exist in Oracle directory `input_dir`
+
+## Installation
+The install depends on the pre-requisite module Utils, and `lib` schema refers to the schema in which Utils is installed.
+
+### Install 1: Install Utils module (if not present)
+#### [Schema: lib; Folder: (Utils) lib]
+- Download and install the Utils module:
+[Utils on GitHub](https://github.com/BrenPatF/oracle_plsql_utils)
+
+### Install 2: Install Oracle Trapit module
+#### [Schema: lib; Folder: lib]
+- Run script from slqplus:
+```
+SQL> @install_trapit
+```
+This creates the required objects without public synonyms or grants. It requires a minimum Oracle database version of 12.2.
+
+### Install 3: Install npm trapit package
+#### [Folder: (npm root)]
+Open a DOS or Powershell window in the folder where you want to install npm packages, and, with [nodejs](https://nodejs.org/en/download/) installed, run
+```
+$ npm install trapit
+```
+This should install the trapit nodejs package in a subfolder .\node_modules\trapit
+
+## Operating System/Oracle Versions
+### Windows
+Tested on Windows 10, should be OS-independent
+### Oracle
+- Tested on Oracle Database Version 18.3.0.0.0
+- Minimum version 12.2
+
+## See also
+- [Utils - Oracle PL/SQL general utilities module](https://github.com/BrenPatF/oracle_plsql_utils)
+- [Log_Set - Oracle logging module](https://github.com/BrenPatF/log_set_oracle)
+- [Timer_Set - Oracle PL/SQL code timing module](https://github.com/BrenPatF/timer_set_oracle)
+- [Trapit - nodejs unit test processing package](https://github.com/BrenPatF/trapit_nodejs_tester)
+
+## License
+MIT

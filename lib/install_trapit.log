@@ -1,0 +1,53 @@
+
+Database             Time                 Version
+-------------------- -------------------- ------------------------------
+Start: ORCL          27-MAY-2019 07:04:20 Version 18.3.0.0.0
+
+Drop table tt_units
+
+Table dropped.
+
+Common type creation
+====================
+
+Type dropped.
+
+
+Type dropped.
+
+Create type L2_chr_arr
+
+Type created.
+
+Create type L3_chr_arr
+
+Type created.
+
+Create type L4_chr_arr
+
+Type created.
+
+Table creation
+==============
+Create table tt_units
+tt_units
+
+Table created.
+
+
+Comment created.
+
+Create package Trapit
+
+Package created.
+
+No errors.
+
+Package body created.
+
+No errors.
+
+'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
+----------------------------------
+End: 27-MAY-2019 07:04:21
+
