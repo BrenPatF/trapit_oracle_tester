@@ -63,7 +63,7 @@ BEGIN
 END Test_API;
 ```
 
-## API
+## API - Trapit
 ### l_scenarios Trapit.scenarios_rec := Trapit.Get_Inputs(p_package_nm, p_procedure_nm)
 Returns a record containing a delimiter and 4-level list of scenario metadata for testing the given package procedure, with parameters as follows:
 
@@ -82,16 +82,24 @@ Adds the actual results data into the JSON input object for testing the given pa
 * `p_procedure_nm`: procedure name
 * `p_act_3lis`: 3-level list of actual values as delimited records, by scenario and group
 
-### Trapit.Run_Tests
-Runs the unit test program for each package procedure set to active in tt_units table.
-
-### Trapit.Add_Ttu(p_package_nm, p_procedure_nm, p_active_yn, p_input_file)
+### Trapit.Add_Ttu(p_package_nm, p_procedure_nm, p_group_nm, p_active_yn, p_input_file)
 Adds a record to tt_units table, with parameters as follows:
 
 * `p_package_nm`: package name
 * `p_procedure_nm`: procedure name
+* `p_group_nm`: test group name
 * `p_active_yn`: active Y/N flag
 * `p_input_file`: name of input file, which has to exist in Oracle directory `input_dir`
+
+## API - Trapit_Run
+This package runs with Invoker rights, not the default Definer rights, so that dynamic SQL calls to the test packages in the calling schema do not require execute privilege to be granted to owning schema (if different from caller).
+
+### Trapit.Run_Tests(p_group_nm)
+Runs the unit test program for each package procedure set to active in tt_units table for a given test group, with parameters as follows:
+
+* `p_group_nm`: test group name
+
+Normally the test packages in a group will be within a single schema from where the tests would be run.
 
 ## Installation
 The install depends on the pre-requisite module Utils, and `lib` schema refers to the schema in which Utils is installed.
@@ -105,11 +113,22 @@ The install depends on the pre-requisite module Utils, and `lib` schema refers t
 #### [Schema: lib; Folder: lib]
 - Run script from slqplus:
 ```
-SQL> @install_trapit
+SQL> @install_trapit app
 ```
-This creates the required objects without public synonyms or grants. It requires a minimum Oracle database version of 12.2.
+This creates the required components for the base install along with grants for them to the app schema (passing none instead of app will bypass the grants). It requires a minimum Oracle database version of 12.2. To grant privileges to another `schema`, run the grants script directly, passing `schema`:
+```
+SQL> @grant_trapit_to_app schema
+```
 
-### Install 3: Install npm trapit package
+### Install 3: Create synonyms to lib
+#### [Schema: app; Folder: app]
+- Run script from slqplus:
+```
+SQL> @c_trapit_syns lib
+```
+This install creates private synonyms to the lib schema. To create synonyms within another schema, run the synonyms script directly from that schema, passing lib schema.
+
+### Install 4: Install npm trapit package
 #### [Folder: (npm root)]
 Open a DOS or Powershell window in the folder where you want to install npm packages, and, with [nodejs](https://nodejs.org/en/download/) installed, run
 ```

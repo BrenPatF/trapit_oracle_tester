@@ -10,9 +10,11 @@ This module facilitates unit testing following 'The Math Function Unit Testing d
     GitHub: https://github.com/BrenPatF/trapit_oracle_tester
 
 ====================================================================================================
-|  Package |  Notes                                                                                |
+|  Package     |  Notes                                                                            |
 |===================================================================================================
-| *Trapit* |  Unit test utility package                                                            |
+| *Trapit*     |  Unit test utility package (Definer rights)                                       |
+----------------------------------------------------------------------------------------------------
+|  Trapit_Run  |  Unit test utility runner package (Invoker rights)                                |
 ====================================================================================================
 
 This file has the Trapit package body. See README for API specification, and the other modules
@@ -25,36 +27,6 @@ INP                           CONSTANT VARCHAR2(10) := 'inp';
 OUT                           CONSTANT VARCHAR2(10) := 'out';
 EXP                           CONSTANT VARCHAR2(10) := 'exp';
 ACT                           CONSTANT VARCHAR2(10) := 'act';
-/***************************************************************************************************
-
-Run_Tests: Run tests
-
-***************************************************************************************************/
-PROCEDURE Run_Tests IS
-
-  TYPE tt_units_arr IS VARRAY(1000) OF tt_units%ROWTYPE;
-  l_tt_units_lis    tt_units_arr;
-  PROCEDURE Run_TT_Package (p_package_proc_nm VARCHAR2) IS
-  BEGIN
-
-    EXECUTE IMMEDIATE 'BEGIN ' || p_package_proc_nm || '; END;';
-
-  END Run_TT_Package;
-
-BEGIN
-
-  SELECT *
-    BULK COLLECT INTO l_tt_units_lis
-    FROM tt_units
-  WHERE active_yn = 'Y';
-  FOR i IN 1..l_tt_units_lis.COUNT LOOP
-
-    Run_TT_Package(l_tt_units_lis(i).package_nm || '.' ||  l_tt_units_lis(i).procedure_nm);
-    COMMIT;
-
-  END LOOP;
-
-END Run_Tests;
 
 /***************************************************************************************************
 
@@ -214,10 +186,12 @@ Add_Ttu: Add a record to tt_units, reading in input_json from JSON file
 
 ***************************************************************************************************/
 
-PROCEDURE Add_Ttu(p_package_nm      VARCHAR2,    -- test package name 
-                  p_procedure_nm    VARCHAR2,    -- test procedure name 
-                  p_active_yn       VARCHAR2,    -- test active Y/N
-                  p_input_file      VARCHAR2) IS -- input file name
+PROCEDURE Add_Ttu(
+            p_package_nm                   VARCHAR2,    -- test package name 
+            p_procedure_nm                 VARCHAR2,    -- test procedure name 
+            p_group_nm                     VARCHAR2,    -- test group
+            p_active_yn                    VARCHAR2,    -- test active Y/N
+            p_input_file                   VARCHAR2) IS -- input file name
 
   l_src_file      BFILE := BFileName('INPUT_DIR', p_input_file);
   l_dest_lob      CLOB;
@@ -244,24 +218,31 @@ BEGIN
 
   MERGE INTO tt_units tgt
   USING (SELECT p_package_nm    package_nm, 
-                p_procedure_nm  procedure_nm, 
+                p_procedure_nm  procedure_nm,
+                p_group_nm      group_nm,
                 p_active_yn     active_yn, 
                 l_dest_lob      input_json 
            FROM DUAL) src
      ON (tgt.package_nm   = src.package_nm 
     AND  tgt.procedure_nm = src.procedure_nm)
   WHEN NOT MATCHED THEN
-    INSERT (tgt.package_nm, tgt.procedure_nm, tgt.active_yn, tgt.input_json)
-    VALUES (src.package_nm, src.procedure_nm, src.active_yn, src.input_json)
+    INSERT (tgt.package_nm, tgt.procedure_nm, tgt.group_nm, tgt.active_yn, tgt.input_json)
+    VALUES (src.package_nm, src.procedure_nm, src.group_nm, src.active_yn, src.input_json)
   WHEN MATCHED THEN
     UPDATE
-       SET tgt.active_yn  = src.active_yn,
+       SET tgt.group_nm   = src.group_nm,
+           tgt.active_yn  = src.active_yn,
            tgt.input_json = src.input_json;
   COMMIT;
   DBMS_LOB.FreeTemporary(l_dest_lob);
   DBMS_LOB.Close(l_src_file);
 
 END Add_Ttu;
+
+BEGIN
+
+  DBMS_Session.Set_Context('TRAPIT_CTX', 'MODE', 'UT');
+  DBMS_Session.Set_NLS('nls_date_format', '''DD-MON-YYYY''');--c_date_fmt); - constant did not work
 
 END Trapit;
 /

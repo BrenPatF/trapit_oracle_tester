@@ -1,0 +1,35 @@
+
+Database             Time                 Version
+-------------------- -------------------- ------------------------------
+Start: ORCL          03-JUN-2019 13:50:39 Version 18.3.0.0.0
+
+old   1: CREATE OR REPLACE SYNONYM L2_chr_arr FOR &lib..L2_chr_arr
+new   1: CREATE OR REPLACE SYNONYM L2_chr_arr FOR lib.L2_chr_arr
+
+Synonym created.
+
+old   1: CREATE OR REPLACE SYNONYM L3_chr_arr FOR &lib..L3_chr_arr
+new   1: CREATE OR REPLACE SYNONYM L3_chr_arr FOR lib.L3_chr_arr
+
+Synonym created.
+
+old   1: CREATE OR REPLACE SYNONYM L4_chr_arr FOR &lib..L4_chr_arr
+new   1: CREATE OR REPLACE SYNONYM L4_chr_arr FOR lib.L4_chr_arr
+
+Synonym created.
+
+old   1: CREATE OR REPLACE SYNONYM Trapit FOR &lib..Trapit
+new   1: CREATE OR REPLACE SYNONYM Trapit FOR lib.Trapit
+
+Synonym created.
+
+old   1: CREATE OR REPLACE SYNONYM Trapit_Run FOR &lib..Trapit_Run
+new   1: CREATE OR REPLACE SYNONYM Trapit_Run FOR lib.Trapit_Run
+
+Synonym created.
+
+
+'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
+----------------------------------
+End: 03-JUN-2019 13:50:39
+

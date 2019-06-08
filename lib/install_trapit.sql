@@ -1,3 +1,4 @@
+DEFINE app=&1
 @..\initspool install_trapit
 /***************************************************************************************************
 Name: install_trapit.sql               Author: Brendan Furey                       Date: 19-May-2019
@@ -15,14 +16,18 @@ Pre-requisite: Installation of the oracle_plsql_utils module (base install):
 
 The lib schema refers to the schema in which oracle_plsql_utils was installed.
 ====================================================================================================
-|  Script              |  Notes                                                                    |
+|  Script                   |  Notes                                                               |
 |===================================================================================================
-| *install_trapit.sql* |  Creates base components, including Trapit package, in lib schema         |
+| *install_trapit.sql*      |  Creates base components, including Trapit package, in lib schema    |
+----------------------------------------------------------------------------------------------------
+|  grant_trapit_to_app.sql  |  Grants privileges on Trapit components from lib to app schema       |
+----------------------------------------------------------------------------------------------------
+|  c_trapit_syns.sql        |  Creates synonyms for Trapit components in app schema to lib schema  |
 ====================================================================================================
 
 This file has the install script for the lib schema.
 
-Components created, with NO synonyms or grants - only accessible within lib schema:
+Components created, with grants to app schema (if passed) via grant_trapit_to_app.sql:
 
     Types         Description
     ============  ==================================================================================
@@ -66,6 +71,7 @@ PROMPT tt_units
 CREATE TABLE tt_units (
     package_nm                   VARCHAR2(30) NOT NULL,
     procedure_nm                 VARCHAR2(30) NOT NULL,
+    group_nm                     VARCHAR2(30),
     description                  VARCHAR2(500),
     active_yn                    VARCHAR2(1),
     input_json                   CLOB,
@@ -76,7 +82,18 @@ CREATE TABLE tt_units (
 /
 COMMENT ON TABLE tt_units IS 'Unit test metadata'
 /
+CREATE OR REPLACE CONTEXT Trapit_Ctx USING Trapit
+/
 PROMPT Create package Trapit
 @trapit.pks
 @trapit.pkb
+PROMPT Create package Trapit_Run
+@trapit_run.pks
+@trapit_run.pkb
+
+PROMPT Grant access to &app (skip if none passed)
+WHENEVER SQLERROR EXIT
+EXEC IF '&app' = 'none' THEN RAISE_APPLICATION_ERROR(-20000, 'Skipping schema grants'); END IF;
+@grant_trapit_to_app &app
+
 @..\endspool
