@@ -92,21 +92,30 @@ BEGIN
   l_scenarios.delim := l_delim;
   l_sce_obj := l_json_obj.get_Object(SCENARIOS);
   l_keys := l_sce_obj.get_Keys;
-  l_sces_4lis.EXTEND(l_keys.COUNT);
   FOR i IN 1..l_keys.COUNT LOOP
+
+    IF l_sce_obj.get_Object(l_keys(i)).get_String('active_yn') = 'N' THEN
+      CONTINUE;
+    END IF;
+
+    l_sces_4lis.EXTEND;
     l_groups := l_sce_obj.get_Object(l_keys(i)).get_Object(INP).get_Keys;
     l_grps_3lis := L3_chr_arr();
     l_grps_3lis.EXTEND(l_groups.COUNT);
     FOR j IN 1..l_groups.COUNT LOOP
+
       l_rec_list := l_sce_obj.get_Object(l_keys(i)).get_Object(INP).get_Array(l_groups(j));
       l_recs_2lis := L2_chr_arr();
       l_recs_2lis.EXTEND(l_rec_list.get_Size);
+
       FOR k IN 0..l_rec_list.get_Size-1 LOOP
         l_recs_2lis(k + 1) := Utils.Split_Values(l_rec_list.get_String(k), Nvl(l_delim, Utils.DELIM));
       END LOOP;
       l_grps_3lis(j) := l_recs_2lis;
+
     END LOOP;
-    l_sces_4lis(i) := l_grps_3lis;
+    l_sces_4lis(l_sces_4lis.COUNT) := l_grps_3lis;
+
   END LOOP;
   l_scenarios.scenarios_4lis := l_sces_4lis;
   RETURN l_scenarios;
@@ -140,6 +149,7 @@ PROCEDURE Set_Outputs(
   l_scenarios             JSON_Key_List;
   l_groups                JSON_Key_List;
   l_out_clob              CLOB;
+  i_act                   PLS_INTEGER := 0;
 
 BEGIN
 
@@ -148,7 +158,14 @@ BEGIN
   l_out_obj.put(META, l_json_obj.get_Object(META));
   l_sce_obj := l_json_obj.get_Object(SCENARIOS);
   l_scenarios := l_sce_obj.get_Keys;
+
   FOR i IN 1..l_scenarios.COUNT LOOP
+
+    IF l_sce_obj.get_Object(l_scenarios(i)).get_String('active_yn') = 'N' THEN
+      CONTINUE;
+    END IF;
+
+    i_act := i_act + 1;
     l_scenario_out_obj := JSON_Object_T();
     l_scenario_out_obj.put(INP, l_sce_obj.get_Object(l_scenarios(i)).get_Object(INP));
     l_groups := l_sce_obj.get_Object(l_scenarios(i)).get_Object(OUT).get_Keys;
@@ -157,22 +174,26 @@ BEGIN
 
       l_exp_list := l_sce_obj.get_Object(l_scenarios(i)).get_Object(OUT).get_Array(l_groups(j));
       l_act_list := JSON_Array_T();
-      IF p_act_3lis(i)(j) IS NOT NULL THEN
-        FOR k IN 1..p_act_3lis(i)(j).COUNT LOOP
-          l_act_list.Append(p_act_3lis(i)(j)(k));
+      IF p_act_3lis(i_act)(j) IS NOT NULL THEN
+
+        FOR k IN 1..p_act_3lis(i_act)(j).COUNT LOOP
+          l_act_list.Append(Nvl(p_act_3lis(i_act)(j)(k), ''));
         END LOOP;
+
       END IF;
       l_result_obj := JSON_Object_T();
       l_result_obj.Put(EXP, l_exp_list);
       l_result_obj.Put(ACT, l_act_list);
       l_grp_out_obj.Put(l_groups(j), l_result_obj);
+
     END LOOP;
     l_scenario_out_obj.put(OUT, l_grp_out_obj);
     l_scenarios_out_obj.put(l_scenarios(i), l_scenario_out_obj);
+
   END LOOP;
   l_out_obj.put(SCENARIOS, l_scenarios_out_obj);
-
   l_out_clob := l_out_obj.to_clob();
+
   UPDATE tt_units
      SET output_json    = l_out_clob
    WHERE package_nm     = p_package_nm
