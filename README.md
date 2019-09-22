@@ -15,8 +15,6 @@ This module is a pre-requisite for the unit testing parts of these other Oracle 
 - [Log_Set - Oracle logging module](https://github.com/BrenPatF/log_set_oracle)
 - [Timer_Set - Oracle PL/SQL code timing module](https://github.com/BrenPatF/timer_set_oracle)
 
-Note: The code from earlier versions of this repo has been moved to a new repo, oracle_plsql_api_demos, where it will be refactored to demonstrate the API calls, along with unit testing, code timing and message logging.
-
 ## Usage
 
 In order to use the framework for unit testing, the following preliminary steps are required: 
