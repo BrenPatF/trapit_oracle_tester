@@ -104,10 +104,26 @@ Normally the test packages in a group will be within a single schema from where 
 ## Installation
 The install depends on the pre-requisite module Utils, and `lib` schema refers to the schema in which Utils is installed.
 
-### Install 1: Install Utils module (if not present)
-#### [Schema: lib; Folder: (Utils) lib]
-- Download and install the Utils module:
-[Utils on GitHub](https://github.com/BrenPatF/oracle_plsql_utils)
+### Install 1: Install pre-requisite module
+The pre-requisite module can be installed by following the instructions at [Utils on GitHub](https://github.com/BrenPatF/oracle_plsql_utils). This allows inclusion of the examples and unit tests for the module. Alternatively, the next section shows how to install the module directly without its examples or unit tests here.
+
+#### [Schema: sys; Folder: install_prereq] Create lib and app schemas and Oracle directory
+- install_sys.sql creates an Oracle directory, `input_dir`, pointing to 'c:\input'. Update this if necessary to a folder on the database server with read/write access for the Oracle OS user
+- Run script from slqplus:
+```
+SQL> @install_sys
+```
+
+#### [Schema: lib; Folder: install_prereq\lib] Create lib components
+- Run script from slqplus:
+```
+SQL> @install_lib_all
+```
+#### [Schema: app; Folder: install_prereq\app] Create app synonyms
+- Run script from slqplus:
+```
+SQL> @c_syns_all
+```
 
 ### Install 2: Install Oracle Trapit module
 #### [Schema: lib; Folder: lib]
