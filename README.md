@@ -15,7 +15,15 @@ This module is a pre-requisite for the unit testing parts of these other Oracle 
 - [Log_Set - Oracle logging module](https://github.com/BrenPatF/log_set_oracle)
 - [Timer_Set - Oracle PL/SQL code timing module](https://github.com/BrenPatF/timer_set_oracle)
 
+## In this README...
+- [Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)
+- [API - Trapit](https://github.com/BrenPatF/trapit_oracle_tester#api---trapit)
+- [API - Trapit_Run](https://github.com/BrenPatF/trapit_oracle_tester#api---trapit_run)
+- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
+- [Operating System/Oracle Versions](https://github.com/BrenPatF/trapit_oracle_tester#operating-systemoracle-versions)
+
 ## Usage
+- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
 
 In order to use the framework for unit testing, the following preliminary steps are required: 
 * A JSON file is created containing the input test data including expected return values in the required format. The input JSON file essentially consists of two objects: 
@@ -64,7 +72,13 @@ END Test_API;
 There is also a separate [module](https://github.com/BrenPatF/oracle_plsql_api_demos) demonstrating instrumentation and logging, code timing and unit testing of Oracle PL/SQL APIs.
 
 ## API - Trapit
+- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
+- [Get_Inputs(p_package_nm, p_procedure_nm)](https://github.com/BrenPatF/trapit_oracle_tester#l_scenarios-trapitscenarios_rec--trapitget_inputsp_package_nm-p_procedure_nm)
+- [Set_Outputs(p_package_nm, p_procedure_nm, p_act_3lis)](https://github.com/BrenPatF/trapit_oracle_tester#trapitset_outputsp_package_nm-p_procedure_nm-p_act_3lis)
+- [Add_Ttu(p_package_nm, p_procedure_nm, p_group_nm, p_active_yn, p_input_file)](https://github.com/BrenPatF/trapit_oracle_tester#trapitadd_ttup_package_nm-p_procedure_nm-p_group_nm-p_active_yn-p_input_file)
 ### l_scenarios Trapit.scenarios_rec := Trapit.Get_Inputs(p_package_nm, p_procedure_nm)
+- [API - Trapit](https://github.com/BrenPatF/trapit_oracle_tester#api---trapit)
+
 Returns a record containing a delimiter and 4-level list of scenario metadata for testing the given package procedure, with parameters as follows:
 
 * `p_package_nm`: package name
@@ -76,6 +90,8 @@ Return Value
   * `scenarios_4lis`: 4-level list of scenario input values - (scenario, group, record, field)
 
 ### Trapit.Set_Outputs(p_package_nm, p_procedure_nm, p_act_3lis)
+- [API - Trapit](https://github.com/BrenPatF/trapit_oracle_tester#api---trapit)
+
 Adds the actual results data into the JSON input object for testing the given package procedure and writes it to file, and to a column in tt_units table, with parameters as follows:
 
 * `p_package_nm`: package name
@@ -83,6 +99,8 @@ Adds the actual results data into the JSON input object for testing the given pa
 * `p_act_3lis`: 3-level list of actual values as delimited records, by scenario and group
 
 ### Trapit.Add_Ttu(p_package_nm, p_procedure_nm, p_group_nm, p_active_yn, p_input_file)
+- [API - Trapit](https://github.com/BrenPatF/trapit_oracle_tester#api---trapit)
+
 Adds a record to tt_units table, with parameters as follows:
 
 * `p_package_nm`: package name
@@ -92,6 +110,9 @@ Adds a record to tt_units table, with parameters as follows:
 * `p_input_file`: name of input file, which has to exist in Oracle directory `input_dir`
 
 ## API - Trapit_Run
+- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
+- [Run_Tests(p_group_nm)](https://github.com/BrenPatF/trapit_oracle_tester#trapitrun_testsp_group_nm)
+
 This package runs with Invoker rights, not the default Definer rights, so that dynamic SQL calls to the test packages in the calling schema do not require execute privilege to be granted to owning schema (if different from caller).
 
 ### Trapit.Run_Tests(p_group_nm)
@@ -102,9 +123,17 @@ Runs the unit test program for each package procedure set to active in tt_units 
 Normally the test packages in a group will be within a single schema from where the tests would be run.
 
 ## Installation
+- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
+- [Install 1: Install pre-requisite module](https://github.com/BrenPatF/trapit_oracle_tester#install-1-install-pre-requisite-module)
+- [Install 2: Install Oracle Trapit module](https://github.com/BrenPatF/trapit_oracle_tester#install-2-install-oracle-trapit-module)
+- [Install 3: Create synonyms to lib](https://github.com/BrenPatF/trapit_oracle_tester#install-3-create-synonyms-to-lib)
+- [Install 4: Install npm trapit package](https://github.com/BrenPatF/trapit_oracle_tester#install-4-install-npm-trapit-package)
+
 The install depends on the pre-requisite module Utils, and `lib` schema refers to the schema in which Utils is installed.
 
 ### Install 1: Install pre-requisite module
+- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
+
 The pre-requisite module can be installed by following the instructions at [Utils on GitHub](https://github.com/BrenPatF/oracle_plsql_utils). This allows inclusion of the examples and unit tests for the module. Alternatively, the next section shows how to install the module directly without its examples or unit tests here.
 
 #### [Schema: sys; Folder: install_prereq] Create lib and app schemas and Oracle directory
@@ -126,6 +155,7 @@ SQL> @c_syns_all
 ```
 
 ### Install 2: Install Oracle Trapit module
+- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
 #### [Schema: lib; Folder: lib]
 - Run script from slqplus:
 ```
@@ -137,6 +167,7 @@ SQL> @grant_trapit_to_app schema
 ```
 
 ### Install 3: Create synonyms to lib
+- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
 #### [Schema: app; Folder: app]
 - Run script from slqplus:
 ```
@@ -145,6 +176,7 @@ SQL> @c_trapit_syns lib
 This install creates private synonyms to the lib schema. To create synonyms within another schema, run the synonyms script directly from that schema, passing lib schema.
 
 ### Install 4: Install npm trapit package
+- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
 #### [Folder: (npm root)]
 Open a DOS or Powershell window in the folder where you want to install npm packages, and, with [nodejs](https://nodejs.org/en/download/) installed, run
 ```
@@ -153,6 +185,7 @@ $ npm install trapit
 This should install the trapit nodejs package in a subfolder .\node_modules\trapit
 
 ## Operating System/Oracle Versions
+- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
 ### Windows
 Tested on Windows 10, should be OS-independent
 ### Oracle
