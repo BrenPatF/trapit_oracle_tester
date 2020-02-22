@@ -1,5 +1,8 @@
 # Trapit
+<img src="mountains.png">
 Oracle PL/SQL unit testing module.
+
+:detective:
 
 TRansactional API Testing (TRAPIT) framework for Oracle PL/SQL unit testing.
 
