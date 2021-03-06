@@ -133,11 +133,13 @@ Requires Oracle database 12.2 or higher
 
 ***************************************************************************************************/
 PROCEDURE Set_Outputs(
-            p_package_nm                   VARCHAR2,      -- package name
-            p_procedure_nm                 VARCHAR2,      -- procedure name
-            p_act_3lis                     L3_chr_arr) IS -- actuals as 3-level list of lists
+            p_package_nm                   VARCHAR2,         -- package name
+            p_procedure_nm                 VARCHAR2,         -- procedure name
+            p_title                        VARCHAR2 := NULL, -- optional title to override the file value
+            p_act_3lis                     L3_chr_arr) IS    -- actuals as 3-level list of lists
   l_json_obj              JSON_Object_T;
   l_out_obj               JSON_Object_T := JSON_Object_T();
+  l_met_obj               JSON_Object_T := JSON_Object_T();
   l_scenarios_out_obj     JSON_Object_T := JSON_Object_T();
   l_out_sce_obj           JSON_Object_T;
   l_scenario_out_obj      JSON_Object_T;
@@ -155,7 +157,13 @@ BEGIN
 
   l_json_obj := get_JSON_Obj(p_package_nm   => p_package_nm,
                              p_procedure_nm => p_procedure_nm);
-  l_out_obj.put(META, l_json_obj.get_Object(META));
+  l_met_obj := l_json_obj.get_Object(META);
+  IF p_title IS NOT NULL THEN
+    l_met_obj.put('title', p_title);
+  END IF;
+
+  l_out_obj.put(META, l_met_obj);
+  l_sce_obj := l_json_obj.get_Object(SCENARIOS);
   l_sce_obj := l_json_obj.get_Object(SCENARIOS);
   l_scenarios := l_sce_obj.get_Keys;
 
