@@ -51,10 +51,11 @@ Examples of its use in testing four demo PL/SQL APIs can be seen here:
 
 ## Usage
 - [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
-- [Usage Steps - General](https://github.com/BrenPatF/trapit_oracle_tester#usage-steps---general)
-- [Usage Steps - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage-steps---example)
+- [Usage - General](https://github.com/BrenPatF/trapit_oracle_tester#usage---general)
+- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
-### Usage Steps - General
+### Usage - General
+- [Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)
 
 In order to use the framework for unit testing, the following preliminary steps are required, after installation: 
 - Create a JSON file containing the input test data including expected return values in the required format. The input JSON file essentially consists of two objects: 
@@ -91,7 +92,7 @@ $ node ./examples/externals/test-externals
 
 The nodejs program produces listings of the results in HTML and/or text format in a subfolder with name derived from the unit test title in the input JSON file. The unit test steps can easily be automated in Powershell (or in a Unix script).
 
-### Usage Steps - Example
+### Usage - Example
 - [Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)
 - [Input JSON File](https://github.com/BrenPatF/trapit_oracle_tester#input-json-file)
 - [Unit Test PL/SQL Wrapper Function](https://github.com/BrenPatF/trapit_oracle_tester#unit-test-plsql-wrapper-function)
@@ -100,6 +101,8 @@ The nodejs program produces listings of the results in HTML and/or text format i
 The example comes from [Oracle PL/SQL network analysis module](https://github.com/BrenPatF/plsql_network)
 
 #### Input JSON File
+- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage-example)
+
 The JSON input file contains `meta` and `scenarios` properties, as mentioned above, with structure reflecting the (extended) inputs and outputs of the unit under test. An easy way to generate a starting point for this is to use a powershell utility [Powershell Utilites module](https://github.com/BrenPatF/powershell_utils) to generate a template file, with a single scenario with placeholder records. This can be done by opening a powershell window from the folder test_data within the example module, and running:
 
 ```
