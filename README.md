@@ -101,7 +101,7 @@ The nodejs program produces listings of the results in HTML and/or text format i
 The example comes from [Oracle PL/SQL network analysis module](https://github.com/BrenPatF/plsql_network)
 
 #### Input JSON File
-- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage-example)
+- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
 The JSON input file contains `meta` and `scenarios` properties, as mentioned above, with structure reflecting the (extended) inputs and outputs of the unit under test. An easy way to generate a starting point for this is to use a powershell utility [Powershell Utilites module](https://github.com/BrenPatF/powershell_utils) to generate a template file, with a single scenario with placeholder records. This can be done by opening a powershell window from the folder test_data within the example module, and running:
 
@@ -277,7 +277,7 @@ The template is then updated with test data for 3 scenarios:
 </div>
 
 #### Unit Test PL/SQL Wrapper Function
-- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage-example)
+- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
 The text box below shows the entire body code for the unit test package containing the pure wrapper function, Purely_Wrap_All_Nets. The function calls a local procedure to add the test data, then calls another local function that calls the unit under test and returns the output data in the required format. The test data are rolled back before return.
 ```
@@ -322,7 +322,7 @@ END TT_Net_Pipe;
 Notice the simplicity of this code, which reflects the level of complexity of input and output structure, not that of the base network analysis code.
 
 #### Unit Test Formatted Results
-- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage-example)
+- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
 The nodejs program produces listings of the results in HTML and/or text format, with a summary of the scenario results and detailed listings for each scenario. 
 
