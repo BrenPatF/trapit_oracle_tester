@@ -50,12 +50,12 @@ Examples of its use in testing four demo PL/SQL APIs can be seen here:
 - [Operating System/Oracle Versions](https://github.com/BrenPatF/trapit_oracle_tester#operating-systemoracle-versions)
 
 ## Usage
-- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
+- [&uarr; In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
 - [Usage - General](https://github.com/BrenPatF/trapit_oracle_tester#usage---general)
 - [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
 ### Usage - General
-- [Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)
+- [&uarr; Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)
 
 In order to use the framework for unit testing, the following preliminary steps are required, after installation: 
 - Create a JSON file containing the input test data including expected return values in the required format. The input JSON file essentially consists of two objects: 
@@ -93,7 +93,7 @@ $ node ./examples/externals/test-externals
 The nodejs program produces listings of the results in HTML and/or text format in a subfolder with name derived from the unit test title in the input JSON file. The unit test steps can easily be automated in Powershell (or in a Unix script).
 
 ### Usage - Example
-- [Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)
+- [&uarr; Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)
 - [Input JSON File](https://github.com/BrenPatF/trapit_oracle_tester#input-json-file)
 - [Unit Test PL/SQL Wrapper Function](https://github.com/BrenPatF/trapit_oracle_tester#unit-test-plsql-wrapper-function)
 - [Unit Test Formatted Results](https://github.com/BrenPatF/trapit_oracle_tester#unit-test-formatted-results)
@@ -101,7 +101,7 @@ The nodejs program produces listings of the results in HTML and/or text format i
 The example comes from [Oracle PL/SQL network analysis module](https://github.com/BrenPatF/plsql_network)
 
 #### Input JSON File
-- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
+- [&uarr; Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
 The JSON input file contains `meta` and `scenarios` properties, as mentioned above, with structure reflecting the (extended) inputs and outputs of the unit under test. An easy way to generate a starting point for this is to use a powershell utility [Powershell Utilites module](https://github.com/BrenPatF/powershell_utils) to generate a template file, with a single scenario with placeholder records. This can be done by opening a powershell window from the folder test_data within the example module, and running:
 
@@ -277,7 +277,7 @@ The template is then updated with test data for 3 scenarios:
 </div>
 
 #### Unit Test PL/SQL Wrapper Function
-- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
+- [&uarr; Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
 The text box below shows the entire body code for the unit test package containing the pure wrapper function, Purely_Wrap_All_Nets. The function calls a local procedure to add the test data, then calls another local function that calls the unit under test and returns the output data in the required format. The test data are rolled back before return.
 ```
@@ -322,7 +322,7 @@ END TT_Net_Pipe;
 Notice the simplicity of this code, which reflects the level of complexity of input and output structure, not that of the base network analysis code.
 
 #### Unit Test Formatted Results
-- [Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
+- [&uarr; Usage - Example](https://github.com/BrenPatF/trapit_oracle_tester#usage---example)
 
 The nodejs program produces listings of the results in HTML and/or text format, with a summary of the scenario results and detailed listings for each scenario. 
 
@@ -465,7 +465,7 @@ SCENARIO 3: 4 subnetworks, looped and tree {
 
 
 ## API - Trapit
-- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
+- [&uarr; In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
 - [Add_Ttu(p_unit_test_package_nm, p_purely_wrap_api_function_nm, p_group_nm, p_active_yn, p_input_file)](https://github.com/BrenPatF/trapit_oracle_tester#trapitadd_ttup_unit_test_package_nm-p_purely_wrap_api_function_nm-p_group_nm-p_active_yn-p_input_file)
 
 This section excludes public program units that are only used by the package Trapit_Run.
@@ -493,7 +493,7 @@ Runs the unit test program for each package procedure set to active in tt_units 
 Normally the test packages in a group will be within a single schema from where the tests would be run.
 
 ## Installation
-- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
+- [&uarr; In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
 - [Install 1: Install pre-requisite module](https://github.com/BrenPatF/trapit_oracle_tester#install-1-install-pre-requisite-module)
 - [Install 2: Install Oracle Trapit module](https://github.com/BrenPatF/trapit_oracle_tester#install-2-install-oracle-trapit-module)
 - [Install 3: Create synonyms to lib](https://github.com/BrenPatF/trapit_oracle_tester#install-3-create-synonyms-to-lib)
@@ -502,7 +502,7 @@ Normally the test packages in a group will be within a single schema from where 
 The install depends on the pre-requisite module Utils, and `lib` schema refers to the schema in which Utils is installed.
 
 ### Install 1: Install pre-requisite module
-- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
+- [&uarr; Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
 
 The pre-requisite module can be installed by following the instructions at [Utils on GitHub](https://github.com/BrenPatF/oracle_plsql_utils). This allows inclusion of the examples and unit tests for the module. Alternatively, the next section shows how to install the module directly without its examples or unit tests here.
 
@@ -528,7 +528,7 @@ SQL> @c_syns_all
 ```
 
 ### Install 2: Install Oracle Trapit module
-- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
+- [&uarr; Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
 
 #### [Schema: lib; Folder: lib]
 - Run script from slqplus:
@@ -543,7 +543,7 @@ SQL> @grant_trapit_to_app schema
 ```
 
 ### Install 3: Create synonyms to lib
-- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
+- [&uarr; Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
 
 #### [Schema: app; Folder: app]
 - Run script from slqplus:
@@ -554,7 +554,7 @@ SQL> @c_trapit_syns lib
 This install creates private synonyms to the lib schema. To create synonyms within another schema, run the synonyms script directly from that schema, passing lib schema.
 
 ### Install 4: Install npm trapit package
-- [Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
+- [&uarr; Installation](https://github.com/BrenPatF/trapit_oracle_tester#installation)
 
 #### [Folder: (npm root)]
 Open a DOS or Powershell window in the folder where you want to install npm packages, and, with [nodejs](https://nodejs.org/en/download/) installed, run:
@@ -565,7 +565,7 @@ $ npm install trapit
 This should install the trapit nodejs package in a subfolder .\node_modules\trapit
 
 ## Operating System/Oracle Versions
-- [In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
+- [&uarr; In this README...](https://github.com/BrenPatF/trapit_oracle_tester#in-this-readme)
 
 ### Windows
 Tested on Windows 10, should be OS-independent
