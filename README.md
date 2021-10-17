@@ -8,6 +8,10 @@ TRansactional API Testing (TRAPIT) framework for Oracle SQL and PL/SQL unit test
 
 This is a lightweight framework for unit testing SQL and PL/SQL based on the 'Math Function Unit Testing design pattern'. 
 
+There is a blog post on scenario selection in unit testing that may be of interest:
+
+- [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/jekyll/update/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
+
 ## In this README...
 [&darr; Background](https://github.com/BrenPatF/trapit_oracle_tester#background)<br/>
 [&darr; Usage](https://github.com/BrenPatF/trapit_oracle_tester#usage)<br/>
