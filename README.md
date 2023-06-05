@@ -6,7 +6,7 @@ Oracle PL/SQL Unit Testing Module
 
 TRansactional API Testing (TRAPIT) framework for Oracle SQL and PL/SQL unit testing.
 
-This is a lightweight framework for unit testing SQL and PL/SQL based on the 'Math Function Unit Testing design pattern'.
+This is a lightweight framework for unit testing SQL and PL/SQL based on [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html).
 
 There is a blog post on scenario selection in unit testing that may be of interest:
 
@@ -26,7 +26,7 @@ I explained the concepts for the unit testing design pattern in relation specifi
 
 - [The Database API Viewed As A Mathematical Function: Insights into Testing](https://www.slideshare.net/brendanfurey7/database-api-viewed-as-a-mathematical-function-insights-into-testing)
 
-I later named the approach 'The Math Function Unit Testing design pattern' when I applied it in Javascript and wrote a JavaScript program to format results both in plain text and as HTML pages:
+I later named the approach [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html) when I applied it in Javascript and wrote a JavaScript program to format results both in plain text and as HTML pages:
 - [Trapit - JavaScript Unit Tester/Formatter](https://github.com/BrenPatF/trapit_nodejs_tester)
 
 The module also allowed for the formatting of results obtained from testing in languages other than JavaScript by means of an intermediate output JSON file. In 2021 I developed a powershell module that included a utility to generate a template for the JSON input scenarios file required by the design pattern:
@@ -53,7 +53,7 @@ Examples of its use in testing four demo PL/SQL APIs can be seen here:
 
 As noted above, the JavaScript module allows for unit testing of JavaScript programs and also the formatting of test results for both JavaScript and non-JavaScript programs. Similarly, the powershell module mentioned allows for unit testing of powershell programs, and also the generation of the JSON input scenarios file template for testing in any language.
 
-In this section we'll start by describing the steps involved in The Math Function Unit Testing design pattern at an overview level. This will show how the generic powershell and JavaScript utilities fit in alongside the language-specific driver utilities.
+In this section we'll start by describing the steps involved in [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html) at an overview level. This will show how the generic powershell and JavaScript utilities fit in alongside the language-specific driver utilities.
 
 Then we'll show how to use the design pattern in unit testing Oracle programs by means of an example from another GitHub project.
 
@@ -63,13 +63,13 @@ Then we'll show how to use the design pattern in unit testing Oracle programs by
 [&darr; Step 2: Create Results Object](#step-2-create-results-object)<br />
 [&darr; Step 3: Format Results](#step-3-format-results)<br />
 
-At a high level the Math Function Unit Testing design pattern involves three main steps:
+At a high level [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html) involves three main steps:
 
 1. Create an input file containing all test scenarios with input data and expected output data for each scenario
 2. Create a results object based on the input file, but with actual outputs merged in, based on calls to the unit under test
 3. Use the results object to generate unit test results files formatted in HTML and/or text
 
-<img src="png/Math Function UT DP - HL Flow.png">
+<img src="png/HLS.png">
 
 The first and third of these steps are supported by generic utilities that can be used in unit testing in any language. The second step uses a language-specific unit test driver utility.
 
@@ -80,9 +80,9 @@ For non-JavaScript programs the results object is materialized using a library p
 This creates a subfolder with name based on the unit test title within the file, and also outputs a summary of the results. The processing is split between three code units:
 - Test Unit: External library function that drives the unit testing with a callback to a specific wrapper function
 - Specific Test Package: This has a 1-line main program to call the library driver function, passing in the callback wrapper function
-- Unit Under Test: Called by the wrapper function, which converts between its specific inputs and outputs and the generic version used by the library package
+- Unit Under Test (API): Called by the wrapper function, which converts between its specific inputs and outputs and the generic version used by the library package
 
-<img src="png/MFUTDP - Flow-Ext.png">
+<img src="png/PFD-Ext.png">
 
 In the first step the external program creates the output results JSON file, while in the second step the file is read into an object by the Trapit library package, which then formats the results.
 
@@ -156,14 +156,14 @@ The test data are read from a table tt_units, with structure:
 
 Unit tests are run by making a call to one of two library subprograms that run all tests for a group name passed in as a parameter.
 
-```
+```sql
 PROCEDURE Run_Tests(p_group_nm VARCHAR2);
 ```
 The above procedure runs the tests for the input group leaving the output JSON files in the assigned directory on the database server.
 
 This version was originally used to execute step 3 separately from step 2.
 
-```
+```sql
 FUNCTION Test_Output_Files(p_group_nm VARCHAR2) RETURN L1_chr_arr;
 ```
 The above function runs the tests for the input group leaving the output JSON files in the assigned directory on the database server, and returns the full file paths in an array.
@@ -174,7 +174,7 @@ This version is used by a Powershell script that combines steps 2 and 3, as show
 [&uarr; Step 2: Create Results Object](#step-2-create-results-object)<br />
 
 Here is the specification for the wrapper function (fixed apart from the function name), with the header comment text.
-```
+```sql
 /***************************************************************************************************
 Purely_Wrap_Uut: Unit test wrapper function for the unit under test
 
@@ -298,7 +298,7 @@ Step 2 requires the writing of a wrapper function that is called by a library pa
 [&uarr; Step 2: Create Results Object](#step-2-create-results-object-1)<br />
 
 Here is an extract from the function body:
-```
+```sql
 FUNCTION Purely_Wrap_Utils(
             p_inp_3lis                     L3_chr_arr)   -- input list of lists (group, record, field)
             RETURN                         L2_chr_arr IS -- output list of lists (group, record)
@@ -413,9 +413,11 @@ SCENARIO 1: Small values [Category Set: Value Size] {
 This section excludes public program units that are only used by the package Trapit_Run.
 
 #### Add_Ttu
+
 ```sql
     Trapit.Add_Ttu(p_unit_test_package_nm, p_purely_wrap_api_function_nm, p_group_nm, p_active_yn, p_input_file);
 ```
+
 Adds a record to tt_units table, with parameters as follows:
 
 - `p_unit_test_package_nm`: unit test package name
@@ -433,6 +435,7 @@ This package runs with Invoker rights, not the default Definer rights, so that d
 ```sql
     Trapit_Run.Run_Tests(p_group_nm);
 ```
+
 Runs the unit test program for each package procedure set to active in tt_units table for a given test group, with parameters as follows:
 
 - `p_group_nm`: test group name
@@ -627,6 +630,7 @@ There are five subfolders below the trapit root folder:
 - [Oracle Instant Client Downloads for Microsoft Windows (x64) 64-bit](https://www.oracle.com/ie/database/technologies/instant-client/winx64-64-downloads.html)
 - [Node.js Downloads](https://nodejs.org/en/download)
 - [Installing Windows PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/install/installing-windows-powershell)
+- [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html)
 - [Trapit - JavaScript Unit Tester/Formatter](https://github.com/BrenPatF/trapit_nodejs_tester)
 - [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/jekyll/update/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
 - [Powershell Utilities Module](https://github.com/BrenPatF/powershell_utils)
