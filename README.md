@@ -426,6 +426,45 @@ Adds a record to tt_units table, with parameters as follows:
 - `p_active_yn`: active Y/N flag
 - `p_input_file`: name of input file, which has to exist in Oracle directory `input_dir`
 
+#### Set_Active_YNs
+
+```sql
+    Trapit.Set_Active_YNs(p_group_nm, p_unit_test_package_nm, p_purely_wrap_api_function_nm, p_active_yn);
+```
+
+Set_Active_YNs: Sets the active_yn flag at both table (tt_units) and scenario level in the column tt_units.input_json.
+
+If p_unit_test_package_nm/p_purely_wrap_api_function_nm are set:
+- Update the corresponding record with the p_yn value passed
+- Update the other records in the group with the inverse of the p_yn value passed
+- Do scenario updates only for the corresponding record
+
+Else
+- Update all records with the p_yn value passed
+- Do scenario updates for all records in the group
+
+End If
+
+If p_scenario_nm is set (for records as above):
+- Update the corresponding scenario with the p_yn value passed
+- Update the other scenarios with the inverse of the p_yn value passed
+
+Else
+- Update all scenarios with the p_yn value passed
+
+End If
+
+This can be useful in debugging, as it allows you to deactivate all records except one, and all
+  scenarios except one, until you have resolved any issues with them, then you can re-activate all
+  by making a call with the optional parameters null. This avoids having to manually set the flags
+  in the input JSON file and re-install. Generally the default value of 'Y' for p_yn is most useful.
+
+- `p_group_nm`: unit test group name
+- `p_unit_test_package_nm`: unit test package name
+- `p_purely_wrap_api_function_nm`: wrapper function name
+- `p_scenario_nm`: scenario name
+- `p_active_yn`: active Y/N flag
+
 ### Trapit_Run
 [&uarr; API](#api)<br />
 
@@ -518,18 +557,46 @@ Powershell is optional, and is used in the project for automation purposes, and 
 
 ### Oracle Installs
 [&uarr; Installation](#installation)<br />
+[&darr; Automated Installation](#automated-installation)<br />
+[&darr; Manual Installation](#manual-installation)<br />
+
+The Oracle installation can be performed via a single powershell script, or in a series of smaller steps.
+
+#### Automated Installation
+[&uarr; Oracle Installs](#oracle-installs)<br />
+
+The Oracle installation can be performed simply by running the following script, Install-Trapit.ps1:
+
+##### [Folder: (module root)]
+
+```powershell
+.\Install-Trapit
+```
+
+Some points to note:
+- This script tries to create lib and app schemas using sys schema, with all passwords assumed to be the  usernames, and TNS alias orclpdb
+- There is a script drop_utils_users.sql that can be run manually first to drop those schemas if they exist, or uncommented from the powershell script
+
+##### [Schema: sys; Folder: install_prereq] Drop lib and app schemas
+
+```sql
+SQL> @drop_utils_users
+```
+
+#### Manual Installation
+[&uarr; Oracle Installs](#oracle-installs)<br />
 [&darr; Install 1: Install prerequisite module](#install-1-install-prerequisite-module)<br />
 [&darr; Install 2: Install Oracle Trapit module](#install-2-install-oracle-trapit-module)<br />
 [&darr; Install 3: Create synonyms to lib](#install-3-create-synonyms-to-lib)<br />
 
-#### Install 1: Install prerequisite module
-[&uarr; Oracle Installs](#oracle-installs)<br />
+##### Install 1: Install prerequisite module
+[&uarr; Manual Installation](#manual-installation)<br />
 
 The install depends on the prerequisite module Utils, and `lib` schema refers to the schema in which Utils is installed.
 
 The prerequisite module can be installed by following the instructions at [Utils on GitHub](https://github.com/BrenPatF/oracle_plsql_utils). This allows inclusion of the examples and unit tests for the module. Alternatively, the next section shows how to install the module directly without its examples or unit tests here.
 
-#### [Schema: sys; Folder: install_prereq] Create lib and app schemas and Oracle directory
+##### [Schema: sys; Folder: install_prereq] Create lib and app schemas and Oracle directory
 - install_sys.sql creates an Oracle directory, `input_dir`, pointing to 'c:\input'. Update this if necessary to a folder on the database server with read/write access for the Oracle OS user
 - Run script from slqplus:
 
@@ -537,23 +604,23 @@ The prerequisite module can be installed by following the instructions at [Utils
 SQL> @install_sys
 ```
 
-#### [Schema: lib; Folder: install_prereq\lib] Create lib components
+##### [Schema: lib; Folder: install_prereq\lib] Create lib components
 - Run script from slqplus:
 
 ```sql
 SQL> @install_lib_all
 ```
-#### [Schema: app; Folder: install_prereq\app] Create app synonyms
+##### [Schema: app; Folder: install_prereq\app] Create app synonyms
 - Run script from slqplus:
 
 ```sql
 SQL> @c_syns_all
 ```
 
-#### Install 2: Install Oracle Trapit module
-[&uarr; Oracle Installs](#oracle-installs)<br />
+##### Install 2: Install Oracle Trapit module
+[&uarr; Manual Installation](#manual-installation)<br />
 
-#### [Schema: lib; Folder: lib]
+##### [Schema: lib; Folder: lib]
 - Run script from slqplus:
 
 ```sql
@@ -565,8 +632,8 @@ This creates the required components for the base install along with grants for 
 SQL> @grant_trapit_to_app schema
 ```
 
-#### Install 3: Create synonyms to lib
-[&uarr; Oracle Installs](#oracle-installs)<br />
+##### Install 3: Create synonyms to lib
+[&uarr; Manual Installation](#manual-installation)<br />
 
 #### [Schema: app; Folder: app]
 - Run script from slqplus:

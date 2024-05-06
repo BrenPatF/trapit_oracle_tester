@@ -1,0 +1,1 @@
+pwsh -file .\Install-Trapit.ps1  > .\Install-Trapit.out 2> .\Install-Trapit.err

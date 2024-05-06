@@ -54,3 +54,4 @@ CREATE OR REPLACE SYNONYM Trapit FOR &lib..Trapit
 /
 CREATE OR REPLACE SYNONYM Trapit_Run FOR &lib..Trapit_Run
 /
+exit
