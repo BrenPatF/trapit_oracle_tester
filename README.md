@@ -537,7 +537,7 @@ The function copies the JSON files to the specified folder and runs the JavaScri
 #### Oracle Client
 [&uarr; Prerequisite Applications](#prerequisite-applications)<br />
 
-An Oracle client is required, including SQL*Plus, with access to an Oracle database:
+An Oracle client is required, including SQL\*Plus, with access to an Oracle database:
 
 - [Oracle Instant Client Downloads for Microsoft Windows (x64) 64-bit](https://www.oracle.com/ie/database/technologies/instant-client/winx64-64-downloads.html)
 
@@ -588,6 +588,17 @@ SQL> @drop_utils_users
 [&darr; Install 1: Install prerequisite module](#install-1-install-prerequisite-module)<br />
 [&darr; Install 2: Install Oracle Trapit module](#install-2-install-oracle-trapit-module)<br />
 [&darr; Install 3: Create synonyms to lib](#install-3-create-synonyms-to-lib)<br />
+
+The Oracle database installation is implemented through a small number of driver scripts: One per Oracle schema and folder, separating out the prerequisite installs from the main ones.
+
+| Script               | Schema | Folder             | Purpose                                         |
+|:---------------------|:-------|:-------------------|:------------------------------------------------|
+| drop_utils_users.sql | sys    | install_prereq     | Drop lib and app schemas and Oracle directory   |
+| install_sys.sql      | sys    | install_prereq     | Create lib and app schemas and Oracle directory |
+| install_lib_all.sql  | lib    | install_prereq\lib | Install lib components for Utils                |
+| c_syns_all.sql       | app    | install_prereq\app | Create app synonyms to lib for Utils            |
+| install_trapit.sql   | lib    | lib                | Install Trapit components                       |
+| c_trapit_syns.sql    | app    | app                | Create app synonyms to lib for Trapit           |
 
 ##### Install 1: Install prerequisite module
 [&uarr; Manual Installation](#manual-installation)<br />
