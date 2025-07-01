@@ -1,8 +1,4 @@
-CREATE OR REPLACE PACKAGE Trapit_Run AUTHID CURRENT_USER AS
-/***************************************************************************************************
-Name: trapit_run.pks                   Author: Brendan Furey                      Date: 08-June-2019
-
-Package spec component in the 'Trapit - Oracle PL/SQL Unit Testing' module, which facilitates unit
+Package body component in the 'Trapit - Oracle PL/SQL Unit Testing' module, which facilitates unit
 testing in Oracle PL/SQL following 'The Math Function Unit Testing design pattern', as described
 here: 
 
@@ -36,24 +32,7 @@ those for scripting languages in two other ways:
 ====================================================================================================
 |  Package     |  Notes                                                                            |
 |==================================================================================================|
-| Trapit       |  Unit test utility package (Definer rights)                                       |
+| *Trapit*     |  Unit test utility package (Definer rights)                                       |
 |--------------|-----------------------------------------------------------------------------------|
-| *Trapit_Run* |  Unit test driver package (Invoker rights)                                        |
+|  Trapit_Run  |  Unit test driver package (Invoker rights)                                        |
 ====================================================================================================
-
-This file has the package spec for Trapit_Run, the unit test driver package. See README for API 
-specification, and the other modules mentioned there for examples of use.
-
-This package runs with Invoker rights, so that dynamic SQL calls to the test packages in the calling
-schema do not require execute privilege to be granted to owning schema (if different from caller)
-
-***************************************************************************************************/
-
-PROCEDURE Run_Tests(
-            p_group_nm                     VARCHAR2);
-FUNCTION Test_Output_Files(
-            p_group_nm                     VARCHAR2) RETURN L1_chr_arr;
-
-END Trapit_Run;
-/
-SHOW ERROR

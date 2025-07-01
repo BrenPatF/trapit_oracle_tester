@@ -1,16 +1,21 @@
-# Trapit
+# Trapit - Oracle PL/SQL Unit Testing Module
 <img src="png/mountains.png">
-Oracle PL/SQL Unit Testing Module
+
+> The Math Function Unit Testing design pattern, implemented in Oracle PL/SQL
 
 :detective:
 
-TRansactional API Testing (TRAPIT) framework for Oracle SQL and PL/SQL unit testing.
+This module supports [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html), a new design pattern that can be applied in any language, and is here implemented in Oracle PL/SQL. The module name is derived from 'TRansactional API Testing' (TRAPIT), and the 'unit' should be considered to be a transactional unit. The pattern avoids microtesting, is data-driven, and fully supports multi-scenario testing and refactoring.
 
-This is a lightweight framework for unit testing SQL and PL/SQL based on [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html).
+The Oracle PL/SQL Trapit module provides a lightweight framework for unit testing SQL and PL/SQL, with test data read from an input JSON file, results written to an output JSON file, and all specific test code contained in a PL/SQL function called by the framework driver function.
 
-There is a blog post on scenario selection in unit testing that may be of interest:
+Unit test results are formatted by a JavaScript program that takes the JSON output results file as its input, [Trapit - JavaScript Unit Testing/Formatting Utilities Module](https://github.com/BrenPatF/trapit_nodejs_tester), and renders the results in HTML and text formats.
 
-- [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
+There is also a PowerShell module, [Trapit - PowerShell Unit Testing Utilities Module](https://github.com/BrenPatF/powershell_utils/tree/master/TrapitUtils), with a utility to generate a template for the JSON input file used by the design pattern, based on simple input CSV files. The module also provides a utility to automate running of the Oracle PL/SQL tests and formatting of the results by the JavaScript program.
+
+This blog post, [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html) provides guidance on effective selection of scenarios for unit testing.
+
+There is an extended Usage section below that illustrates the use of the design pattern for Oracle PL/SQL unit testing by means of an example from another GitHub project.
 
 # In this README...
 [&darr; Background](#background)<br />
@@ -27,41 +32,40 @@ I explained the concepts for the unit testing design pattern in relation specifi
 - [The Database API Viewed As A Mathematical Function: Insights into Testing](https://www.slideshare.net/brendanfurey7/database-api-viewed-as-a-mathematical-function-insights-into-testing)
 
 I later named the approach [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html) when I applied it in Javascript and wrote a JavaScript program to format results both in plain text and as HTML pages:
-- [Trapit - JavaScript Unit Tester/Formatter](https://github.com/BrenPatF/trapit_nodejs_tester)
+- [Trapit - JavaScript Unit Testing/Formatting Utilities Module](https://github.com/BrenPatF/trapit_nodejs_tester)
 
-The module also allowed for the formatting of results obtained from testing in languages other than JavaScript by means of an intermediate output JSON file. In 2021 I developed a powershell module that included a utility to generate a template for the JSON input scenarios file required by the design pattern:
-- [Powershell Trapit Unit Testing Utilities Module.](https://github.com/BrenPatF/powershell_utils/tree/master/TrapitUtils)
+The module also allowed for the formatting of results obtained from testing in languages other than JavaScript by means of an intermediate output JSON file. In 2021 I developed a PowerShell module that included a utility to generate a template for the JSON input scenarios file required by the design pattern:
+- [Trapit - PowerShell Unit Testing Utilities Module](https://github.com/BrenPatF/powershell_utils/tree/master/TrapitUtils)
 
 Also in 2021 I developed a systematic approach to the selection of unit test scenarios:
 - [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
 
-In early 2023 I extended both the the JavaScript results formatter, and the powershell utility to incorporate Category Set as a scenario attribute. Both utilities support use of the design pattern in any language, while the unit testing driver utility is language-specific and is currently available in Powershell, JavaScript, Python and Oracle PL/SQL versions.
+In early 2023 I extended both the the JavaScript results formatter, and the PowerShell utility to incorporate Category Set as a scenario attribute. Both utilities support use of the design pattern in any language, while the unit testing driver utility is language-specific and is currently available in PowerShell, JavaScript, Python and Oracle PL/SQL versions.
 
 This module is a prerequisite for the unit testing parts of these other Oracle GitHub modules:
 - [Utils - Oracle PL/SQL General Utilities Module](https://github.com/BrenPatF/oracle_plsql_utils)
 - [Log_Set - Oracle PL/SQL Logging Module](https://github.com/BrenPatF/log_set_oracle)
 - [Timer_Set - Oracle PL/SQL Code Timing Module](https://github.com/BrenPatF/timer_set_oracle)
 - [Net_Pipe - Oracle PL/SQL Network Analysis Module](https://github.com/BrenPatF/plsql_network)
-
-Examples of its use in testing four demo PL/SQL APIs can be seen here:
-- [Oracle PL/SQL API Demos - demonstrating instrumentation and logging, code timing and unit testing of Oracle PL/SQL APIs](https://github.com/BrenPatF/oracle_plsql_api_demos)
-
+- [Shortest Path Analysis of Large Networks by SQL and PL/SQL](https://github.com/BrenPatF/shortest_path_sql)
+- [Optimization Problems with Items and Categories in Oracle](https://github.com/BrenPatF/item_category_optimization_oracle)
+- [Coupons, Caps and Functions in Oracle](https://github.com/BrenPatF/coupon_caps_oracle)
 ## Usage
 [&uarr; In this README...](#in-this-readme)<br />
-[&darr; Usage - General](#usage---general)<br />
-[&darr; Usage - Example](#usage---example)<br />
+[&darr; General Usage](#general-usage)<br />
+[&darr; Example - Oracle PL/SQL Utilities](#example---oracle-plsql-utilities)<br />
 
-As noted above, the JavaScript module allows for unit testing of JavaScript programs and also the formatting of test results for both JavaScript and non-JavaScript programs. Similarly, the powershell module mentioned allows for unit testing of powershell programs, and also the generation of the JSON input scenarios file template for testing in any language.
+As noted above, the JavaScript module allows for unit testing of JavaScript programs and also the formatting of test results for both JavaScript and non-JavaScript programs. Similarly, the PowerShell module mentioned allows for unit testing of PowerShell programs, and also the generation of the JSON input scenarios file template for testing in any language.
 
-In this section we'll start by describing the steps involved in [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html) at an overview level. This will show how the generic powershell and JavaScript utilities fit in alongside the language-specific driver utilities.
+In this section we'll start by describing the steps involved in [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html) at an overview level. This will show how the generic PowerShell and JavaScript utilities fit in alongside the language-specific driver utilities.
 
-Then we'll show how to use the design pattern in unit testing Oracle programs by means of an example from another GitHub project.
+Then we'll show how to use the design pattern in unit testing Oracle programs, first in general, and then by means of an example from another GitHub project.
 
-### Usage - General
+### General Usage
 [&uarr; Usage](#usage)<br />
-[&darr; Step 1: Create JSON File](#step-1-create-json-file)<br />
-[&darr; Step 2: Create Results Object](#step-2-create-results-object)<br />
-[&darr; Step 3: Format Results](#step-3-format-results)<br />
+[&darr; General Description](#general-description)<br />
+[&darr; Unit Testing Process](#unit-testing-process)<br />
+[&darr; Unit Test Results](#unit-test-results)<br />
 
 At a high level [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html) involves three main steps:
 
@@ -71,7 +75,10 @@ At a high level [The Math Function Unit Testing Design Pattern](https://brenpatf
 
 <img src="png/HLS.png">
 
-The first and third of these steps are supported by generic utilities that can be used in unit testing in any language. The second step uses a language-specific unit test driver utility.
+#### General Description
+[&uarr; General Usage](#general-usage)<br />
+
+The first and third of the three steps are supported by generic utilities that can be used in unit testing in any language. The second step uses a language-specific unit test driver utility.
 
 For non-JavaScript programs the results object is materialized using a library package in the relevant language. The diagram below shows how the processing from the input JSON file splits into two distinct steps:
 - First, the output results object is created using the external library package which is then written to a JSON file
@@ -79,53 +86,104 @@ For non-JavaScript programs the results object is materialized using a library p
 
 This creates a subfolder with name based on the unit test title within the file, and also outputs a summary of the results. The processing is split between three code units:
 - Test Unit: External library function that drives the unit testing with a callback to a specific wrapper function
-- Specific Test Package: This has a 1-line main program to call the library driver function, passing in the callback wrapper function
+- Specific Test Package: This has a 1-line main program to call the library driver function, passing in the wrapper function (in Oracle this is the name of a function stored on the database, in other languages it's a callback function)
 - Unit Under Test (API): Called by the wrapper function, which converts between its specific inputs and outputs and the generic version used by the library package
 
 <img src="png/PFD-Ext.png">
 
 In the first step the external program creates the output results JSON file, while in the second step the file is read into an object by the Trapit library package, which then formats the results.
 
-#### Step 1: Create JSON File
-[&uarr; Usage - General](#usage---general)<br />
+#### Unit Testing Process
+[&uarr; General Usage](#general-usage)<br />
+[&darr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file)<br />
+[&darr; Step 2: Create Results Object](#step-2-create-results-object)<br />
+[&darr; Step 3: Format Results](#step-3-format-results)<br />
+
+This section details the three steps involved in following [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html).
+
+##### Step 1: Create Input Scenarios File
+[&uarr; Unit Testing Process](#unit-testing-process)<br />
+[&darr; Unit Test Wrapper Function](#unit-test-wrapper-function)<br />
+[&darr; Scenario Category ANalysis (SCAN)](#scenario-category-analysis-scan)<br />
+[&darr; Creating and Loading the Input Scenarios File](#creating-and-loading-the-input-scenarios-file)<br />
 
 Step 1 requires analysis to determine the extended signature for the unit under test, and to determine appropriate scenarios to test.
-
-The art of unit testing lies in choosing a set of scenarios that will produce a high degree of confidence in the functioning of the unit under test across the often very large range of possible inputs.
-
-A useful approach to this can be to think in terms of categories of inputs, where we reduce large ranges to representative categories. I explore this approach further in this article:
-
-- [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
-
-The results of this analysis can be summarised in three CSV files which a powershell program uses as inputs to create a template for the JSON file.
-
-The powershell API, `Write-UT_Template` creates a template for the JSON file, with the full meta section, and a set of template scenarios having name as scenario key, a category set attribute, and a single record with default values for each input and output group. The API takes as inputs three CSV files:
-  - `stem`_inp.csv: Input group triplets - (Input group name, field name, default value)
-  - `stem`_out.csv: Input group triplets - (Output group name, field name, default value)
-  - `stem`_sce.csv: Scenario triplets - (Category set, scenario name, active flag)
-
 
 It may be useful during the analysis phase to create two diagrams, one for the extended signature:
 - JSON Structure Diagram: showing the groups with their fields for input and output
 
-and another for the category sets and categories:
+and another for the scenario category sets and categories:
 - Category Structure Diagram: showing the category sets identified with their categories
 
-You can see examples of these diagrams later in this document: [JSON Structure Diagram](#unit-test-wrapper-function) and [Category Structure Diagram](#scenario-category-analysis-scan).
+You can see examples of these diagrams later in this document: [JSON Structure Diagram](#unit-test-wrapper-function-1) and [Category Structure Diagram](#scenario-category-analysis-scan-1), and schematic versions in the next two subsections.
 
-The API can be run with the following powershell in the folder of the CSV files:
+###### Unit Test Wrapper Function
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file)<br />
 
-#### Format-JSON-Stem.ps1
-```powershell
-Import-Module ..\powershell_utils\TrapitUtils\TrapitUtils
-Write-UT_Template 'stem' '|'
+Here is a schematic version of a JSON structure diagram, which in a real instance will  in general have multiple input and output groups, each with multiple fields:
+
+<img src="png/JSD-Example.png">
+
+Each group in the diagram corresponds to a top-level element within the p_inp_3lis 3-level array parameter or L2_chr_arr 2-level array return value of the wrapper function. The fields are stored as 3rd-level array elements in the input parameter, and as elements in delimited strings in the return value 2-level array.
+
+```sql
+FUNCTION Purely_Wrap_Utils(
+            p_inp_3lis                     L3_chr_arr)   -- input list of lists (group, record, field)
+            RETURN                         L2_chr_arr IS -- output list of lists (group, record)
 ```
-This creates the template JSON file, `stem`_temp.json based on the CSV files having prefix `stem` and using the field delimiter '|'. The template file is then updated manually with data appropriate to each scenario, and placed in the Oracle directory, INPUT_DIR, then loaded into the tt_units table by a call to the Trapit.Add_Ttu API.
 
-The powershell API can be used for testing in any language.
+###### Scenario Category ANalysis (SCAN)
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file)<br />
 
-#### Step 2: Create Results Object
-[&uarr; Usage - General](#usage---general)<br />
+The art of unit testing lies in choosing a set of scenarios that will produce a high degree of confidence in the functioning of the unit under test across the often very large range of possible inputs.
+
+A useful approach can be to think in terms of categories of inputs, where we reduce large ranges to representative categories, an idea I explore in this article:
+
+- [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
+
+Here is a schematic version of a category set diagram, which in a real instance will  in general have multiple category sets, each with multiple categories:
+
+<img src="png/CSD-Example.png">
+
+Each category i-j in the diagram corresponds to a scenario j for category set i.
+
+###### Creating and Loading the Input Scenarios File
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file)<br />
+
+The results of the analysis can be summarised in three CSV files which a PowerShell program uses as inputs to create a template for the JSON file.
+
+The PowerShell API, `Write-UT_Template` creates a template for the JSON file, with the full meta section, and a set of template scenarios having name as scenario key, a category set attribute, and zero or more records with default values for each input and output group. The API takes as inputs three CSV files:
+  - `stem`\_inp.csv: list of group, field, values tuples for input
+  - `stem`\_out.csv: list of group, field, values tuples for output
+  - `stem`\_sce.csv: scenario triplets - (Category set, scenario name, active flag); this file is optional
+
+In the case where a scenarios file is present, each group has zero or more records with field values taken from the group CSV files, with a record for each value column present where at least one value is not null for the group. The template scenario represents a kind of prototype scenario, where records may be manually updated (and added or subtracted) to reflect input and expected output values for the actual scenario being tested.
+
+The API can be run with the following PowerShell in the folder of the CSV files:
+
+###### Format-JSON-Stem.ps1
+```powershell
+Import-Module TrapitUtils
+Write-UT_Template 'stem' '|' 'title'
+```
+This creates the template JSON file, `stem`\_temp.json based on the CSV files having prefix `stem` and using the field delimiter '|', and including the unit test title passed. The PowerShell API can be used for testing in any language.
+
+The template file is then updated manually with data appropriate to each scenario.
+
+###### Load JSON File into Database
+
+A record is added into the table TT_UNITS by a call to the Trapit.Add_Ttu API as shown. The input JSON file must first be placed in the operating system folder pointed to by the INPUT_DIR directory, and is loaded into a JSON column in the table. The name of the unit test package ('TT_PKG'), the function ('Purely_Wrap_Uut'), and the unit test group ('lib') are also passed.
+```sql
+BEGIN
+
+  Trapit.Add_Ttu('TT_PKG', 'Purely_Wrap_Uut', 'lib', 'Y', 'tt_pkg.purely_wrap_uut_inp.json');
+
+END;
+/
+```
+
+##### Step 2: Create Results Object
+[&uarr; Unit Testing Process](#unit-testing-process)<br />
 [&darr; Trapit_Run Package](#trapit_run-package)<br />
 [&darr; TT_Package.Purely_Wrap_Uut](#tt_packagepurely_wrap_uut)<br />
 
@@ -137,10 +195,10 @@ The library subprogram writes the output JSON file with the actual results, obta
 
 In non-database languages, such as JavaScript or Python, the wrapper function can be defined in a script and passed as a parameter in a call to the library subprogram. In Oracle PL/SQL the wrapper function is defined in the database and called using dynamic PL/SQL from the library subprogram.
 
-##### Trapit_Run Package
+###### Trapit_Run Package
 [&uarr; Step 2: Create Results Object](#step-2-create-results-object)<br />
 
-The test data are read from a table tt_units, with structure:
+The test data are read from a table TT_UNITS, with structure:
 
 | Column                      | Type                  | Notes                                                                   |
 |:----------------------------|:----------------------|:------------------------------------------------------------------------|
@@ -168,9 +226,9 @@ FUNCTION Test_Output_Files(p_group_nm VARCHAR2) RETURN L1_chr_arr;
 ```
 The above function runs the tests for the input group leaving the output JSON files in the assigned directory on the database server, and returns the full file paths in an array.
 
-This version is used by a Powershell script that combines steps 2 and 3, as shown in step 3 below.
+This version is used by a PowerShell script that combines steps 2 and 3, as shown in step 3 below.
 
-##### TT_Package.Purely_Wrap_Uut
+###### TT_Package.Purely_Wrap_Uut
 [&uarr; Step 2: Create Results Object](#step-2-create-results-object)<br />
 
 Here is the specification for the wrapper function (fixed apart from the function name), with the header comment text.
@@ -197,61 +255,115 @@ The input parameter and return value are of nested array types, and it is conven
 
 This wrapper function may need to write inputs to, and read outputs from, tables, but should be 'externally pure' in the sense that any changes made are rolled back before returning, including any made by the unit under test.
 
-#### Step 3: Format Results
-[&uarr; Usage - General](#usage---general)<br />
+##### Step 3: Format Results
+[&uarr; Unit Testing Process](#unit-testing-process)<br />
 
-Step 3 involves formatting the results contained in the JSON output file from step 2, via the JavaScript formatter, and this step can be combined with step 2 for convenience.
+Step 3 involves formatting the results contained in the JSON output file from step 2, via the JavaScript formatter, and this step can be combined with step 2 for convenience. PowerShell is used to automate the steps.
 
-- `Test-FormatDB` is the function from the TrapitUtils powershell package that calls the main test driver function, then passes the output JSON file name to the JavaScript formatter and outputs a summary of the results. It takes as parameters:
+- `Test-FormatDB` is the function from the TrapitUtils PowerShell package that calls the main test driver function, then passes the output JSON file name to the JavaScript formatter and outputs a summary of the results. It takes as parameters:
 
-    - `unpw`        - Oracle user name / password string
-    - `conn`        - Oracle connection string (such as the TNS alias)
-    - `utGroup`     - Oracle unit test group
-    - `testRoot`    - unit testing root folder, where results folders will be placed
+    - `[String]unpw`        - Oracle user name / password string
+    - `[String]conn`        - Oracle connection string (such as the TNS alias)
+    - `[String]utGroup`     - Oracle unit test group
+    - `[String]testRoot`    - unit testing root folder, where results folders will be placed
+    - `[String]preSQL`      - optional PL/SQL block to execute first
 
-##### Run-Test-Lib.ps1
+    with return value:
+
+    - `[String]`: summary of results, repeated for each unit test in group
+
+##### Test-Format-Lib.ps1
+The test driver script passes the database credentials and the unit test group name into the entry point PowerShell TrapitUtils library API.
 
 ```powershell
 Import-Module ..\powershell_utils\TrapitUtils\TrapitUtils
 Test-FormatDB 'lib/lib' 'orclpdb' 'lib' $PSScriptRoot
 ```
-This script creates a results subfolder for each unit in the 'lib' group, with results in text and HTML formats, in the script folder, and outputs a summary of the following form (repeated for each unit in the group):
+
+#### Unit Test Results
+[&uarr; General Usage](#general-usage)<br />
+[&darr; Unit Test Report - Scenario List](#unit-test-report---scenario-list)<br />
+[&darr; Unit Test Report - Scenario Pages](#unit-test-report---scenario-pages)<br />
+
+The script above creates a results subfolder for each unit in the 'lib' group, with results in text and HTML formats, in the script folder, and outputs a text summary of the following form (repeated for each unit in the group):
 
 ```
 Results summary for file: [MY_PATH]/stem_out.json
-==============================================
+=================================================
 
 File:          stem_out.json
 Title:         [Title]
-Inp Groups:    [Inp Groups]
-Out Groups:    [Out Groups]
-Tests:         [Tests]
-Fails:         [Fails]
+Inp Groups:    [#Inp Groups]
+Out Groups:    [#Out Groups]
+Tests:         [#Tests]
+Fails:         [#Fails]
 Folder:        [Folder]
 ```
-### Usage - Example
+
+Within the results subfolder there is a text file containing a list of summary results at scenario level, followed by the detailed results for each scenario. In addition there are files providing the results in HTML format.
+
+##### Unit Test Report - Scenario List
+[&uarr; Unit Test Results](#unit-test-results)<br />
+
+The scenario list page lists, for each scenario:
+
+- \# - the scenario index
+- Category Set - the category set applying to the scenario
+- Scenario - a description of the scenario
+- Fails (of N) - the number of groups failing, with N being the total number of groups
+- Status - SUCCESS or FAIL
+
+The scenario field is a hyperlink to the individual scenario page.
+
+##### Unit Test Report - Scenario Pages
+[&uarr; Unit Test Results](#unit-test-results)<br />
+
+The page for each scenario has the following schematic structure:
+```
+SCENARIO i: Scenario [Category Set: (category set)]
+  INPUTS
+    For each input group: [Group name] - a heading line followed by a list of records
+      For each field: Field name
+      For each record: 1 line per record, with record number followed by:
+        For each field: Field value for record
+  OUTPUTS
+    For each output group: [Group name] - a heading line followed by a list of records
+      For each field: Field name
+      For each record: 1 line per record, with record number followed by:
+        For each field: Field expected value for record
+        For each field: Field actual value for record (only if any actual differs from expected)
+    Group status - #fails of #records: SUCCESS / FAIL
+Scenario status - #fails of #groups: SUCCESS / FAIL
+```
+### Example - Oracle PL/SQL Utilities
 [&uarr; Usage](#usage)<br />
-[&darr; Step 1: Create JSON File](#step-1-create-json-file-1)<br />
-[&darr; Step 2: Create Results Object](#step-2-create-results-object-1)<br />
-[&darr; Step 3: Format Results](#step-3-format-results-1)<br />
+[&darr; Example Description](#example-description)<br />
+[&darr; Unit Testing Process](#unit-testing-process-1)<br />
+[&darr; Unit Test Results](#unit-test-results-1)<br />
+
+#### Example Description
+[&uarr; Example - Oracle PL/SQL Utilities](#example---oracle-plsql-utilities)<br />
 
 The example comes from [Utils - Oracle PL/SQL general utilities module](https://github.com/BrenPatF/oracle_plsql_utils), a module comprising a set of generic user-defined Oracle types and a PL/SQL package of functions and procedures of general utility.
 
-In this section we show extracts from the README for that project for each of the three unit test steps.
+#### Unit Testing Process
+[&uarr; Example - Oracle PL/SQL Utilities](#example---oracle-plsql-utilities)<br />
+[&darr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-1)<br />
+[&darr; Step 2: Create Results Object](#step-2-create-results-object-1)<br />
+[&darr; Step 3: Format Results](#step-3-format-results-1)<br />
 
-#### Step 1: Create JSON File
-[&uarr; Usage - Example](#usage---example)<br />
-[&darr; Unit Test Wrapper Function](#unit-test-wrapper-function)<br />
-[&darr; Scenario Category ANalysis (SCAN)](#scenario-category-analysis-scan)<br />
+In this section we show extracts from the README for the above project for each of the three unit test steps.
 
-Step 1 requires analysis to determine the extended signature for the unit under test, and to determine appropriate scenarios to test.  The results of this analysis can be summarised in three CSV files which a powershell API, `Write-UT_Template`, uses as inputs to create a template for the JSON file.
+##### Step 1: Create Input Scenarios File
+[&uarr; Unit Testing Process](#unit-testing-process-1)<br />
+[&darr; Unit Test Wrapper Function](#unit-test-wrapper-function-1)<br />
+[&darr; Scenario Category ANalysis (SCAN)](#scenario-category-analysis-scan-1)<br />
+[&darr; Creating and Loading the Input Scenarios File](#creating-and-loading-the-input-scenarios-file-1)<br />
 
-This template file, tt_utils.purely_wrap_utils_temp.json, contains the full meta section (which describes groups and fields), and a set of template scenarios having name as scenario key, a category set attribute, and a single record with default values for each input and output group.
+Step 1 requires analysis to determine the extended signature for the unit under test, and to determine appropriate scenarios to test.  The results of this analysis can be summarised in three CSV files which a PowerShell API, `Write-UT_Template`, uses as inputs to create a template for the JSON file.
 
-For each scenario element, we need to update the values to reflect the scenario to be tested, in the actual input JSON file, tt_utils.purely_wrap_utils_inp.json.
-
-##### Unit Test Wrapper Function
-[&uarr; Step 1: Create JSON File](#step-1-create-json-file-1)<br />
+###### Unit Test Wrapper Function
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-1)<br />
 
 Here is a diagram of the input and output groups for this example:
 
@@ -261,12 +373,12 @@ From the input and output groups depicted we can construct CSV files with flatte
 
 <img src="png/groups - utils.png">
 
-These form two of the three input files for the Powershell script that generates a template ofr the input JSON file. The third is the scenarios file, shown in the next section.
+A PowerShell utility uses these CSV files, together with one for scenarios, discussed next, to generate a template for the JSON unit testing input file. The utility creates a prototype scenario dataset with a record in each group for each populated value column (in this case there's only one), that is used for each scenario in the template.
 
-##### Scenario Category ANalysis (SCAN)
-[&uarr; Step 1: Create JSON File](#step-1-create-json-file-1)<br />
+###### Scenario Category ANalysis (SCAN)
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-1)<br />
 
-As explained in the article mentioned above, it can be very useful to think in terms of generic category sets that apply in many situations. In this case, where we are testing a set of independent utilities, they are particularly useful and can be applied across many of the utilities at the same time.
+As explained in the [article](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html) mentioned above, it can be very useful to think in terms of generic category sets that apply in many situations. In this case, where we are testing a set of independent utilities, they are particularly useful and can be applied across many of the utilities at the same time.
 
 After analysis of the possible scenarios in terms of categories and category sets, we can depict them on a Category Structure diagram:
 
@@ -288,14 +400,40 @@ From the scenarios identified we can construct the following CSV file (`tt_utils
 
 <img src="png/scenarios - utils.png">
 
-#### Step 2: Create Results Object
-[&uarr; Usage - Example](#usage---example)<br />
-[&darr; TT_Utils.Purely_Wrap_Utils](#tt_utilspurely_wrap_utils)<br />
+###### Creating and Loading the Input Scenarios File
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-1)<br />
+
+The results of the analysis can be summarised in three CSV files which a PowerShell API, `Write-UT_Template`, uses as inputs to create a template for the JSON file.
+
+This template file, tt_utils.purely_wrap_utils_temp.json, contains the full meta section (which describes groups and fields), and a set of template scenarios having name as scenario key, a category set attribute, and a single record with default values for each input and output group.
+
+###### Format-JSON-Utils.ps1
+```powershell
+Import-Module ..\powershell_utils\TrapitUtils\TrapitUtils
+Write-UT_Template 'tt_utils.purely_wrap_utils' ';'
+```
+This creates the template JSON file, tt_utils.purely_wrap_utils_temp.json based on the CSV files having prefix `tt_utils.purely_wrap_utils` and using the field delimiter ';'. The PowerShell API can be used for testing in any language.
+
+The template file is then updated manually with data appropriate to each scenario.
+
+###### Load JSON File into Database
+
+A record is added into the table TT_UNITS by a call to the Trapit.Add_Ttu API as shown. The input JSON file must first be placed in the operating system folder pointed to by the INPUT_DIR directory, and is loaded into a JSON column in the table. The name of the unit test package ('TT_UTILS'), the function ('Purely_Wrap_Utils'), and the unit test group ('lib') are also passed.
+
+```sql
+BEGIN
+
+  Trapit.Add_Ttu('TT_UTILS', 'Purely_Wrap_Utils', 'lib', 'Y', 'tt_utils.purely_wrap_utils_inp.json');
+
+END;
+/
+```
+##### Step 2: Create Results Object
+[&uarr; Unit Testing Process](#unit-testing-process-1)<br />
 
 Step 2 requires the writing of a wrapper function that is called by a library packaged procedure that runs all tests for a group name passed in as a parameter.
 
-##### TT_Utils.Purely_Wrap_Utils
-[&uarr; Step 2: Create Results Object](#step-2-create-results-object-1)<br />
+###### TT_Utils.Purely_Wrap_Utils
 
 Here is an extract from the function body:
 ```sql
@@ -310,7 +448,7 @@ FUNCTION Purely_Wrap_Utils(
   l_message                      VARCHAR2(4000);
 BEGIN
 
-  l_act_2lis.EXTEND(16);
+  l_act_2lis.EXTEND(18);
   l_act_2lis(1) := heading(              p_value_2lis     => p_inp_3lis(1));
   l_act_2lis(2) := col_Headers(          p_value_2lis     => p_inp_3lis(2));
   l_act_2lis(3) := list_To_Line(         p_value_2lis     => p_inp_3lis(3));
@@ -323,12 +461,24 @@ END Purely_Wrap_Utils;
 
 ```
 
-#### Step 3: Format Results
-[&uarr; Usage - Example](#usage---example)<br />
-[&darr; Unit Test Report - Oracle PL/SQL Utilities](#unit-test-report---oracle-plsql-utilities)<br />
-[&darr; Scenario 1: Small values [Category Set: Value Size]](#scenario-1-small-values-category-set-value-size)<br />
+##### Step 3: Format Results
+[&uarr; Unit Testing Process](#unit-testing-process-1)<br />
 
 Step 3 involves formatting the results contained in the JSON output file from step 2, via the JavaScript formatter, and this step can be combined with step 2 for convenience.
+
+- `Test-FormatDB` is the function from the TrapitUtils PowerShell package that calls the main test driver function, then passes the output JSON file name to the JavaScript formatter and outputs a summary of the results.
+
+###### Test-Format-Utils.ps1
+
+```powershell
+Import-Module ..\powershell_utils\TrapitUtils\TrapitUtils
+Test-FormatDB 'lib/lib' 'orclpdb' 'lib' $PSScriptRoot
+```
+
+#### Unit Test Results
+[&uarr; Example - Oracle PL/SQL Utilities](#example---oracle-plsql-utilities)<br />
+[&darr; Unit Test Report - Oracle PL/SQL Utilities](#unit-test-report---oracle-plsql-utilities)<br />
+[&darr; Scenario 1: Small values [Category Set: Value Size]](#scenario-1-small-values-category-set-value-size)<br />
 
 The unit test script creates a results subfolder for each unit in the 'lib' group, with results in text and HTML formats, in the script folder, and outputs the following summary:
 
@@ -337,7 +487,7 @@ The unit test script creates a results subfolder for each unit in the 'lib' grou
 File:          tt_utils.purely_wrap_utils_out.json
 Title:         Oracle PL/SQL Utilities
 Inp Groups:    16
-Out Groups:    17
+Out Groups:    19
 Tests:         5
 Fails:         0
 Folder:        oracle-pl_sql-utilities
@@ -346,13 +496,13 @@ Folder:        oracle-pl_sql-utilities
 Next we show the scenario-level summary of results.
 
 ##### Unit Test Report - Oracle PL/SQL Utilities
-[&uarr; Step 3: Format Results](#step-3-format-results-1)<br />
+[&uarr; Unit Test Results](#unit-test-results-1)<br />
 
 Here is the results summary in HTML format:
 <img src="png/UT-Summary.png">
 
 ##### Scenario 1: Small values [Category Set: Value Size]
-[&uarr; Step 3: Format Results](#step-3-format-results-1)<br />
+[&uarr; Unit Test Results](#unit-test-results-1)<br />
 
 The textbox shows extracts of the results for the first scenario, with groups 1 and 16 shown for both input and output sections, and with output group 17, 'Unhandled Exception' being dynamically created by the library package to capture any unhandled exceptions.
 
@@ -387,7 +537,7 @@ SCENARIO 1: Small values [Category Set: Value Size] {
       } 0 failed of 2: SUCCESS
       ========================
       ...
-      GROUP 16: XPlan List (keyword extract) {
+      GROUP 18: XPlan List (keyword extract) {
       ========================================
             #  XPlan Line
             -  ----------------------------------------------------------------------
@@ -396,16 +546,16 @@ SCENARIO 1: Small values [Category Set: Value Size] {
             3  LIKE /Plan hash value: .+/: Plan hash value: 1388734953
       } 0 failed of 3: SUCCESS
       ========================
-      GROUP 17: Unhandled Exception: Empty as expected: SUCCESS
+      GROUP 19: Unhandled Exception: Empty as expected: SUCCESS
       =========================================================
-} 0 failed of 17: SUCCESS
+} 0 failed of 19: SUCCESS
 =========================
 ```
 ## API
 [&uarr; In this README...](#in-this-readme)<br />
-[&darr; Trapit](#trapit-1)<br />
+[&darr; Trapit](#trapit)<br />
 [&darr; Trapit_Run](#trapit_run)<br />
-[&darr; TrapitUtils.psm1 [powershell module]](#trapitutilspsm1-powershell-module)<br />
+[&darr; TrapitUtils.psm1 [PowerShell module]](#trapitutilspsm1-powershell-module)<br />
 
 ### Trapit
 [&uarr; API](#api)<br />
@@ -489,12 +639,12 @@ Runs the unit test program for each record set to active in tt_units table for a
 
 - `p_group_nm`: test group name
 
-Returns a list of the full paths for the output JSON files. This version is used by the Powershell script, Test-FormatDB, that combines unit test steps 2 and 3.
+Returns a list of the full paths for the output JSON files. This version is used by the PowerShell script, Test-FormatDB, that combines unit test steps 2 and 3.
 
-### TrapitUtils.psm1 [powershell module]
+### TrapitUtils.psm1 [PowerShell module]
 [&uarr; API](#api)<br />
 
-This powershell module contains two main entry point functions:
+This PowerShell module contains two main entry point functions:
 
 - A function to write a template for the unit test scenarios JSON file
 - A function to automate the running of the Oracle testing package and the formatting of the resulting JSON output files by a JavaScript program
@@ -526,13 +676,13 @@ The function copies the JSON files to the specified folder and runs the JavaScri
 [&uarr; In this README...](#in-this-readme)<br />
 [&darr; Prerequisite Applications](#prerequisite-applications)<br />
 [&darr; Oracle Installs](#oracle-installs)<br />
-[&darr; Powershell and JavaScript Packages](#powershell-and-javascript-packages)<br />
+[&darr; PowerShell and JavaScript Packages](#powershell-and-javascript-packages)<br />
 
 ### Prerequisite Applications
 [&uarr; Installation](#installation)<br />
 [&darr; Oracle Client](#oracle-client)<br />
 [&darr; Node.js](#nodejs)<br />
-[&darr; Powershell](#powershell)<br />
+[&darr; PowerShell](#powershell)<br />
 
 #### Oracle Client
 [&uarr; Prerequisite Applications](#prerequisite-applications)<br />
@@ -548,10 +698,10 @@ The unit test results are formatted using a JavaScript program, which is include
 
 - [Node.js Downloads](https://nodejs.org/en/download)
 
-#### Powershell
+#### PowerShell
 [&uarr; Prerequisite Applications](#prerequisite-applications)<br />
 
-Powershell is optional, and is used in the project for automation purposes, and for generating a template for the JSON input file required by the Math Function Unit Testing design pattern:
+PowerShell is optional, and is used in the project for automation purposes, and for generating a template for the JSON input file required by [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html):
 
 - [Installing Windows PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/install/installing-windows-powershell)
 
@@ -560,7 +710,7 @@ Powershell is optional, and is used in the project for automation purposes, and 
 [&darr; Automated Installation](#automated-installation)<br />
 [&darr; Manual Installation](#manual-installation)<br />
 
-The Oracle installation can be performed via a single powershell script, or in a series of smaller steps.
+The Oracle installation can be performed via a single PowerShell script, or in a series of smaller steps.
 
 #### Automated Installation
 [&uarr; Oracle Installs](#oracle-installs)<br />
@@ -575,7 +725,7 @@ The Oracle installation can be performed simply by running the following script,
 
 Some points to note:
 - This script tries to create lib and app schemas using sys schema, with all passwords assumed to be the  usernames, and TNS alias orclpdb
-- There is a script drop_utils_users.sql that can be run manually first to drop those schemas if they exist, or uncommented from the powershell script
+- There is a script drop_utils_users.sql that can be run manually first to drop those schemas if they exist, or uncommented from the PowerShell script
 
 ##### [Schema: sys; Folder: install_prereq] Drop lib and app schemas
 
@@ -654,17 +804,17 @@ SQL> @c_trapit_syns lib
 ```
 This install creates private synonyms to the lib schema. To create synonyms within another schema, run the synonyms script directly from that schema, passing lib schema.
 
-### Powershell and JavaScript Packages
+### PowerShell and JavaScript Packages
 [&uarr; Installation](#installation)<br />
-[&darr; Format-JSON-Utils.ps1](#format-json-utilsps1)<br />
-[&darr; Test-Format-Utils.ps1](#test-format-utilsps1)<br />
+[&darr; Format-JSON-Utils.ps1](#format-json-utilsps1-1)<br />
+[&darr; Test-Format-Utils.ps1](#test-format-utilsps1-1)<br />
 
-As noted in the Prerequisite Applications section, JavaScript is used to format unit test results, and Powershell is optionally used for automation purposes, and for generating a template for the JSON input file required by the Math Function Unit Testing design pattern.
+As noted in the Prerequisite Applications section, JavaScript is used to format unit test results, and PowerShell is optionally used for automation purposes, and for generating a template for the JSON input file required by the Math Function Unit Testing design pattern.
 
-Both JavaScript and Powershell packages have their own GitHub projects:
+Both JavaScript and PowerShell packages have their own GitHub projects:
 
-- [Trapit - JavaScript Unit Tester/Formatter](https://github.com/BrenPatF/trapit_nodejs_tester)
-- [Powershell utilities module](https://github.com/BrenPatF/powershell_utils)
+- [Trapit - JavaScript Unit Testing/Formatting Utilities Module](https://github.com/BrenPatF/trapit_nodejs_tester)
+- [Trapit - PowerShell Unit Testing Utilities Module](https://github.com/BrenPatF/powershell_utils/tree/master/TrapitUtils)
 
 However, for convenience the packages are included in the current project folder structure, rooted in the powershell_utils subfolder, and do not require separate installation.
 
@@ -673,7 +823,7 @@ There are two main entry points, whose usage can be seen in the project:
 - [Utils - Oracle PL/SQL general utilities module](https://github.com/BrenPatF/oracle_plsql_utils)
 
 #### Format-JSON-Utils.ps1
-[&uarr; Powershell and JavaScript Packages](#powershell-and-javascript-packages)<br />
+[&uarr; PowerShell and JavaScript Packages](#powershell-and-javascript-packages)<br />
 
 This is used to generate a template input JSON file for the Oracle PL/SQL general utilities module.
 ```sql
@@ -682,7 +832,7 @@ Write-UT_Template 'tt_utils.purely_wrap_utils' ';'
 ```
 
 #### Test-Format-Utils.ps1
-[&uarr; Powershell and JavaScript Packages](#powershell-and-javascript-packages)<br />
+[&uarr; PowerShell and JavaScript Packages](#powershell-and-javascript-packages)<br />
 
 This run Oracle unit tests for a given test group ('lib' here) for the Oracle PL/SQL general utilities module, and includes the formatting step by means of a call to the JavaScript formatter.
 ```sql
@@ -701,7 +851,7 @@ There are five subfolders below the trapit root folder:
 - `install_prereq`: Installation prerequisites
 - `lib`: Library schema folder (main)
 - `png`: Image files for the README
-- `powershell_utils`: Powershell packages, with JavaScript Trapit module included in TrapitUtils
+- `powershell_utils`: PowerShell packages, with JavaScript Trapit module included in TrapitUtils
 
 ## See Also
 [&uarr; In this README...](#in-this-readme)<br />
@@ -709,11 +859,12 @@ There are five subfolders below the trapit root folder:
 - [Node.js Downloads](https://nodejs.org/en/download)
 - [Installing Windows PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/install/installing-windows-powershell)
 - [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html)
-- [Trapit - JavaScript Unit Tester/Formatter](https://github.com/BrenPatF/trapit_nodejs_tester)
+- [Trapit - JavaScript Unit Testing/Formatting Utilities Module](https://github.com/BrenPatF/trapit_nodejs_tester)
 - [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
-- [Powershell Utilities Module](https://github.com/BrenPatF/powershell_utils)
+- [Trapit - PowerShell Unit Testing Utilities Module](https://github.com/BrenPatF/powershell_utils/tree/master/TrapitUtils)
 - [Utils - Oracle PL/SQL General Utilities Module](https://github.com/BrenPatF/oracle_plsql_utils)
 - [Log_Set - Oracle PL/SQL Logging Module](https://github.com/BrenPatF/log_set_oracle)
+- [Trapit - PowerShell Unit Testing Utilities Module](https://github.com/BrenPatF/powershell_utils/tree/master/TrapitUtils)
 - [Timer_Set - Oracle PL/SQL Code Timing Module](https://github.com/BrenPatF/timer_set_oracle)
 - [Net_Pipe - Oracle PL/SQL Network Analysis Module](https://github.com/BrenPatF/plsql_network)
 - [Oracle PL/SQL API Demos - demonstrating instrumentation and logging, code timing and unit testing of Oracle PL/SQL APIs](https://github.com/BrenPatF/oracle_plsql_api_demos)
@@ -722,7 +873,7 @@ There are five subfolders below the trapit root folder:
 ## Software Versions
 
 - Windows 11
-- Powershell 5/7
+- PowerShell 5/7
 - npm 6.13.4
 - Node.js v12.16.1
 - Oracle Database Version 21.3.0.0.0
