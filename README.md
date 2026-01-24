@@ -1144,7 +1144,7 @@ Here we show the scenario-level summary of results, and show the detail for one 
 
 You can review the HTML formatted unit test results here:
 
-- [Unit Test Report: Trapit Oracle Tester](http://htmlpreview.github.io/?https://github.com/BrenPatF/trapit_oracle_tester/tree/master/unit_test/trapit-oracle-tester/trapit-oracle-tester.html)
+- [Unit Test Report: Trapit Oracle Tester](http://htmlpreview.github.io/?https://github.com/BrenPatF/trapit_oracle_tester/blob/master/unit_test/trapit-oracle-tester/trapit-oracle-tester.html)
 
 <img src="png/trapit-oracle-tester.png">
 
