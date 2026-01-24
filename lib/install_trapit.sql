@@ -4,25 +4,16 @@ DEFINE app=&1
 /***************************************************************************************************
 Name: install_trapit.sql               Author: Brendan Furey                       Date: 19-May-2019
 
-Installation script for the unit test utility components in the trapit_oracle_tester module. It 
-requires a minimum Oracle database version of 12.2, owing to the use of v12.2 PL/SQL JSON features.
+Installation script in the 'Trapit - Oracle PL/SQL Unit Testing' module, which facilitates unit
+testing in Oracle PL/SQL following 'The Math Function Unit Testing design pattern', as described
+here: 
 
-This module facilitates unit testing in Oracle PL/SQL following 'The Math Function Unit Testing 
-design pattern', as described here: 
+    https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html
 
-    The Math Function Unit Testing design pattern, implemented in nodejs:
-    https://github.com/BrenPatF/trapit_nodejs_tester
+GitHub project for Oracle PL/SQL:
 
-This module on GitHub:
-
-    Oracle PL/SQL unit testing module
     https://github.com/BrenPatF/trapit_oracle_tester
 
-Pre-requisite: Installation of the oracle_plsql_utils module (base install):
-
-    GitHub: https://github.com/BrenPatF/oracle_plsql_utils
-
-The lib schema refers to the schema in which oracle_plsql_utils was installed.
 ====================================================================================================
 |  Script                   |  Notes                                                               |
 |==================================================================================================|
@@ -31,9 +22,14 @@ The lib schema refers to the schema in which oracle_plsql_utils was installed.
 |  grant_trapit_to_app.sql  |  Grants privileges on Trapit components from lib to app schema       |
 |---------------------------|----------------------------------------------------------------------|
 |  c_trapit_syns.sql        |  Creates synonyms for Trapit components in app schema to lib schema  |
+|---------------------------|----------------------------------------------------------------------|
+|  l_objects.sql            |  Lists recently created objects for a schema                         |
+|---------------------------|----------------------------------------------------------------------|
+|  install_trapit_tt.sql    |  Creates unit test components for testing the generic unit test API, |
+|                           |  Trapit_Run.Run_A_Test                                               |
 ====================================================================================================
 
-This file has the install script for the lib schema.
+This file has the install script for the lib schema (base components).
 
 Components created, with grants to app schema (if passed) via grant_trapit_to_app.sql:
 

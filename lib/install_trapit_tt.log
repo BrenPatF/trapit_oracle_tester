@@ -1,0 +1,23 @@
+
+Database             Time                 Version
+-------------------- -------------------- ------------------------------
+Start: FREE          24-JAN-2026 15:31:41 Version 23.4.0.24.05
+
+Create package TT_Trapit
+
+Package created.
+
+No errors.
+
+Package body created.
+
+No errors.
+Add the tt_units record, reading in JSON file from INPUT_DIR
+
+PL/SQL procedure successfully completed.
+
+
+'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
+----------------------------------
+End: 24-JAN-2026 15:31:42
+

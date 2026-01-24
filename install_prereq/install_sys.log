@@ -1,7 +1,7 @@
 
 Database             Time                 Version
 -------------------- -------------------- ------------------------------
-Start: ORCL          06-MAY-2024 15:49:43 Version 21.3.0.0.0
+Start: FREE          24-JAN-2026 15:31:40 Version 23.4.0.24.05
 
 Create directory input_dir
 
@@ -179,5 +179,5 @@ Grant succeeded.
 
 'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
 ----------------------------------
-End: 06-MAY-2024 15:49:43
+End: 24-JAN-2026 15:31:40
 

@@ -1,0 +1,1 @@
+pwsh .\Format-JSON-Trapit.ps1  > .\Format-JSON-Trapit.out 2> .\Format-JSON-Trapit.err

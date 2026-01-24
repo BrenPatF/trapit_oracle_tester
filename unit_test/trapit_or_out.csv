@@ -1,0 +1,18 @@
+Group,Field,Value1,Value2,Value3,Value4,Value5,Value6
+Unit Test,Title,Inner title,,,,,
+Unit Test,Delimiter,;,,,,,
+Input Fields,Group,Input Group 1,Input Group 1,Input Group 2,Input Group 2,,
+Input Fields,Field,Input Field 1-1,Input Field 1-2,Input Field 2-1,Input Field 2-2,,
+Output Fields,Group,Output Group 1,Output Group 1,Output Group 2,Output Group 2,Unhandled Exception,Unhandled Exception
+Output Fields,Field,Output Field 1-1,Output Field 1-2,Output Field 2-1,Output Field 2-2,Message,Stack
+Scenarios,Scenario,Inner scenario 1,Inner scenario 2,,,,
+Scenarios,Category Set,Inner Category Set 1,Inner Category Set 2,,,,
+Input Values,Scenario,Inner scenario 1,Inner scenario 1,Inner scenario 2,Inner scenario 2,,
+Input Values,Group,Input Group 1,Input Group 2,Input Group 1,Input Group 2,,
+Input Values,Row CSV,Input value 1-1-1;Input value 1-1-2,Input value 1-2-1;Input value 1-2-2,Input value 2-1-1;Input value 2-1-2,Input value 2-2-1;Input value 2-2-2,,
+Expected Values,Scenario,Inner scenario 1,Inner scenario 1,Inner scenario 2,Inner scenario 2,,
+Expected Values,Group,Output Group 1,Output Group 2,Output Group 1,Output Group 2,,
+Expected Values,Row CSV,Expected value 1-1-1;Expected value 1-1-2,Expected value 1-2-1;Expected value 1-2-2,Expected value 2-1-1;Expected value 2-1-2,Expected value 2-2-1;Expected value 2-2-2,,
+Actual Values,Scenario,Inner scenario 1,Inner scenario 1,Inner scenario 2,Inner scenario 2,,
+Actual Values,Group,Output Group 1,Output Group 2,Output Group 1,Output Group 2,,
+Actual Values,Row CSV,Expected value 1-1-1;Expected value 1-1-2,Expected value 1-2-1;Expected value 1-2-2,Expected value 2-1-1;Expected value 2-1-2,Expected value 2-2-1;Expected value 2-2-2,,

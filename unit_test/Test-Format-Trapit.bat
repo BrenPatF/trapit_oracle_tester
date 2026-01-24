@@ -1,0 +1,1 @@
+pwsh -file .\Test-Format-Trapit.ps1  > .\Test-Format-Trapit.out 2> .\Test-Format-Trapit.err

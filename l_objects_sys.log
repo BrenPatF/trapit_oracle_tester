@@ -1,0 +1,25 @@
+
+Database             Time                 Version
+-------------------- -------------------- ------------------------------
+Start: FREE          24-JAN-2026 15:31:42 Version 23.4.0.24.05
+
+Objects in schema sys created within last minute
+
+OBJECT_TYPE             OBJECT_NAME                    STATUS
+----------------------- ------------------------------ -------
+CONTEXT                 TRAPIT_CTX                     VALID
+DIRECTORY               INPUT_DIR                      VALID
+PACKAGE                 DBMS_LOCK                      VALID
+PACKAGE                 UTL_FILE                       VALID
+VIEW                    V_$DATABASE                    VALID
+VIEW                    V_$SQL                         VALID
+VIEW                    V_$SQL_PLAN                    VALID
+VIEW                    V_$SQL_PLAN_STATISTICS_ALL     VALID
+
+8 rows selected.
+
+
+'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
+----------------------------------
+End: 24-JAN-2026 15:31:42
+

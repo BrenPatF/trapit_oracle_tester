@@ -1,0 +1,2486 @@
+{
+  "meta": {
+    "title": "Trapit Python Tester",
+    "delimiter": "|",
+    "inp": {
+      "Unit Test": [
+        "Title",
+        "Delimiter"
+      ],
+      "Input Fields": [
+        "Group",
+        "Field"
+      ],
+      "Output Fields": [
+        "Group",
+        "Field"
+      ],
+      "Scenarios": [
+        "Scenario",
+        "Active Y/N",
+        "Category Set",
+        "Exception  Y/N"
+      ],
+      "Input Values": [
+        "Scenario",
+        "Group",
+        "Row CSV"
+      ],
+      "Expected Values": [
+        "Scenario",
+        "Group",
+        "Row CSV"
+      ],
+      "Actual Values": [
+        "Scenario",
+        "Group",
+        "Row CSV"
+      ]
+    },
+    "out": {
+      "Unit Test": [
+        "Title",
+        "Delimiter"
+      ],
+      "Input Fields": [
+        "Group",
+        "Field"
+      ],
+      "Output Fields": [
+        "Group",
+        "Field"
+      ],
+      "Scenarios": [
+        "Scenario",
+        "Category Set"
+      ],
+      "Input Values": [
+        "Scenario",
+        "Group",
+        "Row CSV"
+      ],
+      "Expected Values": [
+        "Scenario",
+        "Group",
+        "Row CSV"
+      ],
+      "Actual Values": [
+        "Scenario",
+        "Group",
+        "Row CSV"
+      ]
+    }
+  },
+  "scenarios": {
+    "No input groups": {
+      "active_yn": "Y",
+      "category_set": "Input Group Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "One input group": {
+      "active_yn": "Y",
+      "category_set": "Input Group Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Multiple input groups": {
+      "active_yn": "Y",
+      "category_set": "Input Group Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "No output groups": {
+      "active_yn": "Y",
+      "category_set": "Output Group Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+        ],
+        "Actual Values": [
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+        ],
+        "Actual Values": [
+        ]
+      }
+    },
+    "One output group": {
+      "active_yn": "Y",
+      "category_set": "Output Group Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ]
+      }
+    },
+    "Multiple output groups": {
+      "active_yn": "Y",
+      "category_set": "Output Group Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "One input group field": {
+      "active_yn": "Y",
+      "category_set": "Input Field Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Multiple input fields": {
+      "active_yn": "Y",
+      "category_set": "Input Field Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "One output group field": {
+      "active_yn": "Y",
+      "category_set": "Output Field Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1"
+        ]
+      }
+    },
+    "Multiple output fields": {
+      "active_yn": "Y",
+      "category_set": "Output Field Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "No input group records": {
+      "active_yn": "Y",
+      "category_set": "Input Record Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "One input group record": {
+      "active_yn": "Y",
+      "category_set": "Input Record Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Multiple input group records": {
+      "active_yn": "Y",
+      "category_set": "Input Record Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "No output group records": {
+      "active_yn": "Y",
+      "category_set": "Output Record Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+        ],
+        "Actual Values": [
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+        ],
+        "Actual Values": [
+        ]
+      }
+    },
+    "One output group record": {
+      "active_yn": "Y",
+      "category_set": "Output Record Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2"
+        ]
+      }
+    },
+    "Multiple output group records": {
+      "active_yn": "Y",
+      "category_set": "Output Record Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "One scenario": {
+      "active_yn": "Y",
+      "category_set": "Scenario Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2"
+        ]
+      }
+    },
+    "Multiple scenarios": {
+      "active_yn": "Y",
+      "category_set": "Scenario Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Active and inactive scenarios": {
+      "active_yn": "Y",
+      "category_set": "Scenario Multiplicity",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|N|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Category sets null": {
+      "active_yn": "Y",
+      "category_set": "Category Set",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y||N",
+          "Inner scenario 2|Y||N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|",
+          "Inner scenario 2|"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Multiple category sets with the same value": {
+      "active_yn": "Y",
+      "category_set": "Category Set",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 1|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 1"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Multiple category sets with null and not null values": {
+      "active_yn": "Y",
+      "category_set": "Category Set",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y||N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Delimiter example 1": {
+      "active_yn": "Y",
+      "category_set": "Delimiter Characters",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Delimiter example 2": {
+      "active_yn": "Y",
+      "category_set": "Delimiter Characters",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|:"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1:Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1:Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1:Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1:Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1:Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1:Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1:Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1:Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1:Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1:Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1:Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1:Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|:"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1:Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1:Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1:Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1:Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1:Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1:Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1:Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1:Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1:Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1:Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1:Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1:Expected value 2-2-2"
+        ]
+      }
+    },
+    "Multicharacter delimiter": {
+      "active_yn": "Y",
+      "category_set": "Delimiter Characters",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|??"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1??Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1??Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1??Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1??Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1??Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1??Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1??Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1??Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1??Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1??Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1??Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1??Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|??"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1??Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1??Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1??Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1??Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1??Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1??Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1??Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1??Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1??Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1??Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1??Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1??Expected value 2-2-2"
+        ]
+      }
+    },
+    "Valid: All records the same": {
+      "active_yn": "Y",
+      "category_set": "Invalidity Type",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Same record numbers, values differ": {
+      "active_yn": "Y",
+      "category_set": "Invalidity Type",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Wrong Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Wrong Expected value 2-2-2"
+        ]
+      }
+    },
+    "More expected than actual records": {
+      "active_yn": "Y",
+      "category_set": "Invalidity Type",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ]
+      }
+    },
+    "More actual than expected records": {
+      "active_yn": "Y",
+      "category_set": "Invalidity Type",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "Unhandled exception": {
+      "active_yn": "Y",
+      "category_set": "Unhandled Exception",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|Y",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Unhandled Exception|ORA-20000: Exception thrown",
+          "Inner scenario 1|Unhandled Exception|ORA-06512: at \"LIB.UTILS\", line 467\nORA-06512: at \"LIB.TT_TRAPIT\", line 459\nORA-06512: at line 1\nORA-06512: at \"LIB.TRAPIT_RUN\", line 83\n",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ]
+      }
+    },
+    "At least one scenario fails": {
+      "active_yn": "Y",
+      "category_set": "Test Status",
+      "inp": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Y|Inner Category Set 1|N",
+          "Inner scenario 2|Y|Inner Category Set 2|N"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Wrong Expected value 2-2-2"
+        ]
+      },
+      "out": {
+        "Unit Test": [
+          "Inner Unit Test|;"
+        ],
+        "Input Fields": [
+          "Input Group 1|Input Field 1-1",
+          "Input Group 1|Input Field 1-2",
+          "Input Group 2|Input Field 2-1",
+          "Input Group 2|Input Field 2-2"
+        ],
+        "Output Fields": [
+          "Output Group 1|Output Field 1-1",
+          "Output Group 1|Output Field 1-2",
+          "Output Group 2|Output Field 2-1",
+          "Output Group 2|Output Field 2-2",
+          "Unhandled Exception|Line"
+        ],
+        "Scenarios": [
+          "Inner scenario 1|Inner Category Set 1",
+          "Inner scenario 2|Inner Category Set 2"
+        ],
+        "Input Values": [
+          "Inner scenario 1|Input Group 1|Input value 1-1-1;Input value 1-1-2",
+          "Inner scenario 1|Input Group 2|Input value 1-2-1;Input value 1-2-2",
+          "Inner scenario 2|Input Group 1|Input value 2-1-1;Input value 2-1-2",
+          "Inner scenario 2|Input Group 2|Input value 2-2-1;Input value 2-2-2"
+        ],
+        "Expected Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Expected value 2-2-2"
+        ],
+        "Actual Values": [
+          "Inner scenario 1|Output Group 1|Expected value 1-1-1;Expected value 1-1-2",
+          "Inner scenario 1|Output Group 2|Expected value 1-2-1;Expected value 1-2-2",
+          "Inner scenario 2|Output Group 1|Expected value 2-1-1;Expected value 2-1-2",
+          "Inner scenario 2|Output Group 2|Expected value 2-2-1;Wrong Expected value 2-2-2"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+pwsh -file .\Copy-Trapit_Prereq.ps1  > .\Copy-Trapit_Prereq.out 2> .\Copy-Trapit_Prereq.err

@@ -39,6 +39,8 @@ those for scripting languages in two other ways:
 | Trapit       |  Unit test utility package (Definer rights)                                       |
 |--------------|-----------------------------------------------------------------------------------|
 | *Trapit_Run* |  Unit test driver package (Invoker rights)                                        |
+|--------------|-----------------------------------------------------------------------------------|
+|  TT_Trapit   |  Unit test package for testing the generic unit test API, Trapit_Run.Run_A_Test   |
 ====================================================================================================
 
 This file has the package body for Trapit_Run, the unit test driver package. See README for API 
@@ -51,7 +53,7 @@ schema do not require execute privilege to be granted to owning schema (if diffe
 
 /***************************************************************************************************
 
-run_A_Test: Run a single unit test, using the name of the package function passed in to make a call
+Run_A_Test: Run a single unit test, using the name of the package function passed in to make a call
             via dynamic SQL. The function must have the signature expected for the Math Function 
             Unit Testing design pattern, namely:
 
@@ -60,7 +62,9 @@ run_A_Test: Run a single unit test, using the name of the package function passe
                           record as delimited fields string)
 
 ***************************************************************************************************/
-PROCEDURE run_A_Test(p_package_function VARCHAR2, p_title VARCHAR2)  IS
+PROCEDURE Run_A_Test(
+            p_package_function             VARCHAR2, 
+            p_title                        VARCHAR2) IS
 
   l_act_3lis                     L3_chr_arr := L3_chr_arr();
   l_sces_4lis                    L4_chr_arr;
@@ -90,7 +94,7 @@ BEGIN
                      p_act_3lis                    => l_act_3lis,
                      p_err_2lis                    => l_err_2lis);
 
-END run_A_Test;
+END Run_A_Test;
 
 /***************************************************************************************************
 
@@ -109,7 +113,7 @@ BEGIN
 
     l_ttu_lis := Utils.Split_Values(p_string => r.COLUMN_VALUE, 
                                     p_delim  => '|');
-    run_A_Test(p_package_function => l_ttu_lis(1), p_title => l_ttu_lis(2));
+    Run_A_Test(p_package_function => l_ttu_lis(1), p_title => l_ttu_lis(2));
     COMMIT;
 
   END LOOP;
@@ -136,7 +140,7 @@ BEGIN
 
     l_ttu_lis := Utils.Split_Values(p_string => r.COLUMN_VALUE, 
                                     p_delim  => '|');
-    run_A_Test(p_package_function => l_ttu_lis(1), p_title => l_ttu_lis(2));
+    Run_A_Test(p_package_function => l_ttu_lis(1), p_title => l_ttu_lis(2));
     COMMIT;
     l_file_lis.Extend;
     l_file_lis(l_file_lis.Count) := Lower(l_input_dir || '\' || l_ttu_lis(1)) || '_out.json';

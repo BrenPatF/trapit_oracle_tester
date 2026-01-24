@@ -1,0 +1,33 @@
+Category Set,Scenario,Active
+Input Group Multiplicity, No input groups, N
+Input Group Multiplicity, One input group, N
+Input Group Multiplicity, Multiple input groups, N
+Output Group Multiplicity, No output groups, N
+Output Group Multiplicity, One output group, N
+Output Group Multiplicity, Multiple output groups, N
+Input Field Multiplicity, One input group field, N
+Input Field Multiplicity, Multiple input fields, N
+Output Field Multiplicity, One output group field, N
+Output Field Multiplicity, Multiple output fields, N
+Input Record Multiplicity, No input group records, N
+Input Record Multiplicity, One input group record, N
+Input Record Multiplicity, Multiple input group records, N
+Output Record Multiplicity, No output group records, N
+Output Record Multiplicity, One output group record, N
+Output Record Multiplicity, Multiple output group records, N
+Scenario Multiplicity, One scenario, N
+Scenario Multiplicity, Multiple scenarios, N
+Scenario Multiplicity, Active and inactive scenarios, N
+Category Set, Category sets undefined, N
+Category Set, Category sets null, N
+Category Set, Multiple category sets with the same value, N
+Category Set, Multiple category sets with null and not null values, N
+Delimiter Characters, Delimiter example 1, N
+Delimiter Characters, Delimiter example 2, N
+Delimiter Characters, Multicharacter delimiter, N
+Invalidity Type, All records the same, N
+Invalidity Type, Same record numbers, N
+Invalidity Type, More expected than actual records, N
+Invalidity Type, More actual than expected records set, N
+Unhandled Exception, Unhandled exception, N
+Test Status, At least one scenario fails, N

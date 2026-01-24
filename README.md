@@ -22,6 +22,7 @@ There is an extended Usage section below that illustrates the use of the design 
 [&darr; Usage](#usage)<br />
 [&darr; API](#api)<br />
 [&darr; Installation](#installation)<br />
+[&darr; Unit Testing](#unit-testing)<br />
 [&darr; Folder Structure](#folder-structure)<br />
 [&darr; See Also](#see-also)<br />
 ## Background
@@ -84,12 +85,13 @@ For non-JavaScript programs the results object is materialized using a library p
 - First, the output results object is created using the external library package which is then written to a JSON file
 - Second, a script from the Trapit JavaScript library package is run, passing in the name of the output results JSON file
 
-This creates a subfolder with name based on the unit test title within the file, and also outputs a summary of the results. The processing is split between three code units:
-- Test Unit: External library function that drives the unit testing with a callback to a specific wrapper function
-- Specific Test Package: This has a 1-line main program to call the library driver function, passing in the wrapper function (in Oracle this is the name of a function stored on the database, in other languages it's a callback function)
+This creates a subfolder with name based on the unit test title within the file, and also outputs a summary of the results. The processing for step 1 is split between four code units:
+- Test Driver: This drives the unit testing, calling Test Unit, and may be written in a scripting language, such as PowerShell for example
+- Purely Wrap API: The wrapper function that is passed the inputs and returns the actual outputs for a single scenario
 - Unit Under Test (API): Called by the wrapper function, which converts between its specific inputs and outputs and the generic version used by the library package
+- Test Unit: External library function that drives the unit testing with a call to a specific wrapper function via dynamic SQL
 
-<img src="png/PFD-Ext.png">
+<img src="png/PFD-Ext-Oracle.png">
 
 In the first step the external program creates the output results JSON file, while in the second step the file is read into an object by the Trapit library package, which then formats the results.
 
@@ -175,9 +177,7 @@ The template file is then updated manually with data appropriate to each scenari
 A record is added into the table TT_UNITS by a call to the Trapit.Add_Ttu API as shown. The input JSON file must first be placed in the operating system folder pointed to by the INPUT_DIR directory, and is loaded into a JSON column in the table. The name of the unit test package ('TT_PKG'), the function ('Purely_Wrap_Uut'), and the unit test group ('lib') are also passed.
 ```sql
 BEGIN
-
   Trapit.Add_Ttu('TT_PKG', 'Purely_Wrap_Uut', 'lib', 'Y', 'tt_pkg.purely_wrap_uut_inp.json');
-
 END;
 /
 ```
@@ -247,7 +247,6 @@ Purely_Wrap_Uut: Unit test wrapper function for the unit under test
 FUNCTION Purely_Wrap_Uut(
             p_inp_3lis                     L3_chr_arr) -- input list of lists (group, record, field)
             RETURN                         L2_chr_arr; -- output list of lists (group, record)
-
 ```
 The input parameter and return value are of nested array types, and it is convenient for programming reasons to split the input records into fields, but return record values as delimited strings.
 
@@ -440,14 +439,12 @@ Here is an extract from the function body:
 FUNCTION Purely_Wrap_Utils(
             p_inp_3lis                     L3_chr_arr)   -- input list of lists (group, record, field)
             RETURN                         L2_chr_arr IS -- output list of lists (group, record)
-
   c_delim                        VARCHAR2(1) := ';';
   l_act_2lis                     L2_chr_arr := L2_chr_arr();
   l_start_tmstp                  TIMESTAMP := SYSTIMESTAMP;
   l_start_cpu_cs                 PLS_INTEGER := DBMS_Utility.Get_CPU_Time;
   l_message                      VARCHAR2(4000);
 BEGIN
-
   l_act_2lis.EXTEND(18);
   l_act_2lis(1) := heading(              p_value_2lis     => p_inp_3lis(1));
   l_act_2lis(2) := col_Headers(          p_value_2lis     => p_inp_3lis(2));
@@ -456,9 +453,7 @@ BEGIN
                                          p_delim          => p_inp_3lis(13)(1)(1));
 ''' [continues]
   RETURN l_act_2lis;
-
 END Purely_Wrap_Utils;
-
 ```
 
 ##### Step 3: Format Results
@@ -483,7 +478,6 @@ Test-FormatDB 'lib/lib' 'orclpdb' 'lib' $PSScriptRoot
 The unit test script creates a results subfolder for each unit in the 'lib' group, with results in text and HTML formats, in the script folder, and outputs the following summary:
 
 ```
-
 File:          tt_utils.purely_wrap_utils_out.json
 Title:         Oracle PL/SQL Utilities
 Inp Groups:    16
@@ -625,7 +619,7 @@ This package runs with Invoker rights, not the default Definer rights, so that d
     Trapit_Run.Run_Tests(p_group_nm);
 ```
 
-Runs the unit test program for each package procedure set to active in tt_units table for a given test group, with parameters as follows:
+Runs the unit test program for each package procedure set to active in the tt_units table for a given test group, with parameters as follows:
 
 - `p_group_nm`: test group name
 
@@ -640,6 +634,17 @@ Runs the unit test program for each record set to active in tt_units table for a
 - `p_group_nm`: test group name
 
 Returns a list of the full paths for the output JSON files. This version is used by the PowerShell script, Test-FormatDB, that combines unit test steps 2 and 3.
+
+#### Run_A_Test
+```sql
+    Trapit_Run.Run_A_Test(p_package_function, p_title);
+```
+This is the core unit test program, which calls the test wrapper function for each scenario. It reads the JSON input object containing metadata and scenarios from the tt_units table, and writes the output object both to the table and to the file system. It has parameters as follows:
+
+- `p_package_function`: The name of the wrapper function in the form `package.function`
+- `p_title`: Unit test title, which overrides that in the JSON input object
+
+This procedure is normally called from the above two APIs, but is public to enable unit testing.
 
 ### TrapitUtils.psm1 [PowerShell module]
 [&uarr; API](#api)<br />
@@ -725,7 +730,7 @@ The Oracle installation can be performed simply by running the following script,
 
 Some points to note:
 - This script tries to create lib and app schemas using sys schema, with all passwords assumed to be the  usernames, and TNS alias orclpdb
-- There is a script drop_utils_users.sql that can be run manually first to drop those schemas if they exist, or uncommented from the PowerShell script
+- The script first calls drop_utils_users.sql to drop those schemas if they exist
 
 ##### [Schema: sys; Folder: install_prereq] Drop lib and app schemas
 
@@ -741,14 +746,18 @@ SQL> @drop_utils_users
 
 The Oracle database installation is implemented through a small number of driver scripts: One per Oracle schema and folder, separating out the prerequisite installs from the main ones.
 
-| Script               | Schema | Folder             | Purpose                                         |
-|:---------------------|:-------|:-------------------|:------------------------------------------------|
-| drop_utils_users.sql | sys    | install_prereq     | Drop lib and app schemas and Oracle directory   |
-| install_sys.sql      | sys    | install_prereq     | Create lib and app schemas and Oracle directory |
-| install_lib_all.sql  | lib    | install_prereq\lib | Install lib components for Utils                |
-| c_syns_all.sql       | app    | install_prereq\app | Create app synonyms to lib for Utils            |
-| install_trapit.sql   | lib    | lib                | Install Trapit components                       |
-| c_trapit_syns.sql    | app    | app                | Create app synonyms to lib for Trapit           |
+| Script                | Schema | Folder             | Purpose                                         |
+|:----------------------|:-------|:-------------------|:------------------------------------------------|
+| drop_utils_users.sql  | sys    | install_prereq     | Drop lib and app schemas and Oracle directory   |
+| install_sys.sql       | sys    | install_prereq     | Create lib and app schemas and Oracle directory |
+| install_lib_all.sql   | lib    | install_prereq\lib | Install lib components for Utils                |
+| c_syns_all.sql        | app    | install_prereq\app | Create app synonyms to lib for Utils            |
+| install_trapit.sql    | lib    | lib                | Install Trapit components                       |
+| install_trapit_tt.sql | lib    | lib                | Install Trapit unit test components             |
+| c_trapit_syns.sql     | app    | app                | Create app synonyms to lib for Trapit           |
+| l_objects.sql         | sys    | .                  | List recently created objects for schema sys    |
+| l_objects.sql         | lib    | .                  | List recently created objects for schema lib    |
+| l_objects.sql         | app    | .                  | List recently created objects for schema app    |
 
 ##### Install 1: Install prerequisite module
 [&uarr; Manual Installation](#manual-installation)<br />
@@ -792,6 +801,11 @@ This creates the required components for the base install along with grants for 
 ```sql
 SQL> @grant_trapit_to_app schema
 ```
+
+```sql
+SQL> @install_trapit_tt
+```
+This creates the required components for the unit test install. This is required only to unit test the main unit test API itself, not for general usage.
 
 ##### Install 3: Create synonyms to lib
 [&uarr; Manual Installation](#manual-installation)<br />
@@ -839,6 +853,313 @@ This run Oracle unit tests for a given test group ('lib' here) for the Oracle PL
 Import-Module ..\powershell_utils\TrapitUtils\TrapitUtils
 Test-FormatDB 'lib/lib' 'orclpdb' 'lib' $PSScriptRoot
 ```
+## Unit Testing
+[&uarr; In this README...](#in-this-readme)<br />
+[&darr; Unit Testing Process](#unit-testing-process-2)<br />
+[&darr; Unit Test Results](#unit-test-results-2)<br />
+
+In this section the unit testing API function Trapit_Run.Run_A_Test is itself tested using [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html). A 'pure' wrapper function is constructed that takes input parameters and returns a value, and is tested within a loop over scenario records read from a JSON object.
+
+### Unit Testing Process
+[&uarr; Unit Testing](#unit-testing)<br />
+[&darr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-2)<br />
+[&darr; Step 2: Create Results Object](#step-2-create-results-object-2)<br />
+[&darr; Step 3: Format Results](#step-3-format-results-2)<br />
+
+This section details the three steps involved in following [The Math Function Unit Testing Design Pattern](https://brenpatf.github.io/2023/06/05/the-math-function-unit-testing-design-pattern.html).
+
+#### Step 1: Create Input Scenarios File
+[&uarr; Unit Testing Process](#unit-testing-process-2)<br />
+[&darr; Unit Test Wrapper Function](#unit-test-wrapper-function-2)<br />
+[&darr; Scenario Category ANalysis (SCAN)](#scenario-category-analysis-scan-2)<br />
+[&darr; Creating the Input Scenarios File](#creating-the-input-scenarios-file)<br />
+
+##### Unit Test Wrapper Function
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-2)<br />
+
+The signature of the unit under test is:
+
+```sql
+PROCEDURE Run_A_Test(
+            p_package_function             VARCHAR2,
+            p_title                        VARCHAR2);
+```
+where the parameters are described in the API section above. The diagram below shows the structure of the input and output of the wrapper function.
+
+<img src="png/JSD-trapit.png">
+
+As noted above, the inputs to the unit under test here include a function. This raises the interesting question as to how we can model a function in our test data. In fact the best way to do this seems to be to regard the function as a kind of black box, where we don't care about the interior of the function, but only its behaviour in terms of returning an output from an input. This is why we have the Actual Values group in the input side of the diagram above, as well as on the output side. We can model any deterministic function in our test data simply by specifying input and output sets of values.
+
+As we are using the trapit.test_unit API to test itself, we will have inner and outer levels for the calls and their parameters. The inner-level wrapper function passed in in the call to the unit under test by the outer-level wrapper function therefore needs simply to return the set of Actual Values records for the given scenario. In order for it to know which set to return, the scenarios need to be within readable scope, and we need to know which scenario to use. This is achieved by maintaining arrays containing a list of inner scenarios and a list of inner output groups, along with a nonlocal variable with an index to the current inner scenario that the inner wrapper increments each time it's called. This allows the output array to be extracted from the input parameter from the outer wrapper function.
+
+From the input and output groups depicted we can construct CSV files with flattened group/field structures, and default values added, as follows:
+
+###### trapit_or_inp.csv
+<img src="png/trapit_or_inp.png">
+
+The value fields shown correspond to a prototype scenario with records per input group:
+- Unit Test: 1
+- Input Fields: 4
+- Output Fields: 4
+- Scenarios: 2
+- Input Values: 4
+- Expected Values: 4
+- Actual Values: 4
+
+###### trapit_or_out.csv
+<img src="png/trapit_or_out.png">
+
+The value fields shown correspond to a prototype scenario with records per output group:
+- Unit Test: 1
+- Input Fields: 4
+- Output Fields: 6
+- Scenarios: 2
+- Input Values: 4
+- Expected Values: 4
+- Actual Values: 4
+
+A PowerShell utility uses these CSV files, together with one for scenarios, discussed next, to generate a template for the JSON unit testing input file. The utility creates a prototype scenario dataset with a record in each group for each populated value column, that is used for each scenario in the template.
+
+##### Scenario Category ANalysis (SCAN)
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-2)<br />
+[&darr; Generic Category Sets](#generic-category-sets)<br />
+[&darr; Categories and Scenarios](#categories-and-scenarios)<br />
+
+The art of unit testing lies in choosing a set of scenarios that will produce a high degree of confidence in the functioning of the unit under test across the often very large range of possible inputs.
+
+A useful approach can be to think in terms of categories of inputs, where we reduce large ranges to representative categories, an idea I explore in this article:
+
+- [Unit Testing, Scenarios and Categories: The SCAN Method](https://brenpatf.github.io/2021/10/17/unit-testing-scenarios-and-categories-the-scan-method.html)
+
+###### Generic Category Sets
+[&uarr; Scenario Category ANalysis (SCAN)](#scenario-category-analysis-scan-2)<br />
+
+As explained in the article mentioned above, it can be very useful to think in terms of generic category sets that apply in many situations. Multiplicity is relevant here (as it often is):
+
+###### *Multiplicity*
+
+There are several entities where the generic category set of multiplicity applies, and we should check each of the applicable None / One / Multiple instance categories.
+
+| Code     | Description     |
+|:--------:|:----------------|
+| None     | No values       |
+| One      | One value       |
+| Multiple | Multiple values |
+
+Apply to:
+<ul>
+<li>Input Groups</li>
+<li>Output Groups</li>
+<li>Input Fields (one or multiple only)</li>
+<li>Output Fields (one or multiple only)</li>
+<li>Input Records</li>
+<li>Output Records</li>
+<li>Delimiter Characters (one or multiple characters only)</li>
+<li>Scenarios (one or multiple only)</li>
+</ul>
+
+###### Categories and Scenarios
+[&uarr; Scenario Category ANalysis (SCAN)](#scenario-category-analysis-scan-2)<br />
+
+After analysis of the possible scenarios in terms of categories and category sets, we can depict them on a Category Structure diagram:
+
+<img src="png/CSD-trapit.png">
+
+We can tabulate the results of the category analysis, and assign a scenario against each category set/category with a unique description:
+
+|  # | Category Set               | Category        | Scenario                                                 |
+|---:|:---------------------------|:----------------|:-----------------------------------------------------    |
+|  1 | Input Group Multiplicity   | None            | No input groups                                          |
+|  2 | Input Group Multiplicity   | One             | One input group                                          |
+|  3 | Input Group Multiplicity   | Multiple        | Multiple input groups                                    |
+|  4 | Output Group Multiplicity  | None            | No output groups                                         |
+|  5 | Output Group Multiplicity  | One             | One output group                                         |
+|  6 | Output Group Multiplicity  | Multiple        | Multiple output groups                                   |
+|  7 | Input Field Multiplicity   | One             | One input group field                                    |
+|  8 | Input Field Multiplicity   | Multiple        | Multiple input fields                                    |
+|  9 | Output Field Multiplicity  | One             | One output group field                                   |
+| 10 | Output Field Multiplicity  | Multiple        | Multiple output fields                                   |
+| 11 | Input Record Multiplicity  | None            | No input group records                                   |
+| 12 | Input Record Multiplicity  | One             | One input group record                                   |
+| 13 | Input Record Multiplicity  | Multiple        | Multiple input group records                             |
+| 14 | Output Record Multiplicity | None            | No output group records                                  |
+| 15 | Output Record Multiplicity | One             | One output group record                                  |
+| 16 | Output Record Multiplicity | Multiple        | Multiple output group records                            |
+| 17 | Scenario Multiplicity      | One             | One scenario                                             |
+| 18 | Scenario Multiplicity      | Multiple        | Multiple scenarios                                       |
+| 19 | Scenario Multiplicity      | Active/Inactive | Active and inactive scenarios                            |
+| 21 | Category Set               | Null            | Category sets null                                       |
+| 21 | Category Set               | Same            | Multiple category sets with the same value               |
+| 22 | Category Set               | Different       | Multiple category sets with null and not null values     |
+| 23 | Delimiter Characters       | Delimiter 1     | Delimiter example 1                                      |
+| 24 | Delimiter Characters       | Delimiter 2     | Delimiter example 2                                      |
+| 25 | Delimiter Characters       | Multiple        | Multicharacter delimiter                                 |
+| 26 | Invalidity Type            | Valid           | All records the same                                     |
+| 27 | Invalidity Type            | Values mismatch | Same record numbers, value difference                    |
+| 28 | Invalidity Type            | #Exp > #Act     | More expected than actual records                        |
+| 29 | Invalidity Type            | #Exp < #Act     | More actual than expected records set                    |
+| 30 | Unhandled Exception        | Yes             | Unhandled exception                                      |
+|  * | Unhandled Exception        | No              | (No unhandled exception)*                                |
+|  * | Test Status                | Pass            | (All scenarios pass)*                                    |
+| 31 | Test Status                | Fail            | At least one scenario fails                              |
+
+From the scenarios identified we can construct the following CSV file, taking the category set and scenario columns, and adding an initial value for the active flag:
+
+###### trapit_or_sce.csv
+<img src="png/trapit_or_sce.png">
+
+##### Creating the Input Scenarios File
+[&uarr; Step 1: Create Input Scenarios File](#step-1-create-input-scenarios-file-2)<br />
+
+The API to generate a template JSON file can be run with the following PowerShell in the folder of the CSV files:
+
+###### Format-JSON-Trapit
+
+```powershell
+Import-Module ..\powershell_utils\TrapitUtils\TrapitUtils.psm1
+Write-UT_Template 'trapit_or' '|' 'Trapit Oracle Tester'
+```
+
+This creates the template JSON file, trapit_or_temp.json, which contains an element for each of the scenarios, with the appropriate category set and active flag, and a prototype set of input and output records.
+
+In the prototype record sets, each group has zero or more records with field values taken from the group CSV files, with a record for each value column present where at least one value is not null for the group. The template scenario records may be manually updated (and added or subtracted) to reflect input and expected output values for the actual scenario being tested.
+
+#### Step 2: Create Results Object
+[&uarr; Unit Testing Process](#unit-testing-process-2)<br />
+
+Step 2 requires the writing of a wrapper function that is called by the main unit testing API Trapit_Run.Run_A_Test via dynamic SQL. This function reads the input JSON file, calls the wrapper function for each scenario, and writes the output JSON file with the actual results merged in along with the expected results.
+
+The wrapper function has the structure shown in the diagram below, being defined in a driver script followed by a single line calling the test_format API.
+
+<img src="png/tt_trapit_csd.png">
+
+##### TT_Trapit (skeleton)
+
+```sql
+CREATE OR REPLACE PACKAGE BODY TT_Trapit AS
+FUNCTION groups_List_From_GF(
+            p_group_field_2lis             L2_chr_arr)   -- group/csv pairs list
+            RETURN                         L1_chr_arr IS -- groups list
+...
+FUNCTION groups_Obj_From_GF(
+            p_group_field_2lis             L2_chr_arr,      -- group/csv pairs list
+            p_group_lis                    L1_chr_arr)      -- groups list
+            RETURN                         JSON_Object_T IS -- JSON groups object
+...
+FUNCTION groups_Obj_From_SGF(
+            p_sce                          VARCHAR2,        -- scenario
+            p_group_lis                    L1_chr_arr,      -- groups list
+            p_sgf_2lis                     L2_chr_arr)      -- scenario/group/csv triples list
+            RETURN                         JSON_Object_T IS -- JSON groups object
+...
+PROCEDURE write_Input_JSON(
+            p_inp_3lis                     L3_chr_arr) IS -- input 3-level list
+...
+FUNCTION get_JSON_Obj
+            RETURN                         JSON_Object_T IS -- JSON object
+...
+PROCEDURE JSON_Array_To_List(
+            p_prefix                       VARCHAR2,      -- prefix
+            p_json_array                   JSON_Array_T,  -- JSON array
+            x_fld_ind               IN OUT PLS_INTEGER,   -- field index
+            x_value_lis             IN OUT L1_chr_arr) IS -- list of values
+...
+FUNCTION met_List(
+            p_obj                          JSON_Object_T) -- JSON object
+            RETURN                         L1_chr_arr IS  -- list of input or output fields
+...
+FUNCTION get_Actuals
+            RETURN                         L2_chr_arr IS -- actuals as 2-level list of lists
+...
+
+FUNCTION Purely_Wrap_Inner(
+            p_inp_3lis                     L3_chr_arr)   -- inputs as 3-level list of lists
+            RETURN                         L2_chr_arr IS -- actuals as 2-level list of lists
+BEGIN
+  g_sce_inp_ind := g_sce_inp_ind + 1;
+  IF g_sce_inp_lis(g_sce_inp_ind) = 'Y' THEN
+    Utils.Raise_Error('Exception thrown');
+  END IF;
+  RETURN g_act_value_3lis(g_sce_inp_ind);
+END Purely_Wrap_Inner;
+
+FUNCTION Purely_Wrap_Outer(
+            p_inp_3lis                     L3_chr_arr)   -- inputs as 3-level list of lists
+            RETURN                         L2_chr_arr IS -- actuals as 2-level list of lists
+  l_act_2lis        L2_chr_arr := L2_chr_arr();
+BEGIN
+  g_sce_inp_ind := 0;
+  write_Input_JSON(p_inp_3lis => p_inp_3lis);
+  Trapit_Run.Run_A_Test(p_package_function => UNIT_TEST_PACKAGE_NM || '.' || UNIT_TEST_FUNCTION_INN_NM,
+                        p_title            => 'Inner Unit Test');
+  l_act_2lis := get_Actuals;
+  ROLLBACK;
+  RETURN l_act_2lis;
+END Purely_Wrap_Outer;
+END TT_Trapit;
+```
+
+#### Step 3: Format Results
+[&uarr; Unit Testing Process](#unit-testing-process-2)<br />
+
+Step 3 involves formatting the results contained in the JSON output file from step 2, via the JavaScript formatter, and this step can be combined with step 2 for convenience.
+
+- `Test-FormatDB` is the function from the TrapitUtils PowerShell package that calls the main test driver function, then passes the output JSON file name to the JavaScript formatter and outputs a summary of the results.
+
+##### Test-Format-Trapit\.ps1 (skeleton)
+```powershell
+Import-Module ..\powershell_utils\TrapitUtils\TrapitUtils
+Test-FormatDB 'lib/lib' 'orclpdb' 'trapit' $PSScriptRoot `
+'BEGIN
+    Utils.g_w_is_active := FALSE;
+END;
+/
+'
+```
+This script calls the TrapitUtils library function Test-FormatDB, passing in for the `preSQL` parameter a SQL string to turn off logging to spool file.
+
+### Unit Test Results
+[&uarr; Unit Testing](#unit-testing)<br />
+[&darr; Unit Test Report - Trapit Oracle Tester](#unit-test-report---trapit-oracle-tester)<br />
+[&darr; Results for Scenario 18: Multiple scenarios [Category Set: Scenario Multiplicity]](#results-for-scenario-18-multiple-scenarios-category-set-scenario-multiplicity)<br />
+
+The unit test script creates a results subfolder, with results in text and HTML formats, in the script folder, and outputs the following summary:
+```
+Results summary for file: C:\Users\Brend\OneDrive\Documents\Home\WIP\trapit_oracle_tester\unit_test/tt_trapit.purely_wrap_outer_out.json
+========================================================================================================================================
+
+File:          tt_trapit.purely_wrap_outer_out.json
+Title:         Trapit Oracle Tester
+Inp Groups:    7
+Out Groups:    8
+Tests:         31
+Fails:         0
+Folder:        trapit-oracle-tester
+```
+
+#### Unit Test Report - Trapit Oracle Tester
+[&uarr; Unit Test Results](#unit-test-results-2)<br />
+
+Here we show the scenario-level summary of results, and show the detail for one of the scenarios, in HTML format.
+
+You can review the HTML formatted unit test results here:
+
+- [Unit Test Report: Trapit Oracle Tester](http://htmlpreview.github.io/?https://github.com/BrenPatF/trapit_oracle_tester/blob/master/trapit_oracle_tester/unit_test/trapit-oracle-tester/trapit-oracle-tester.html)
+
+<img src="png/trapit-oracle-tester.png">
+
+#### Results for Scenario 18: Multiple scenarios [Category Set: Scenario Multiplicity]
+[&uarr; Unit Test Results](#unit-test-results-2)<br />
+[&darr; Input Groups](#input-groups)<br />
+[&darr; Output Groups](#output-groups)<br />
+
+##### Input Groups
+[&uarr; Results for Scenario 18: Multiple scenarios [Category Set: Scenario Multiplicity]](#results-for-scenario-18-multiple-scenarios-category-set-scenario-multiplicity)<br />
+<img src="png/trapit-oracle-tester_sce_18_inp.png">
+
+##### Output Groups
+[&uarr; Results for Scenario 18: Multiple scenarios [Category Set: Scenario Multiplicity]](#results-for-scenario-18-multiple-scenarios-category-set-scenario-multiplicity)<br />
+<img src="png/trapit-oracle-tester_sce_18_out.png">
 ## Folder Structure
 [&uarr; In this README...](#in-this-readme)<br />
 
@@ -846,12 +1167,13 @@ The project folder structure is shown below.
 
 <img src="png/folders.png">
 
-There are five subfolders below the trapit root folder:
+There are six subfolders below the trapit root folder:
 - `app`: Application schema folder (main)
 - `install_prereq`: Installation prerequisites
 - `lib`: Library schema folder (main)
 - `png`: Image files for the README
 - `powershell_utils`: PowerShell packages, with JavaScript Trapit module included in TrapitUtils
+- `unit_test`: Root folder for unit testing, with subfolder having the results files
 
 ## See Also
 [&uarr; In this README...](#in-this-readme)<br />
@@ -876,7 +1198,7 @@ There are five subfolders below the trapit root folder:
 - PowerShell 5/7
 - npm 6.13.4
 - Node.js v12.16.1
-- Oracle Database Version 21.3.0.0.0
+- Oracle Database 23ai Free Release 23.0.0.0.0 - Production Version 23.4.0.24.05
 
 ## License
 MIT

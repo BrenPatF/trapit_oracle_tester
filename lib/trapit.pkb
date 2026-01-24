@@ -39,6 +39,8 @@ those for scripting languages in two other ways:
 | *Trapit*     |  Unit test utility package (Definer rights)                                       |
 |--------------|-----------------------------------------------------------------------------------|
 |  Trapit_Run  |  Unit test driver package (Invoker rights)                                        |
+|--------------|-----------------------------------------------------------------------------------|
+|  TT_Trapit   |  Unit test package for testing the generic unit test API, Trapit_Run.Run_A_Test   |
 ====================================================================================================
 
 This file has the package body for Trapit, the unit test utility package. See README for API 
@@ -189,7 +191,7 @@ BEGIN
   l_met_out_obj := l_met_obj.get_Object(OUT);
   l_met_out_obj.put(EXCEPTION_GROUP, JSON_Array_T('["Line"]')); -- should be array of "Line"
   l_met_obj.put(OUT, l_met_out_obj);
- 
+
   l_out_obj.put(META, l_met_obj);
   l_sce_obj := l_json_obj.get_Object(SCENARIOS);
   l_scenarios := l_sce_obj.get_Keys;

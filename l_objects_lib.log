@@ -1,0 +1,40 @@
+
+Database             Time                 Version
+-------------------- -------------------- ------------------------------
+Start: FREE          24-JAN-2026 15:31:42 Version 23.4.0.24.05
+
+Objects in schema lib created within last minute
+
+OBJECT_TYPE             OBJECT_NAME                    STATUS
+----------------------- ------------------------------ -------
+INDEX                   SYS_IL0000162195C00007$$       VALID
+INDEX                   SYS_IL0000162195C00008$$       VALID
+INDEX                   UNI_PK                         VALID
+LOB                     SYS_LOB0000162195C00007$$      VALID
+LOB                     SYS_LOB0000162195C00008$$      VALID
+PACKAGE                 TRAPIT                         VALID
+PACKAGE                 TRAPIT_RUN                     VALID
+PACKAGE                 TT_TRAPIT                      VALID
+PACKAGE                 UTILS                          VALID
+PACKAGE BODY            TRAPIT                         VALID
+PACKAGE BODY            TRAPIT_RUN                     VALID
+PACKAGE BODY            TT_TRAPIT                      VALID
+PACKAGE BODY            UTILS                          VALID
+SEQUENCE                ISEQ$$_162178                  VALID
+TABLE                   LOG_LINES                      VALID
+TABLE                   TT_UNITS                       VALID
+TYPE                    CHR_INT_ARR                    VALID
+TYPE                    CHR_INT_REC                    VALID
+TYPE                    L1_CHR_ARR                     VALID
+TYPE                    L1_NUM_ARR                     VALID
+TYPE                    L2_CHR_ARR                     VALID
+TYPE                    L3_CHR_ARR                     VALID
+TYPE                    L4_CHR_ARR                     VALID
+
+23 rows selected.
+
+
+'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
+----------------------------------
+End: 24-JAN-2026 15:31:42
+

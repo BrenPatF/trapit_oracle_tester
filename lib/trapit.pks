@@ -37,15 +37,16 @@ those for scripting languages in two other ways:
 |  Package     |  Notes                                                                            |
 |==================================================================================================|
 | *Trapit*     |  Unit test utility package (Definer rights)                                       |
-|--------------------------------------------------------------------------------------------------|
+|--------------|-----------------------------------------------------------------------------------|
 |  Trapit_Run  |  Unit test driver package (Invoker rights)                                        |
+|--------------|-----------------------------------------------------------------------------------|
+|  TT_Trapit   |  Unit test package for testing the generic unit test API, Trapit_Run.Run_A_Test   |
 ====================================================================================================
 
 This file has the package spec for Trapit, the unit test utility package. See README for API 
 specification, and the other modules mentioned there for examples of use
 
 ***************************************************************************************************/
-
 FUNCTION Get_Inputs(
             p_unit_test_package_nm         VARCHAR2,
             p_purely_wrap_api_function_nm  VARCHAR2)

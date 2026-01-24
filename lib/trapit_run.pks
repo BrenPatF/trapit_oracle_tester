@@ -39,6 +39,8 @@ those for scripting languages in two other ways:
 | Trapit       |  Unit test utility package (Definer rights)                                       |
 |--------------|-----------------------------------------------------------------------------------|
 | *Trapit_Run* |  Unit test driver package (Invoker rights)                                        |
+|--------------|-----------------------------------------------------------------------------------|
+|  TT_Trapit   |  Unit test package for testing the generic unit test API, Trapit_Run.Run_A_Test   |
 ====================================================================================================
 
 This file has the package spec for Trapit_Run, the unit test driver package. See README for API 
@@ -48,7 +50,9 @@ This package runs with Invoker rights, so that dynamic SQL calls to the test pac
 schema do not require execute privilege to be granted to owning schema (if different from caller)
 
 ***************************************************************************************************/
-
+PROCEDURE Run_A_Test(
+            p_package_function             VARCHAR2, 
+            p_title                        VARCHAR2);
 PROCEDURE Run_Tests(
             p_group_nm                     VARCHAR2);
 FUNCTION Test_Output_Files(
