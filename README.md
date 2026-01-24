@@ -421,9 +421,7 @@ A record is added into the table TT_UNITS by a call to the Trapit.Add_Ttu API as
 
 ```sql
 BEGIN
-
   Trapit.Add_Ttu('TT_UTILS', 'Purely_Wrap_Utils', 'lib', 'Y', 'tt_utils.purely_wrap_utils_inp.json');
-
 END;
 /
 ```
