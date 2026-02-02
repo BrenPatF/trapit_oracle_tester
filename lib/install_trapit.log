@@ -1,7 +1,7 @@
 
 Database             Time                 Version
 -------------------- -------------------- ------------------------------
-Start: FREE          24-JAN-2026 15:31:41 Version 23.4.0.24.05
+Start: FREE          02-FEB-2026 13:45:02 Version 23.4.0.24.05
 
 Drop table tt_units
 DROP TABLE tt_units
@@ -103,5 +103,5 @@ Grant succeeded.
 
 'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
 ----------------------------------
-End: 24-JAN-2026 15:31:41
+End: 02-FEB-2026 13:45:03
 

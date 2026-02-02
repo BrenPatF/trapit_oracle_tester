@@ -1,7 +1,7 @@
 
 Database             Time                 Version
 -------------------- -------------------- ------------------------------
-Start: FREE          24-JAN-2026 15:31:38 Version 23.4.0.24.05
+Start: FREE          02-FEB-2026 13:44:50 Version 23.4.0.24.05
 
 Drop lib and app
 old   1: DROP USER &LIB_USER CASCADE
@@ -21,5 +21,5 @@ Directory dropped.
 
 'END:'||TO_CHAR(SYSDATE,'DD-MON-YY
 ----------------------------------
-End: 24-JAN-2026 15:31:39
+End: 02-FEB-2026 13:45:00
 

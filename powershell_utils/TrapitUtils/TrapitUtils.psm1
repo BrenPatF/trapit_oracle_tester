@@ -434,8 +434,8 @@ EXIT;
     if ($arr[$ids[0]] -eq '!') { throw "No output files to process..." }
     foreach($i in $ids[0] .. ($ids[1] - 2)) {
         Copy-Item $arr[$i] $testRoot
-        $fileName = $testRoot + '/' + (Split-Path $arr[$i] -leaf)
-        ' '
-        node ($PSScriptRoot + '/node_modules/trapit/externals/format-external-file') $fileName
+        $jsonFile = $testRoot + '/' + (Split-Path $arr[$i] -leaf)
+        Get-Heading ('Results summary for file: ' + $jsonFile)
+        node ($PSScriptRoot + '/node_modules/trapit/externals/format-external-file') $jsonFile
     }
 }
